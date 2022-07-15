@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trabalho_final/pages/map.dart';
 
 void main() => runApp(const ProjetoFinal());
 
@@ -8,8 +9,8 @@ class ProjetoFinal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Container(),
+    return const MaterialApp(
+      home: Map(),
     );
   }
 }
