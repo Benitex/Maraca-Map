@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:trabalho_final/pages/map.dart';
+import 'package:trabalho_final/screens/map_screen.dart';
+import 'package:trabalho_final/classes/themes.dart';
 
 void main() => runApp(const ProjetoFinal());
 
@@ -9,8 +10,10 @@ class ProjetoFinal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Map(),
+    return MaterialApp(
+      home: const MapScreen(),
+      theme: Themes.standard,
+      debugShowCheckedModeBanner: false,
     );
   }
 }

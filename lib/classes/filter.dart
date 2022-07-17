@@ -1,38 +1,20 @@
 // Classe Filter contendo as especificações de filtros do mapa para um usuário
 
-//TODO aumentar a densidade dos poi
-
 class Filter {
-  static Map<String, String> _settings = {
-    'attractions': 'on',
-    'business': 'on', // TODO dividir o business
-    'medical': 'on',
-    'placesOfWorship': 'on',
-    'schools': 'on',
-    'publicTransportStations': 'on',
-  };
+  static final List<FilterOption> _options = [
+    FilterOption('attractions', true),
+    FilterOption('business', true),
+    FilterOption('medical', false),
+    FilterOption('placesOfWorship', false),
+    FilterOption('schools', true),
+    FilterOption('publicTransportStations', true),
+    FilterOption('accessibility', false),
+  ];
 
-  static set attractions(bool active) {
-    _settings['attractions'] = active ? 'on' : 'off';
-  }
-  static set business(bool active) {
-    _settings['business'] = active ? 'on' : 'off';
-  }
-  static set medical(bool active) {
-    _settings['medical'] = active ? 'on' : 'off';
-  }
-  static set placesOfWorship(bool active) {
-    _settings['placesOfWorship'] = active ? 'on' : 'off';
-  }
-  static set schools(bool active) {
-    _settings['schools'] = active ? 'on' : 'off';
-  }
-  static set publicTransportStations(bool active) {
-    _settings['publicTransportStations'] = active ? 'on' : 'off';
-  }
+  static List<FilterOption> get options => _options;
 
   // Método que retorna uma String json equivalente ao filtro especificado
-  static String get() {
+  static String getJSON() {
     return '''
 [
   {
@@ -43,7 +25,7 @@ class Filter {
     "featureType": "poi.attraction",
     "stylers": [
       {
-        "visibility": "${_settings['attractions']}"
+        "visibility": "${_getActivityString('attractions')}"
       }
     ]
   },
@@ -51,7 +33,7 @@ class Filter {
     "featureType": "poi.business",
     "stylers": [
       {
-        "visibility": "${_settings['business']}"
+        "visibility": "${_getActivityString('business')}"
       }
     ]
   },
@@ -63,7 +45,7 @@ class Filter {
     "featureType": "poi.medical",
     "stylers": [
       {
-        "visibility": "${_settings['medical']}"
+        "visibility": "${_getActivityString('medical')}"
       }
     ]
   },
@@ -75,7 +57,7 @@ class Filter {
     "featureType": "poi.place_of_worship",
     "stylers": [
       {
-        "visibility": "${_settings['placesOfWorship']}"
+        "visibility": "${_getActivityString('placesOfWorship')}"
       }
     ]
   },
@@ -83,7 +65,7 @@ class Filter {
     "featureType": "poi.school",
     "stylers": [
       {
-        "visibility": "${_settings['schools']}"
+        "visibility": "${_getActivityString('schools')}"
       }
     ]
   },
@@ -103,11 +85,52 @@ class Filter {
     "featureType": "transit.station",
     "stylers": [
       {
-        "visibility": "${_settings['publicTransportStations']}"
+        "visibility": "${_getActivityString('publicTransportStations')}"
       }
     ]
   },
 ]
     ''';
+  }
+
+  static String _getActivityString(String type) {
+    for (var option in options) {
+      if (type == option._type) {
+        if (option.active) {
+          return 'on';
+        } else {
+          return 'off';
+        }
+      }
+    }
+    return 'Error: Option not defined';
+  }
+}
+
+class FilterOption {
+  FilterOption(this._type, this.active);
+
+  final String _type;
+  bool active;
+
+  String get type {
+    switch (_type) {
+      case 'attractions':
+        return 'Passeios turísticos';
+      case 'business':
+        return 'Lojas e restaurantes';
+      case 'medical':
+        return 'Hospitais';
+      case 'placesOfWorship':
+        return 'Instituições religiosas';
+      case 'schools':
+        return 'Escolas';
+      case 'publicTransportStations':
+        return 'Transporte público';
+      case 'accessibility':
+        return 'Modo de acessibilidade';
+      default:
+        return 'Error: Option not defined';
+    }
   }
 }
