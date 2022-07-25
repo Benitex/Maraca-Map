@@ -47,5 +47,14 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+
+	<key>NSLocationWhenInUseUsageDescription</key>
+    <string>Permissão de localização durante o uso do aplicativo</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>Permissão de localização o tempo inteiro e durante o uso do aplicativo</string>
+    <key>NSLocationUsageDescription</key>
+    <string>Necessário para localização em dispositivos antigos.</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>Permissão de localização o tempo inteiro</string>
 </dict>
 </plist>
