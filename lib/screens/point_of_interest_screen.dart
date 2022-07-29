@@ -5,6 +5,9 @@ class PointOfInterestScreen extends StatefulWidget {
   PointOfInterestScreen({super.key, required String pointOfInterestID}) {
     pointOfInterest = PointOfInterest(pointOfInterestID);
   }
+  PointOfInterestScreen.fromPointOfInterest({super.key, required PointOfInterest selectedPointOfInterest}) {
+    pointOfInterest = selectedPointOfInterest;
+  }
 
   static late PointOfInterest pointOfInterest;
 
