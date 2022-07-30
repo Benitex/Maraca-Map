@@ -3,6 +3,8 @@ import 'package:google_maps_webservice/geocoding.dart';
 import 'package:trabalho_final/providers/places.dart';
 import 'package:trabalho_final/screens/point_of_interest_details.dart';
 
+// AlertDialog de seleção de PointOfInterest quando há mais de um na mesma coordenada
+
 class PlaceSelection extends StatelessWidget {
   const PlaceSelection({super.key, required this.places});
 
@@ -28,6 +30,8 @@ class PlaceSelection extends StatelessWidget {
   }
 }
 
+// Modelo de tiles de PointOfInterest
+
 class PointOfInterestOption extends StatelessWidget {
   const PointOfInterestOption({super.key, required this.pointOfInterestID});
 
@@ -39,18 +43,20 @@ class PointOfInterestOption extends StatelessWidget {
       future: Places.getDetailsByPlaceId(pointOfInterestID),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return OutlinedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => PointOfInterestDetails(
-                  pointOfInterestID: pointOfInterestID,
-                )),
-              );
-            },
-            child: Text(snapshot.data!.name),
-          );
+          return Row(children: [Expanded(
+            child: OutlinedButton(
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PointOfInterestDetails(
+                    pointOfInterestID: pointOfInterestID,
+                  )),
+                );
+              },
+              child: Text(snapshot.data!.name),
+            ),
+          )],);
         } else {
           return Container();
         }

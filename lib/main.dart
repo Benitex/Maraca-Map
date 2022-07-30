@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:trabalho_final/screens/map.dart';
-import 'package:trabalho_final/classes/themes.dart';
 
 void main() => runApp(const ProjetoFinal());
 
@@ -12,8 +11,10 @@ class ProjetoFinal extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: const Map(),
-      theme: Themes.standard,
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primaryColor: const Color(0x00012030),
+      ),
     );
   }
 }

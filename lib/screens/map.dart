@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:trabalho_final/models/filter_option.dart';
 import 'package:trabalho_final/providers/geocoding.dart';
 import 'package:google_maps_webservice/geocoding.dart';
-import 'package:trabalho_final/classes/filter.dart';
+import 'package:trabalho_final/providers/filter.dart';
 import 'package:trabalho_final/screens/filter_selection.dart';
 import 'package:trabalho_final/widgets/map/place_selection.dart';
 import 'package:trabalho_final/screens/point_of_interest_details.dart';
@@ -12,8 +13,8 @@ class Map extends StatefulWidget {
 
   static late GoogleMapController _mapController;
 
-  static void updateMarkers() {
-    Map._mapController.setMapStyle(Filter.getJSON());
+  static void updateMarkers(List<FilterOption> options) {
+    Map._mapController.setMapStyle(Filter.getJSON(options));
   }
 
   @override
@@ -41,9 +42,17 @@ class _MapState extends State<Map> {
 
         onMapCreated: (controller) {
           Map._mapController = controller;
-          Map.updateMarkers();
+          Map.updateMarkers([
+            FilterOption('attractions', true),
+            FilterOption('business', true),
+            FilterOption('medical', false),
+            FilterOption('placesOfWorship', false),
+            FilterOption('schools', true),
+            FilterOption('publicTransportStations', true),
+            FilterOption('accessibility', false)
+          ]);
         },
-        onTap: (argument) async => _viewPointOfInterestDetails(argument),
+        onTap: (argument) => _viewPointOfInterestDetails(argument),
       ),
 
       // Botão dos filtros

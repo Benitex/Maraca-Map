@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:trabalho_final/classes/filter.dart';
+import 'package:trabalho_final/models/filter_option.dart';
 import 'package:trabalho_final/screens/map.dart';
 
 class FilterSelection extends StatefulWidget {
@@ -10,6 +10,16 @@ class FilterSelection extends StatefulWidget {
 }
 
 class _FilterSelectionState extends State<FilterSelection> {
+  static final List<FilterOption> _filterOptions = [
+    FilterOption('attractions', true),
+    FilterOption('business', true),
+    FilterOption('medical', false),
+    FilterOption('placesOfWorship', false),
+    FilterOption('schools', true),
+    FilterOption('publicTransportStations', true),
+    FilterOption('accessibility', false),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,19 +27,20 @@ class _FilterSelectionState extends State<FilterSelection> {
         title: const Text("Filtros"),
         centerTitle: true,
       ),
+
       body: ListView.builder(
-        itemCount: Filter.options.length,
+        itemCount: _filterOptions.length,
         itemBuilder: (context, index) {
           return Card(
             child: SwitchListTile(
               title: Text(
-                Filter.options[index].type,
+                _filterOptions[index].name,
                 style: const TextStyle(), // TODO adicionar o estilo
               ),
-              value: Filter.options[index].active,
+              value: _filterOptions[index].active,
               onChanged: (value) => setState(() {
-                Filter.options[index].active = value;
-                Map.updateMarkers();
+                _filterOptions[index].active = value;
+                Map.updateMarkers(_filterOptions);
               }),
             ),
           );
