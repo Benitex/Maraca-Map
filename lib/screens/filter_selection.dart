@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:trabalho_final/classes/filter.dart';
-import 'package:trabalho_final/screens/map_screen.dart';
+import 'package:trabalho_final/screens/map.dart';
 
-class FilterScreen extends StatefulWidget {
-  const FilterScreen({super.key});
+class FilterSelection extends StatefulWidget {
+  const FilterSelection({super.key});
 
   @override
-  State<FilterScreen> createState() => _FilterScreenState();
+  State<FilterSelection> createState() => _FilterSelectionState();
 }
 
-class _FilterScreenState extends State<FilterScreen> {
+class _FilterSelectionState extends State<FilterSelection> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +17,6 @@ class _FilterScreenState extends State<FilterScreen> {
         title: const Text("Filtros"),
         centerTitle: true,
       ),
-
       body: ListView.builder(
         itemCount: Filter.options.length,
         itemBuilder: (context, index) {
@@ -30,7 +29,7 @@ class _FilterScreenState extends State<FilterScreen> {
               value: Filter.options[index].active,
               onChanged: (value) => setState(() {
                 Filter.options[index].active = value;
-                MapScreen.updateMarkers();
+                Map.updateMarkers();
               }),
             ),
           );
