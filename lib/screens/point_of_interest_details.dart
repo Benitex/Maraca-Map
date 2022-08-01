@@ -18,16 +18,50 @@ class PointOfInterestDetails extends StatelessWidget {
           return Scaffold(
             appBar: AppBar(
               title: Text(pointOfInterest.name),
-              actions: [pointOfInterest.icon],
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: pointOfInterest.icon,
+                ),
+              ],
             ),
             body: ListView(
               children: <Widget>[
+                //Endereço
                 ListTile(
                   title: const Text("Endereço"),
                   subtitle: Text(pointOfInterest.address),
                 ),
 
-                // TODO adicionar os outros campos
+                // Classificação
+                pointOfInterest.rating == -1 ? (
+                  const ListTile(
+                    title: Text("Esse lugar não possui classificação."),
+                  )
+                ) : (
+                  ListTile(
+                    title: const Text("Classificação"),
+                    subtitle: Row(
+                      children: [
+                        Text(pointOfInterest.rating.toString()),
+                        for (int count = 1; count <= 5; count++)
+                          Padding(
+                            padding: const EdgeInsets.only(right: 3),
+                            child: Icon(
+                              pointOfInterest.rating >= count ? Icons.star : Icons.star_border,
+                              color: Colors.amber,
+                            ),
+                          ),
+                      ],
+                    ),
+                  )
+                ),
+
+                // Preço
+                ListTile(
+                  title: const Text("Preço"),
+                  subtitle: Text(pointOfInterest.priceLevel),
+                ),
               ],
             ),
           );

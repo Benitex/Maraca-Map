@@ -13,7 +13,7 @@ class PlaceSelection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text("Selecione um ponto de interesse:"),
+      title: const Text("Escolha um lugar:"),
       content: Column(
         children: [
           for (GeocodingResult place in places)

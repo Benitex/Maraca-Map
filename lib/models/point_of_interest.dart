@@ -40,4 +40,33 @@ class PointOfInterest {
     // AddressComponent[1] = rua, AddressComponent[0] = número
     return "${adressComponents[1].shortName}, ${adressComponents[0].shortName}";
   }
+
+  // Classificação
+  num get rating {
+    if (_placesDetails.rating is num) {
+      return _placesDetails.rating!;
+    } else {
+      return -1; // -1 representa que não foram encontradas informações de preço
+    }
+  }
+
+  // Preço
+  String get priceLevel {
+    if (_placesDetails.priceLevel is PriceLevel) {
+      switch (_placesDetails.priceLevel!) {
+        case PriceLevel.free:
+          return "Grátis";
+        case PriceLevel.inexpensive:
+          return "Barato";
+        case PriceLevel.moderate:
+          return "Moderado";
+        case PriceLevel.expensive:
+          return "Caro";
+        case PriceLevel.veryExpensive:
+          return "Muito caro";
+      }
+    } else {
+      return "Informações de preço indisponíveis.";
+    }
+  }
 }
