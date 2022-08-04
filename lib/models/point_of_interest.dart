@@ -10,7 +10,7 @@ class PointOfInterest {
   }
 
   final String _id;
-  late PlaceDetails _placesDetails;
+  late final PlaceDetails _placesDetails;
 
   // TODO definir os outros atributos de acordo com os details
 
@@ -22,7 +22,8 @@ class PointOfInterest {
 
   // Ícone
   Image get icon {
-    String iconAddress = "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/geocode-71.png";
+    String iconAddress =
+        "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/geocode-71.png";
     if (_placesDetails.icon is String) {
       iconAddress = _placesDetails.icon!;
     }

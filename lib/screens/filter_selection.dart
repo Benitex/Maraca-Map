@@ -35,7 +35,6 @@ class _FilterSelectionState extends State<FilterSelection> {
             child: SwitchListTile(
               title: Text(
                 _filterOptions[index].name,
-                style: const TextStyle(), // TODO adicionar o estilo
               ),
               value: _filterOptions[index].active,
               onChanged: (value) => setState(() {

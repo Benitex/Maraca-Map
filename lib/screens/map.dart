@@ -15,7 +15,7 @@ class Map extends StatefulWidget {
   static late GoogleMapController controller;
 
   static void updateMarkers(List<FilterOption> options) {
-    Map.controller.setMapStyle(Filter.getJSON(options));
+    controller.setMapStyle(Filter.getJSON(options));
   }
 
   @override
@@ -36,6 +36,7 @@ class _MapState extends State<Map> {
 
         // TODO adicionar opções nas configurações
         buildingsEnabled: false,
+        mapType: MapType.normal,
         zoomControlsEnabled: false,
 
         onMapCreated: (controller) => _onMapCreated(controller),

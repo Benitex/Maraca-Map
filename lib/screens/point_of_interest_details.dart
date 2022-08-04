@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_webservice/places.dart';
 import 'package:trabalho_final/models/point_of_interest.dart';
 
 class PointOfInterestDetails extends StatelessWidget {
@@ -44,11 +45,11 @@ class PointOfInterestDetails extends StatelessWidget {
                     subtitle: Row(
                       children: [
                         Text(pointOfInterest.rating.toString()),
-                        for (int count = 1; count <= 5; count++)
+                        for (int starCounter = 1; starCounter <= 5; starCounter++)
                           Padding(
                             padding: const EdgeInsets.only(right: 3),
                             child: Icon(
-                              pointOfInterest.rating >= count ? Icons.star : Icons.star_border,
+                              pointOfInterest.rating >= starCounter ? Icons.star : Icons.star_border,
                               color: Colors.amber,
                             ),
                           ),
