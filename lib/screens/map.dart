@@ -95,8 +95,19 @@ class _MapState extends State<Map> {
       List<GeocodingResult> possiblePlaces = [];
 
       for (GeocodingResult result in allPlaces) {
-        if (result.types.contains("point_of_interest")) { // TODO definir os tipos
-          possiblePlaces.add(result);
+        if (result.types.contains("point_of_interest")) {
+          // Verificação se um filtro ativo contém um dos subtipos
+          filtersLoop:
+          for (FilterOption option in Map.filters) {
+            if (option.active) {
+              for (String subtype in await Types.getSubtypesByName(option.name)) {
+                if (result.types.contains(subtype) && !possiblePlaces.contains(result)) {
+                  possiblePlaces.add(result);
+                  break filtersLoop;
+                }
+              }
+            }
+          }
         }
       }
 
