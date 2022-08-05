@@ -4,6 +4,7 @@ import 'package:google_maps_webservice/geocoding.dart';
 import 'package:trabalho_final/providers/geocoding.dart';
 import 'package:trabalho_final/providers/filter.dart';
 import 'package:trabalho_final/providers/geolocator.dart';
+import 'package:trabalho_final/providers/types.dart';
 import 'package:trabalho_final/screens/filter_selection.dart';
 import 'package:trabalho_final/models/filter_option.dart';
 import 'package:trabalho_final/screens/point_of_interest_details.dart';
@@ -13,9 +14,10 @@ class Map extends StatefulWidget {
   const Map({super.key});
 
   static late GoogleMapController controller;
+  static late List<FilterOption> filters;
 
-  static void updateMarkers(List<FilterOption> options) {
-    controller.setMapStyle(Filter.getJSON(options));
+  static void updateMarkers() {
+    controller.setMapStyle(Filter.getJSON(filters));
   }
 
   @override
@@ -79,15 +81,8 @@ class _MapState extends State<Map> {
 
   void _onMapCreated(GoogleMapController controller) async {
     Map.controller = controller;
-    Map.updateMarkers([
-      FilterOption('attractions', true),
-      FilterOption('business', true),
-      FilterOption('medical', false),
-      FilterOption('placesOfWorship', false),
-      FilterOption('schools', true),
-      FilterOption('publicTransportStations', true),
-      FilterOption('accessibility', false)
-    ]);
+    Map.filters = await Types.getFilterOptions();
+    Map.updateMarkers();
     Map.controller.moveCamera(CameraUpdate.newCameraPosition(
       CameraPosition(zoom: 18, target: await Geolocator.getCurrentLatLng()),
     ));

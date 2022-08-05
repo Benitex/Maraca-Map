@@ -4,7 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Geolocator {
   static Future<LatLng> getCurrentLatLng() async {
-    await _checkPermissions();
+    await _checkPermissions(); // TODO adicionar avisos de negação de permissões
     Position position = await api.Geolocator.getCurrentPosition();
 
     return LatLng(

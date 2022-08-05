@@ -1,6 +1,7 @@
 {
   "attractions": {
     "portuguese_name": "Lazer e turismo",
+    "initial_value": true,
     "sub_types": [
       {
         "type": "amusement_park",
@@ -58,6 +59,7 @@
   },
   "business": {
     "portuguese_name": "Lojas e restaurantes",
+    "initial_value": true,
     "sub_types": [
       {
         "type": "accounting",
@@ -311,6 +313,7 @@
   },
   "medical": {
     "portuguese_name": "Hospitais",
+    "initial_value": false,
     "sub_types": [
       {
         "type": "dentist",
@@ -348,6 +351,7 @@
   },
   "placesOfWorship": {
     "portuguese_name": "Templos religiosos",
+    "initial_value": false,
     "sub_types": [
       {
         "type": "cemetery",
@@ -373,6 +377,7 @@
   },
   "schools": {
     "portuguese_name": "Escolas",
+    "initial_value": true,
     "sub_types": [
       {
         "type": "primary_school",
@@ -394,6 +399,7 @@
   },
   "publicTransportStations": {
     "portuguese_name": "Transporte público",
+    "initial_value": true,
     "sub_types": [
       {
         "type": "airport",
@@ -426,6 +432,7 @@
     ]
   },
   "accessibility": {
-    "portuguese_name": "Acessibilidade"
+    "portuguese_name": "Acessibilidade",
+    "initial_value": false
   }
 }
