@@ -2,7 +2,7 @@
   "attractions": {
     "portuguese_name": "Lazer e turismo",
     "initial_value": true,
-    "sub_types": [
+    "subtypes": [
       {
         "type": "amusement_park",
         "portuguese_name": "Parque de diversões"
@@ -60,7 +60,7 @@
   "business": {
     "portuguese_name": "Lojas e restaurantes",
     "initial_value": true,
-    "sub_types": [
+    "subtypes": [
       {
         "type": "accounting",
         "portuguese_name": "Contabilidade"
@@ -140,6 +140,10 @@
       {
         "type": "drugstore",
         "portuguese_name": "Farmácia"
+      },
+      {
+        "type": "establishment",
+        "portuguese_name": "Estabelecimento"
       },
       {
         "type": "electrician",
@@ -314,7 +318,7 @@
   "medical": {
     "portuguese_name": "Hospitais",
     "initial_value": false,
-    "sub_types": [
+    "subtypes": [
       {
         "type": "dentist",
         "portuguese_name": "Dentista"
@@ -352,7 +356,7 @@
   "placesOfWorship": {
     "portuguese_name": "Templos religiosos",
     "initial_value": false,
-    "sub_types": [
+    "subtypes": [
       {
         "type": "cemetery",
         "portuguese_name": "Cemitério"
@@ -378,7 +382,7 @@
   "schools": {
     "portuguese_name": "Escolas",
     "initial_value": true,
-    "sub_types": [
+    "subtypes": [
       {
         "type": "primary_school",
         "portuguese_name": "Escola de ensino fundamental"
@@ -400,7 +404,7 @@
   "publicTransportStations": {
     "portuguese_name": "Transporte público",
     "initial_value": true,
-    "sub_types": [
+    "subtypes": [
       {
         "type": "airport",
         "portuguese_name": "Aeroporto"
@@ -433,6 +437,7 @@
   },
   "accessibility": {
     "portuguese_name": "Acessibilidade",
-    "initial_value": false
+    "initial_value": false,
+    "subtypes": []
   }
 }

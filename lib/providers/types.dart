@@ -3,37 +3,51 @@ import 'package:flutter/services.dart';
 import 'package:trabalho_final/models/filter_option.dart';
 
 class Types {
-  static Future<List<FilterOption>> getFilterOptions() async {
-    List<FilterOption> filterOptions = [];
+  static late final Map _map;
 
-    final Map types = await jsonDecode(
+  static Future loadJSONMap() async {
+    _map = await jsonDecode(
       await rootBundle.loadString('assets/point_of_interest_types.json'),
     );
+  }
 
-    types.forEach((key, value) {
+  static List<FilterOption> getFilterOptions() {
+    List<FilterOption> filterOptions = [];
+
+    _map.forEach((key, type) {
       filterOptions.add(
-        FilterOption(key, value["initial_value"], value["portuguese_name"])
+        FilterOption(key, type["initial_value"], type["portuguese_name"]),
       );
     });
 
     return filterOptions;
   }
 
-  static Future<List<String>> getSubtypesByName(String name) async {
+  static List<String> getSubtypesByName(String name) {
     List<String> subtypes = [];
 
-    final Map types = await jsonDecode(
-      await rootBundle.loadString('assets/point_of_interest_types.json'),
-    );
-
-    types.forEach((key, type) {
+    _map.forEach((key, type) {
       if (type['portuguese_name'] == name) {
-        for (Map subtype in type['sub_types']) {
+        for (Map subtype in type['subtypes']) {
           subtypes.add(subtype['type']);
         }
       }
     });
 
     return subtypes;
+  }
+
+  static String getTranslatedName(String type) {
+    String translatedName = '';
+
+    _map.forEach((name, value) {
+      for (Map subtype in value['subtypes']) {
+        if (type == subtype["type"]) {
+          translatedName = subtype['portuguese_name'];
+        }
+      }
+    });
+
+    return translatedName;
   }
 }

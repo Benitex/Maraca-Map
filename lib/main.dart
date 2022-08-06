@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:trabalho_final/providers/types.dart';
 import 'package:trabalho_final/screens/map.dart';
 
-void main() => runApp(const ProjetoFinal());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Types.loadJSONMap();
+  runApp(const ProjetoFinal());
+}
 
 // TODO adidicionar o nome do aplicativo
 class ProjetoFinal extends StatelessWidget {

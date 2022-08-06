@@ -81,7 +81,7 @@ class _MapState extends State<Map> {
 
   void _onMapCreated(GoogleMapController controller) async {
     Map.controller = controller;
-    Map.filters = await Types.getFilterOptions();
+    Map.filters = Types.getFilterOptions();
     Map.updateMarkers();
     Map.controller.moveCamera(CameraUpdate.newCameraPosition(
       CameraPosition(zoom: 18, target: await Geolocator.getCurrentLatLng()),
@@ -100,7 +100,7 @@ class _MapState extends State<Map> {
           filtersLoop:
           for (FilterOption option in Map.filters) {
             if (option.active) {
-              for (String subtype in await Types.getSubtypesByName(option.name)) {
+              for (String subtype in Types.getSubtypesByName(option.name)) {
                 if (result.types.contains(subtype) && !possiblePlaces.contains(result)) {
                   possiblePlaces.add(result);
                   break filtersLoop;

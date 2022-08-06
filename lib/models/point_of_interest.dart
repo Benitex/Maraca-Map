@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:trabalho_final/providers/places.dart';
+import 'package:trabalho_final/providers/types.dart';
 
 class PointOfInterest {
   PointOfInterest(this._id);
@@ -20,10 +21,29 @@ class PointOfInterest {
   // Nome
   String get name => _placesDetails.name;
 
+  // Tipos
+  List<String> get types {
+    List<String> types = [];
+    for (String type in _placesDetails.types) {
+      String name = Types.getTranslatedName(type);
+      if (name != '') {
+        // remoção de tipos genéricos se um tipo específicio foi definido
+        if (name == "Estabelecimento" || name == "Loja") {
+          if (types.isEmpty) {
+            types.add(name);
+          }
+        } else {
+          types.add(name);
+        }
+      }
+    }
+
+    return types;
+  }
+
   // Ícone
   Image get icon {
-    String iconAddress =
-        "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/geocode-71.png";
+    String iconAddress = "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/geocode-71.png";
     if (_placesDetails.icon is String) {
       iconAddress = _placesDetails.icon!;
     }
@@ -47,8 +67,13 @@ class PointOfInterest {
     if (_placesDetails.rating is num) {
       return _placesDetails.rating!;
     } else {
-      return -1; // -1 representa que não foram encontradas informações de preço
+      return -1;
     }
+  }
+
+  // Avaliações
+  List<Review> get reviews {
+    return _placesDetails.reviews;
   }
 
   // Preço
