@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:google_maps_webservice/places.dart';
 
 class Places {
@@ -8,5 +9,11 @@ class Places {
     PlacesDetailsResponse response = await _api.getDetailsByPlaceId(id, language: "pt-BR");
 
     return response.result;
+  }
+
+  static Image getImageFromPhoto(Photo photo) {
+    return Image.network(
+      "https://maps.googleapis.com/maps/api/place/photo?maxwidth=${photo.width}&photo_reference=${photo.photoReference}&key=$_webAPIKey",
+    );
   }
 }

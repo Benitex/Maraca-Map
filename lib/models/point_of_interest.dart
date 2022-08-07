@@ -13,8 +13,6 @@ class PointOfInterest {
   final String _id;
   late final PlaceDetails _placesDetails;
 
-  // TODO definir os outros atributos de acordo com os details
-
   // ID
   String get id => _id;
 
@@ -122,5 +120,44 @@ class PointOfInterest {
     } else {
       return "Página indisponível.";
     }
+  }
+
+  // Horário de funcionamento
+  String get openingHoursToday {
+    if (_placesDetails.openingHours is OpeningHoursDetail) {
+      int weekday = DateTime.now().weekday;
+      if (weekday > 6) {
+        weekday = 0;
+      }
+
+      OpeningHoursPeriod openingHoursPeriod = _placesDetails.openingHours!.periods[weekday];
+      String openingHours = '', closingHours = '';
+
+      if (openingHoursPeriod.open is OpeningHoursPeriodDate && openingHoursPeriod.close is OpeningHoursPeriodDate) {
+        openingHours = "${openingHoursPeriod.open!.time.substring(0, 2)}:${openingHoursPeriod.open!.time.substring(2)}";
+        closingHours = "${openingHoursPeriod.close!.time.substring(0, 2)}:${openingHoursPeriod.close!.time.substring(2)}";
+      }
+
+      if (openingHours != '') {
+        return "Abre às $openingHours e fecha às $closingHours.";
+      } else {
+        return "Esse lugar não abre hoje.";
+      }
+    } else {
+      return "Horário de funcionamento indisponível.";
+    }
+  }
+
+  // Imagens
+  List<Image> get images {
+    List<Image> images = [];
+
+    for (Photo photo in _placesDetails.photos) {
+      images.add(
+        Places.getImageFromPhoto(photo),
+      );
+    }
+
+    return images;
   }
 }
