@@ -95,4 +95,32 @@ class PointOfInterest {
       return "Informações de preço indisponíveis.";
     }
   }
+
+  // Telefone
+  Map<String, String> get phoneNumber {
+    Map<String, String> phoneNumber = {
+      "phone_number": '',
+      "formatted_phone_number": '',
+    };
+
+    if (_placesDetails.internationalPhoneNumber is String) {
+      phoneNumber["phone_number"] = _placesDetails.internationalPhoneNumber!;
+      if (_placesDetails.formattedPhoneNumber is String) {
+        phoneNumber["formatted_phone_number"] = _placesDetails.formattedPhoneNumber!;
+      }
+    } else {
+      phoneNumber["phone_number"] = "Número de telefone indisponível.";
+    }
+
+    return phoneNumber;
+  }
+
+  // Página do Google Places
+  get url {
+    if (_placesDetails.url is String) {
+      return Uri.parse(_placesDetails.url!);
+    } else {
+      return "Página indisponível.";
+    }
+  }
 }

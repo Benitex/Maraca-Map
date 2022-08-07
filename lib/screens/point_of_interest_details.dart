@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:trabalho_final/models/point_of_interest.dart';
 import 'package:trabalho_final/widgets/point_of_interest_details/rating_row.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PointOfInterestDetails extends StatelessWidget {
   PointOfInterestDetails({super.key, required String pointOfInterestID}) {
@@ -27,75 +28,113 @@ class PointOfInterestDetails extends StatelessWidget {
                 ),
               ],
             ),
-            body: ListView(
-              children: <Widget>[
-                // Tipos
-                ListTile(
-                  title: Row(
-                    children: [
-                      for (int typeCounter = 0; typeCounter < pointOfInterest.types.length ; typeCounter++)
-                        typeCounter == pointOfInterest.types.length -1 ? (
-                          Text("${pointOfInterest.types[typeCounter]}.")
-                        ) : (
-                          Text("${pointOfInterest.types[typeCounter]}, ")
-                        ),
-                    ],
+
+            body: ListView(children: <Widget>[
+              // Tipos
+              ListTile(
+                title: Row(children: [
+                  for (int typeCounter = 0; typeCounter < pointOfInterest.types.length ; typeCounter++)
+                    typeCounter == pointOfInterest.types.length -1 ? (
+                      Text("${pointOfInterest.types[typeCounter]}.")
+                    ) : (
+                      Text("${pointOfInterest.types[typeCounter]}, ")
+                    ),
+                ]),
+              ),
+
+              // Endereço
+              ListTile(
+                title: const Text("Endereço"),
+                subtitle: Text(pointOfInterest.address),
+              ),
+
+              // Preço
+              ListTile(
+                title: const Text("Preço"),
+                subtitle: Text(pointOfInterest.priceLevel),
+              ),
+
+              // Telefone
+              ListTile(
+                title: const Text("Telefone"),
+                subtitle: Row(children: [
+                  Text(pointOfInterest.phoneNumber["phone_number"]!),
+                  OutlinedButton(
+                    onPressed: () async {
+                      await launchUrl(Uri(
+                        scheme: "tel",
+                        path: "tel:${pointOfInterest.phoneNumber['formatted_phone_number']}",
+                      ));
+                    },
+                    child: const Icon(Icons.phone),
                   ),
-                ),
+                ]),
+              ),
 
-                // Endereço
-                ListTile(
-                  title: const Text("Endereço"),
-                  subtitle: Text(pointOfInterest.address),
-                ),
-
-                // Preço
-                ListTile(
-                  title: const Text("Preço"),
-                  subtitle: Text(pointOfInterest.priceLevel),
-                ),
-                // Classificação
-                pointOfInterest.rating == -1 ? (
-                  const ListTile(
-                    title: Text("Esse lugar não possui classificação."),
-                  )
+              // Página do Google Places
+              ListTile(
+                title: const Text("Mais detalhes"),
+                subtitle: pointOfInterest.url == "Página indisponível." ? (
+                  Text(pointOfInterest.url)
                 ) : (
-                  ListTile(
-                    title: const Text("Classificação"),
-                    subtitle: RatingRow(rating: pointOfInterest.rating),
-                  )
-                ),
-
-                // Avaliações
-                Column(
-                  children: [
-                    for (Review review in pointOfInterest.reviews)
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: Column(children: [
-                          ListTile(
-                            title: Row(children: [
-                              Image.network(review.profilePhotoUrl, width: 40),
-                              Padding(
-                                padding: const EdgeInsets.all(8),
-                                child: Text(review.authorName),
-                              ),
-                            ]),
-                            subtitle: RatingRow(rating: review.rating),
-                          ),
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 15, right: 15),
-                              child: Text(review.text),
-                            ),
-                          ),
-                        ]),
+                  Column(children: [
+                    const Text("Conheça mais sobre esse lugar em sua página do Google Places:"),
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: TextButton(
+                        onPressed: () async {
+                          if (!await launchUrl(pointOfInterest.url)) {
+                            throw "Could not launch ${pointOfInterest.url}";
+                          }
+                        },
+                        child: Text("${pointOfInterest.url}"),
                       ),
-                  ],
+                    ),
+                  ])
                 ),
-              ],
-            ),
+              ),
+
+              // Classificação
+              pointOfInterest.rating == -1 ? (
+                const ListTile(
+                  title: Text("Esse lugar não possui classificação."),
+                )
+              ) : (
+                ListTile(
+                  title: const Text("Classificação"),
+                  subtitle: RatingRow(rating: pointOfInterest.rating),
+                )
+              ),
+
+              // Avaliações
+              Column(
+                children: [
+                  for (Review review in pointOfInterest.reviews)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: Column(children: [
+                        ListTile(
+                          title: Row(children: [
+                            Image.network(review.profilePhotoUrl, width: 40),
+                            Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: Text(review.authorName),
+                            ),
+                          ]),
+                          subtitle: RatingRow(rating: review.rating),
+                        ),
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 15, right: 15),
+                            child: Text(review.text),
+                          ),
+                        ),
+                      ]),
+                    ),
+                ],
+              ),
+            ]),
           );
 
         } else { // carregando
