@@ -5,12 +5,11 @@ import 'package:trabalho_final/screens/map.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Types.loadJSONMap();
-  runApp(const ProjetoFinal());
+  runApp(const MaracaMap());
 }
 
-// TODO adidicionar o nome do aplicativo
-class ProjetoFinal extends StatelessWidget {
-  const ProjetoFinal({super.key});
+class MaracaMap extends StatelessWidget {
+  const MaracaMap({super.key});
 
   @override
   Widget build(BuildContext context) {
