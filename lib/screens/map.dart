@@ -42,7 +42,7 @@ class _MapState extends State<Map> {
         zoomControlsEnabled: false,
 
         onMapCreated: (controller) => _onMapCreated(controller),
-        onTap: (argument) => _viewPointOfInterestDetails(argument),
+        onTap: (argument) => _searchPointsOfInterest(argument),
       ),
 
       // Botões
@@ -88,7 +88,7 @@ class _MapState extends State<Map> {
     ));
   }
 
-  void _viewPointOfInterestDetails(LatLng position) async {
+  void _searchPointsOfInterest(LatLng position) async {
     List<GeocodingResult> allPlaces = await Geocoding.searchByLocation(position);
 
     if (allPlaces.isNotEmpty) {

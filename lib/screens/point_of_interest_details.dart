@@ -62,17 +62,18 @@ class PointOfInterestDetails extends StatelessWidget {
                 ),
 
                 // Imagens
-                ListTile(
-                  enabled: pointOfInterest.images.isNotEmpty,
-                  title: const Text("Imagens"),
-                  subtitle: SizedBox(
-                    height: 160,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: pointOfInterest.images,
+                pointOfInterest.images.isNotEmpty ? (
+                  ListTile(
+                    title: const Text("Imagens"),
+                    subtitle: SizedBox(
+                      height: 160,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: pointOfInterest.images,
+                      ),
                     ),
-                  ),
-                ),
+                  )
+                ) : Container(),
 
                 // Telefone
                 ListTile(

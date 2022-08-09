@@ -130,12 +130,14 @@ class PointOfInterest {
         weekday = 0;
       }
 
-      OpeningHoursPeriod openingHoursPeriod = _placesDetails.openingHours!.periods[weekday];
       String openingHours = '', closingHours = '';
+      if (_placesDetails.openingHours!.periods.length >= weekday) {  
+        final OpeningHoursPeriod openingHoursPeriod = _placesDetails.openingHours!.periods[weekday];
 
-      if (openingHoursPeriod.open is OpeningHoursPeriodDate && openingHoursPeriod.close is OpeningHoursPeriodDate) {
-        openingHours = "${openingHoursPeriod.open!.time.substring(0, 2)}:${openingHoursPeriod.open!.time.substring(2)}";
-        closingHours = "${openingHoursPeriod.close!.time.substring(0, 2)}:${openingHoursPeriod.close!.time.substring(2)}";
+        if (openingHoursPeriod.open is OpeningHoursPeriodDate && openingHoursPeriod.close is OpeningHoursPeriodDate) {
+          openingHours = "${openingHoursPeriod.open!.time.substring(0, 2)}:${openingHoursPeriod.open!.time.substring(2)}";
+          closingHours = "${openingHoursPeriod.close!.time.substring(0, 2)}:${openingHoursPeriod.close!.time.substring(2)}";
+        }
       }
 
       if (openingHours != '') {
