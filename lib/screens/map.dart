@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/geocoding.dart';
-import 'package:trabalho_final/providers/geocoding.dart';
-import 'package:trabalho_final/providers/filter.dart';
-import 'package:trabalho_final/providers/geolocator.dart';
-import 'package:trabalho_final/providers/types.dart';
-import 'package:trabalho_final/screens/filter_selection.dart';
-import 'package:trabalho_final/models/filter_option.dart';
-import 'package:trabalho_final/screens/point_of_interest_details.dart';
-import 'package:trabalho_final/widgets/map/place_selection.dart';
+import 'package:maraca_map/cloud_functions/geocoding.dart';
+import 'package:maraca_map/providers/filter.dart';
+import 'package:maraca_map/cloud_functions/geolocator.dart';
+import 'package:maraca_map/providers/types.dart';
+import 'package:maraca_map/screens/filter_selection.dart';
+import 'package:maraca_map/models/filter_option.dart';
+import 'package:maraca_map/screens/point_of_interest_details.dart';
+import 'package:maraca_map/widgets/map/place_selection.dart';
 
 class Map extends StatefulWidget {
   const Map({super.key});

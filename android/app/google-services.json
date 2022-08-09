@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "951656976711",
+    "project_id": "guia-do-exterior-do-cefet",
+    "storage_bucket": "guia-do-exterior-do-cefet.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951656976711:android:926ab4cbf165416d2d7c62",
+        "android_client_info": {
+          "package_name": "com.maraca_map"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "951656976711-umnno4ln1bbk2kri4ml414qiv9epc1qu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBs2WhGKu55z2-5vVEbBKMnRX1JopYFy8g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "951656976711-umnno4ln1bbk2kri4ml414qiv9epc1qu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "951656976711-pfnvl5c5b3a2mjhcpnru1lt9n2drk33v.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.maracaMap"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

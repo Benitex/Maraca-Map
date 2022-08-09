@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:trabalho_final/providers/types.dart';
-import 'package:trabalho_final/screens/map.dart';
+import 'package:maraca_map/providers/types.dart';
+import 'package:maraca_map/screens/map.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:maraca_map/cloud_functions/firebase/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Types.loadJSONMap();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(const MaracaMap());
 }
 

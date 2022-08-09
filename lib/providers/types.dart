@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
-import 'package:trabalho_final/models/filter_option.dart';
+import 'package:maraca_map/models/filter_option.dart';
 
 class Types {
   static late final Map _map;

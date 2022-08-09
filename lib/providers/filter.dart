@@ -1,6 +1,6 @@
 // Classe que fornece um JSON
 
-import 'package:trabalho_final/models/filter_option.dart';
+import 'package:maraca_map/models/filter_option.dart';
 
 class Filter {
   static late List<FilterOption> _filterOptions;

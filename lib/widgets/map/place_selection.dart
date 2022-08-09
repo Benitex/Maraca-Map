@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_webservice/geocoding.dart';
-import 'package:trabalho_final/providers/places.dart';
-import 'package:trabalho_final/screens/point_of_interest_details.dart';
+import 'package:maraca_map/cloud_functions/places.dart';
+import 'package:maraca_map/screens/point_of_interest_details.dart';
 
 // AlertDialog de seleção de PointOfInterest quando há mais de um na mesma coordenada
 

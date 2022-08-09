@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:trabalho_final/screens/map.dart';
+import 'package:maraca_map/screens/map.dart';
 
 class FilterSelection extends StatefulWidget {
   const FilterSelection({super.key});

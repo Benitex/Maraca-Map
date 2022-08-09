@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_webservice/places.dart';
-import 'package:trabalho_final/providers/places.dart';
-import 'package:trabalho_final/providers/types.dart';
+import 'package:maraca_map/cloud_functions/places.dart';
+import 'package:maraca_map/providers/types.dart';
 
 class PointOfInterest {
   PointOfInterest(this._id);

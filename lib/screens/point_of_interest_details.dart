@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_webservice/places.dart';
-import 'package:trabalho_final/models/point_of_interest.dart';
-import 'package:trabalho_final/widgets/point_of_interest_details/rating_row.dart';
+import 'package:maraca_map/models/point_of_interest.dart';
+import 'package:maraca_map/widgets/point_of_interest_details/rating_row.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PointOfInterestDetails extends StatelessWidget {
