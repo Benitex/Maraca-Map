@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:maraca_map/screens/map.dart';
 
 class FilterSelection extends StatefulWidget {
-  const FilterSelection({super.key});
+  const FilterSelection({super.key, required this.updateMarkers});
+
+  final Function updateMarkers;
 
   @override
   State<FilterSelection> createState() => _FilterSelectionState();
@@ -28,7 +30,7 @@ class _FilterSelectionState extends State<FilterSelection> {
               value: Map.filters[index].active,
               onChanged: (value) => setState(() {
                 Map.filters[index].active = value;
-                Map.updateMarkers();
+                widget.updateMarkers();
               }),
             ),
           );

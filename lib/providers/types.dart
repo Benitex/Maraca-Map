@@ -19,6 +19,9 @@ class Types {
         FilterOption(key, type["initial_value"], type["portuguese_name"]),
       );
     });
+    filterOptions.insert(
+      6, FilterOption("traffic", false, "Trânsito"),
+    );
 
     return filterOptions;
   }

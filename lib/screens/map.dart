@@ -2,29 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/geocoding.dart';
 import 'package:maraca_map/cloud_functions/geocoding.dart';
-import 'package:maraca_map/providers/filter.dart';
 import 'package:maraca_map/cloud_functions/geolocator.dart';
+import 'package:maraca_map/providers/filter.dart';
 import 'package:maraca_map/providers/types.dart';
-import 'package:maraca_map/screens/filter_selection.dart';
 import 'package:maraca_map/models/filter_option.dart';
+import 'package:maraca_map/screens/filter_selection.dart';
 import 'package:maraca_map/screens/point_of_interest_details.dart';
+import 'package:maraca_map/screens/settings.dart';
 import 'package:maraca_map/widgets/map/place_selection.dart';
 
 class Map extends StatefulWidget {
   const Map({super.key});
 
-  static late GoogleMapController controller;
-  static late List<FilterOption> filters;
-
-  static void updateMarkers() {
-    controller.setMapStyle(Filter.getJSON(filters));
-  }
+  static List<FilterOption> filters = Types.getFilterOptions();
 
   @override
   State<Map> createState() => _MapState();
 }
 
 class _MapState extends State<Map> {
+  static late GoogleMapController _mapController;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,6 +38,8 @@ class _MapState extends State<Map> {
         buildingsEnabled: false,
         mapType: MapType.normal,
         zoomControlsEnabled: false,
+        trafficEnabled: Map.filters[6].active,
+
 
         onMapCreated: (controller) => _onMapCreated(controller),
         onTap: (argument) => _searchPointsOfInterest(argument),
@@ -55,7 +55,15 @@ class _MapState extends State<Map> {
               onPressed: () => setState(() {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const FilterSelection()),
+                  MaterialPageRoute(builder: (context) {
+                    return FilterSelection(
+                      updateMarkers: () {
+                        setState(() {
+                          _mapController.setMapStyle(Filter.getJSON(Map.filters));
+                        });
+                      },
+                    );
+                  })
                 );
               }),
               child: const Icon(Icons.filter_alt),
@@ -66,7 +74,7 @@ class _MapState extends State<Map> {
           Positioned(bottom: 0, right: 0,
             child: FloatingActionButton(
               heroTag: "Posição atual",
-              onPressed: () async => await Map.controller.animateCamera(
+              onPressed: () async => await _mapController.animateCamera(
                 CameraUpdate.newCameraPosition(
                   CameraPosition(zoom: 18, target: await Geolocator.getCurrentLatLng()),
                 ),
@@ -80,10 +88,9 @@ class _MapState extends State<Map> {
   }
 
   void _onMapCreated(GoogleMapController controller) async {
-    Map.controller = controller;
-    Map.filters = Types.getFilterOptions();
-    Map.updateMarkers();
-    Map.controller.moveCamera(CameraUpdate.newCameraPosition(
+    _mapController = controller;
+    _mapController.setMapStyle(Filter.getJSON(Map.filters));
+    _mapController.animateCamera(CameraUpdate.newCameraPosition(
       CameraPosition(zoom: 18, target: await Geolocator.getCurrentLatLng()),
     ));
   }
@@ -115,9 +122,11 @@ class _MapState extends State<Map> {
         setState(() {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => PointOfInterestDetails(
-              pointOfInterestID: possiblePlaces.first.placeId,
-            )),
+            MaterialPageRoute(builder: (context) {
+              return PointOfInterestDetails(
+                pointOfInterestID: possiblePlaces.first.placeId,
+              );
+            }),
           );
         });
       } else if (possiblePlaces.length > 1) {

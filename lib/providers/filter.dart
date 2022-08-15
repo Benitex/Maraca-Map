@@ -1,15 +1,15 @@
-// Classe que fornece um JSON
-
 import 'package:maraca_map/models/filter_option.dart';
 
 class Filter {
   static late List<FilterOption> _filterOptions;
 
+  // converte bools para formatação "on", "off"
   static String _getActivity(String type) {
     FilterOption option = _filterOptions.firstWhere((option) => option.type == type);
     return (option.active ? 'on' : 'off');
   }
 
+  // tranforma uma lista de opções de filtro em JSON
   static String getJSON(List<FilterOption> options) {
     _filterOptions = options;
     return '''
