@@ -19,22 +19,20 @@ class _FilterSelectionState extends State<FilterSelection> {
         centerTitle: true,
       ),
 
-      body: ListView.builder(
-        itemCount: Map.filters.length,
-        itemBuilder: (context, index) {
-          return Card(
-            child: SwitchListTile(
+      body: ListView(
+        children: [
+          for (var filterOption in Map.filters)
+            Card(child: SwitchListTile(
               title: Text(
-                Map.filters[index].name,
+                filterOption.name,
               ),
-              value: Map.filters[index].active,
+              value: filterOption.active,
               onChanged: (value) => setState(() {
-                Map.filters[index].active = value;
+                filterOption.active = value;
                 widget.updateMarkers();
               }),
-            ),
-          );
-        },
+            )),
+        ],
       ),
     );
   }

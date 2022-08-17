@@ -48,26 +48,12 @@ class _MapState extends State<Map> {
       // Botões
       floatingActionButton: Stack(
         children: [
-          // Botão dos filtros
-          Positioned(bottom: 70, right: 0,
-            child: FloatingActionButton(
-              heroTag: "Filtros",
-              onPressed: () => setState(() {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) {
-                    return FilterSelection(
-                      updateMarkers: () {
-                        setState(() {
-                          _mapController.setMapStyle(Filter.getJSON(Map.filters));
-                        });
-                      },
-                    );
-                  })
-                );
-              }),
-              child: const Icon(Icons.filter_alt),
-            ),
+          ExpandableFloatingActionButton(
+            updateMap: () {
+              setState(() {
+                _mapController.setMapStyle(Filter.getJSON(Map.filters));
+              });
+            }
           ),
 
           // Botão de mover a câmera para posição atual
