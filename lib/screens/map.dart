@@ -6,9 +6,9 @@ import 'package:maraca_map/cloud_functions/geolocator.dart';
 import 'package:maraca_map/providers/filter.dart';
 import 'package:maraca_map/providers/types.dart';
 import 'package:maraca_map/models/filter_option.dart';
-import 'package:maraca_map/screens/filter_selection.dart';
 import 'package:maraca_map/screens/point_of_interest_details.dart';
 import 'package:maraca_map/screens/settings.dart';
+import 'package:maraca_map/widgets/map/floating_action_buttons.dart';
 import 'package:maraca_map/widgets/map/place_selection.dart';
 
 class Map extends StatefulWidget {
@@ -32,14 +32,15 @@ class _MapState extends State<Map> {
           target: LatLng(-22.912392877001498, -43.224780036813414),
         ),
         myLocationEnabled: true,
-        myLocationButtonEnabled: false,
 
-        // TODO adicionar opções nas configurações
-        buildingsEnabled: false,
-        mapType: MapType.normal,
-        zoomControlsEnabled: false,
         trafficEnabled: Map.filters[6].active,
 
+        // Configurações
+        mapType: Settings.options[0].active ? MapType.hybrid : MapType.normal,
+        zoomControlsEnabled: false,
+        buildingsEnabled: false,
+        compassEnabled: false,
+        myLocationButtonEnabled: false,
 
         onMapCreated: (controller) => _onMapCreated(controller),
         onTap: (argument) => _searchPointsOfInterest(argument),
