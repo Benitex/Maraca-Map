@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:maraca_map/screens/filter_selection.dart';
+import 'package:maraca_map/screens/explore.dart';
 import 'package:maraca_map/screens/settings.dart';
 
 class ExpandableFloatingActionButton extends StatefulWidget {
@@ -51,13 +52,13 @@ class ExpandableFloatingActionButtonState extends State<ExpandableFloatingAction
                   context,
                   MaterialPageRoute(builder: (context) {
                     return FilterSelection(updateMarkers: widget.updateMap);
-                  })
+                  }),
                 );
               }),
-              child: const Icon(Icons.location_on),
+              child: const Icon(Icons.filter_alt),
             ),
           ),
-          
+
           Positioned(bottom: 130, right: 0, left: 35,
             child: FloatingActionButton(
               heroTag: "search",

@@ -14,15 +14,22 @@ import 'package:maraca_map/widgets/map/place_selection.dart';
 class Map extends StatefulWidget {
   const Map({super.key});
 
+  static late GoogleMapController controller;
   static List<FilterOption> filters = Types.getFilterOptions();
+
+  static Future<void> moveCamera(LatLng location) async {
+    await controller.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(zoom: 18, target: location),
+      ),
+    );
+  }
 
   @override
   State<Map> createState() => _MapState();
 }
 
 class _MapState extends State<Map> {
-  static late GoogleMapController _mapController;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +59,7 @@ class _MapState extends State<Map> {
           ExpandableFloatingActionButton(
             updateMap: () {
               setState(() {
-                _mapController.setMapStyle(Filter.getJSON(Map.filters));
+                Map.controller.setMapStyle(Filter.getJSON(Map.filters));
               });
             }
           ),
@@ -61,11 +68,7 @@ class _MapState extends State<Map> {
           Positioned(bottom: 0, right: 0,
             child: FloatingActionButton(
               heroTag: "Posição atual",
-              onPressed: () async => await _mapController.animateCamera(
-                CameraUpdate.newCameraPosition(
-                  CameraPosition(zoom: 18, target: await Geolocator.getCurrentLatLng()),
-                ),
-              ),
+              onPressed: () async => await Map.moveCamera(await Geolocator.getCurrentLatLng()),
               child: const Icon(Icons.location_searching),
             ),
           ),
@@ -75,11 +78,9 @@ class _MapState extends State<Map> {
   }
 
   void _onMapCreated(GoogleMapController controller) async {
-    _mapController = controller;
-    _mapController.setMapStyle(Filter.getJSON(Map.filters));
-    _mapController.animateCamera(CameraUpdate.newCameraPosition(
-      CameraPosition(zoom: 18, target: await Geolocator.getCurrentLatLng()),
-    ));
+    Map.controller = controller;
+    Map.controller.setMapStyle(Filter.getJSON(Map.filters));
+    Map.moveCamera(await Geolocator.getCurrentLatLng());
   }
 
   void _searchPointsOfInterest(LatLng position) async {

@@ -16,6 +16,13 @@ class PointOfInterest {
   // ID
   String get id => _id;
 
+  // Location
+  get location {
+    if (_placesDetails.geometry is Geometry) {
+      return _placesDetails.geometry!.location;
+    }
+  }
+
   // Nome
   String get name => _placesDetails.name;
 

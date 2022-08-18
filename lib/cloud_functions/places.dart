@@ -13,7 +13,11 @@ class Places {
 
   static Image getImageFromPhoto(Photo photo) {
     return Image.network(
-      "https://maps.googleapis.com/maps/api/place/photo?maxwidth=${photo.width}&photo_reference=${photo.photoReference}&key=$_webAPIKey",
+      _api.buildPhotoUrl(
+        photoReference: photo.photoReference,
+        maxWidth: photo.width as int,
+        maxHeight: photo.height as int,
+      ),
     );
   }
 }
