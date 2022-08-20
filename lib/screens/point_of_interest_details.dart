@@ -4,7 +4,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:maraca_map/models/point_of_interest.dart';
 import 'package:maraca_map/widgets/point_of_interest_details/rating_row.dart';
-import 'package:maraca_map/screens/loading.dart';
 import 'package:maraca_map/screens/map.dart';
 
 class PointOfInterestDetails extends StatelessWidget {
@@ -20,7 +19,15 @@ class PointOfInterestDetails extends StatelessWidget {
       future: pointOfInterest.setPlaceDetails(),
 
       builder: (context, snapshot) {
-        if (snapshot.hasData) { // carregado
+        if (snapshot.connectionState != ConnectionState.done) {
+          return Scaffold(
+            appBar: AppBar(),
+            body: const Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+
+        } else {
           return Scaffold(
             appBar: AppBar(
               title: Text(pointOfInterest.name),
@@ -34,7 +41,10 @@ class PointOfInterestDetails extends StatelessWidget {
 
             floatingActionButton: FloatingActionButton(
               onPressed: () async {
-                Navigator.pop(context);
+                Navigator.popUntil(
+                  context,
+                  (route) => route.isFirst,
+                );
                 await Map.moveCamera(
                   LatLng(pointOfInterest.location.lat, pointOfInterest.location.lng),
                 );
@@ -171,9 +181,6 @@ class PointOfInterestDetails extends StatelessWidget {
               ],
             ),
           );
-
-        } else { // carregando
-          return const Loading();
         }
       },
     );

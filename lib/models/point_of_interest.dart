@@ -5,9 +5,8 @@ import 'package:maraca_map/providers/types.dart';
 
 class PointOfInterest {
   PointOfInterest(this._id);
-  Future setPlaceDetails() async {
+  Future<void> setPlaceDetails() async {
     _placesDetails = await Places.getDetailsByPlaceId(_id);
-    return true;
   }
 
   final String _id;
@@ -138,7 +137,7 @@ class PointOfInterest {
       }
 
       String openingHours = '', closingHours = '';
-      if (_placesDetails.openingHours!.periods.length >= weekday) {  
+      if (_placesDetails.openingHours!.periods.length > weekday) {  
         final OpeningHoursPeriod openingHoursPeriod = _placesDetails.openingHours!.periods[weekday];
 
         if (openingHoursPeriod.open is OpeningHoursPeriodDate && openingHoursPeriod.close is OpeningHoursPeriodDate) {
@@ -169,4 +168,6 @@ class PointOfInterest {
 
     return images;
   }
+
+  // TODO distância até o usuário
 }

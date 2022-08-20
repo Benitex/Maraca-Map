@@ -61,11 +61,17 @@ class ExpandableFloatingActionButtonState extends State<ExpandableFloatingAction
 
           Positioned(bottom: 130, right: 0, left: 35,
             child: FloatingActionButton(
-              heroTag: "search",
-              onPressed: () {
-                // TODO adicionar tela de busca
-              },
-              child: const Icon(Icons.search),
+              heroTag: "explore",
+              onPressed: () => setState(() {
+                _open = false;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) {
+                    return const Explore();
+                  }),
+                );
+              }),
+              child: const Icon(Icons.location_on),
             ),
           ),
 
