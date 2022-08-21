@@ -77,6 +77,9 @@ class PointOfInterestDetails extends StatelessWidget {
                   title: const Text("Endereço"),
                   subtitle: Text(pointOfInterest.address),
                 ),
+                ListTile(
+                  subtitle: Text(pointOfInterest.distance),
+                ),
 
                 // Preço
                 ListTile(

@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_webservice/places.dart';
-import 'package:maraca_map/cloud_functions/places.dart';
+import 'package:google_maps_webservice/distance.dart' as distance_api;
+import 'package:maraca_map/cloud_functions/google_maps_webservice/distance.dart';
+import 'package:maraca_map/cloud_functions/google_maps_webservice/places.dart';
 import 'package:maraca_map/providers/types.dart';
 
 class PointOfInterest {
   PointOfInterest(this._id);
   Future<void> setPlaceDetails() async {
     _placesDetails = await Places.getDetailsByPlaceId(_id);
+    _distanceFromUser = await Distance.fromHereTo(location);
   }
 
   final String _id;
   late final PlaceDetails _placesDetails;
+  late final distance_api.Element _distanceFromUser;
 
   // ID
   String get id => _id;
@@ -169,5 +173,8 @@ class PointOfInterest {
     return images;
   }
 
-  // TODO distância até o usuário
+  // Distância até o usuário
+  String get distance {
+    return "Esse lugar está a ${_distanceFromUser.distance.text} de você. O tempo para chegar até lá a pé é de ${_distanceFromUser.duration.text}.";
+  }
 }

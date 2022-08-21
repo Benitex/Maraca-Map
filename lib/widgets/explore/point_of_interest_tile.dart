@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_webservice/places.dart';
-import 'package:maraca_map/cloud_functions/places.dart';
+import 'package:maraca_map/cloud_functions/google_maps_webservice/distance.dart';
+import 'package:maraca_map/cloud_functions/google_maps_webservice/places.dart';
 import 'package:maraca_map/screens/point_of_interest_details.dart';
 import 'package:maraca_map/widgets/point_of_interest_details/rating_row.dart';
 
@@ -36,7 +37,7 @@ class PointOfInterestTile extends StatelessWidget {
                 )
               ) : (
                 Places.getImageFromPhoto(pointOfInterest.photos.first)
-                // TODO procurar lista de imagem que muda quando arrasta pro lado
+                // TODO adicionar mais imagens se sobrar espaço na row
               ),
             ),
 
@@ -54,7 +55,18 @@ class PointOfInterestTile extends StatelessWidget {
                 style: TextStyle(color: pointOfInterest.openingHours!.openNow ? Colors.green : Colors.red),
               ) : Container(),
 
-            // TODO distância até o usuário
+            // Distância até o usuário
+            pointOfInterest.geometry is Geometry ?
+              FutureBuilder(
+                future: Distance.fromHereTo(pointOfInterest.geometry!.location),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Text(snapshot.data!.distance.text);
+                  } else {
+                    return Container();
+                  }
+                },
+              ) : Container(),
           ]),
         ),
       ),
