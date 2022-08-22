@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_webservice/geocoding.dart';
 import 'package:maraca_map/cloud_functions/google_maps_webservice/places.dart';
+import 'package:maraca_map/screens/general_screens.dart';
 import 'package:maraca_map/screens/point_of_interest_details.dart';
-
-// AlertDialog de seleção de PointOfInterest quando há mais de um na mesma coordenada
 
 class PlaceSelection extends StatelessWidget {
   const PlaceSelection({super.key, required this.places});
@@ -17,7 +16,7 @@ class PlaceSelection extends StatelessWidget {
       content: Column(
         children: [
           for (GeocodingResult place in places)
-            PointOfInterestOption(pointOfInterestID: place.placeId)
+            _PointOfInterestTile(pointOfInterestID: place.placeId)
         ],
       ),
       actions: [
@@ -30,10 +29,8 @@ class PlaceSelection extends StatelessWidget {
   }
 }
 
-// Modelo de tiles de PointOfInterest
-
-class PointOfInterestOption extends StatelessWidget {
-  const PointOfInterestOption({super.key, required this.pointOfInterestID});
+class _PointOfInterestTile extends StatelessWidget {
+  const _PointOfInterestTile({required this.pointOfInterestID});
 
   final String pointOfInterestID;
 
@@ -42,9 +39,14 @@ class PointOfInterestOption extends StatelessWidget {
     return FutureBuilder(
       future: Places.getDetailsByPlaceId(pointOfInterestID),
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return Row(children: [Expanded(
-            child: OutlinedButton(
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return OutlinedButton(onPressed: () {}, child: const Loading());
+        } else if (snapshot.hasError) {
+          return Container();
+
+        } else {
+          return Row(children: [
+            OutlinedButton(
               onPressed: () {
                 Navigator.pop(context);
                 Navigator.push(
@@ -56,9 +58,7 @@ class PointOfInterestOption extends StatelessWidget {
               },
               child: Text(snapshot.data!.name),
             ),
-          )],);
-        } else {
-          return Container();
+          ]);
         }
       },
     );

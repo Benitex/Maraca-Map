@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart';
-import 'package:maraca_map/cloud_functions/google_maps_webservice/geolocator.dart';
+import 'package:maraca_map/cloud_functions/geolocator.dart';
 
 class Places {
   static const String _webAPIKey = "AIzaSyDGEN_ctKKkqaA0jtx6n7f1WH0y6KohfuI";

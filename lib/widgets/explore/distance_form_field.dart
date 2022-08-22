@@ -9,12 +9,12 @@ class DistanceFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: 80,
-      child: Expanded(
+      child: Row(children: [Expanded(
         child: TextFormField(
           keyboardType: TextInputType.number,
           controller: controller,
         ),
-      ),
+      )]),
     );
   }
 }

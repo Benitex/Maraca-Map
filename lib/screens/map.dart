@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/geocoding.dart';
 import 'package:maraca_map/cloud_functions/google_maps_webservice/geocoding.dart';
-import 'package:maraca_map/cloud_functions/google_maps_webservice/geolocator.dart';
+import 'package:maraca_map/cloud_functions/geolocator.dart';
 import 'package:maraca_map/providers/filter.dart';
 import 'package:maraca_map/providers/types.dart';
 import 'package:maraca_map/models/filter_option.dart';

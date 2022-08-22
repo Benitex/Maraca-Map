@@ -1,6 +1,6 @@
 import 'package:google_maps_webservice/distance.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:maraca_map/cloud_functions/google_maps_webservice/geolocator.dart';
+import 'package:maraca_map/cloud_functions/geolocator.dart';
 
 class Distance {
   static const String _webAPIKey = "AIzaSyDGEN_ctKKkqaA0jtx6n7f1WH0y6KohfuI";

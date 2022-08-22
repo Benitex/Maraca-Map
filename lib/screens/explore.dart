@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:maraca_map/cloud_functions/google_maps_webservice/places.dart';
+import 'package:maraca_map/screens/general_screens.dart';
 import 'package:maraca_map/widgets/explore/distance_form_field.dart';
 import 'package:maraca_map/widgets/explore/points_of_interest_results_row.dart';
 import 'package:maraca_map/widgets/explore/price_dropdown_menu.dart';
@@ -49,11 +50,12 @@ class _ExploreState extends State<Explore> {
           FutureBuilder(
             future: _getSearchResults(),
             builder: (context, snapshot) {
-              if (snapshot.connectionState != ConnectionState.done) {
-                return const Padding(
-                  padding: EdgeInsets.only(top: 300),
-                  child: Center(child: CircularProgressIndicator()),
-                );
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Loading();
+              } else if (snapshot.hasError) {
+                return const ErrorScreen();
+              } else if (results.isEmpty) {
+                return const NoResults();
 
               } else {
                 return Column(

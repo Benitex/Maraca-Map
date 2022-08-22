@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:maraca_map/cloud_functions/google_maps_webservice/distance.dart';
 import 'package:maraca_map/cloud_functions/google_maps_webservice/places.dart';
+import 'package:maraca_map/screens/general_screens.dart';
 import 'package:maraca_map/screens/point_of_interest_details.dart';
 import 'package:maraca_map/widgets/point_of_interest_details/rating_row.dart';
 
@@ -60,10 +61,14 @@ class PointOfInterestTile extends StatelessWidget {
               FutureBuilder(
                 future: Distance.fromHereTo(pointOfInterest.geometry!.location),
                 builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Text(snapshot.data!.distance.text);
-                  } else {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
                     return Container();
+                  } else if (snapshot.hasError) {
+                    return const ErrorScreen();
+                  } else if (!snapshot.hasData) {
+                    return Container();
+                  } else {
+                    return Text(snapshot.data!.distance.text);
                   }
                 },
               ) : Container(),

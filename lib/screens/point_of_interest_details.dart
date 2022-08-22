@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:maraca_map/screens/general_screens.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:maraca_map/models/point_of_interest.dart';
@@ -19,12 +20,15 @@ class PointOfInterestDetails extends StatelessWidget {
       future: pointOfInterest.setPlaceDetails(),
 
       builder: (context, snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
             appBar: AppBar(),
-            body: const Center(
-              child: CircularProgressIndicator(),
-            ),
+            body: const Loading(),
+          );
+        } else if (snapshot.hasError) {
+          return Scaffold(
+            appBar: AppBar(),
+            body: const ErrorScreen(),
           );
 
         } else {
