@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_config/flutter_config.dart';
+import 'package:maraca_map/providers/types.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:maraca_map/cloud_functions/firebase/firebase_options.dart';
-import 'package:maraca_map/providers/types.dart';
 import 'package:maraca_map/screens/map.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  await FlutterConfig.loadEnvVariables();
   await Types.loadJSONMap();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_config/flutter_config.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:maraca_map/cloud_functions/geolocator.dart';
 
 class Places {
-  static const String _webAPIKey = "AIzaSyDGEN_ctKKkqaA0jtx6n7f1WH0y6KohfuI";
-  static final GoogleMapsPlaces _api = GoogleMapsPlaces(apiKey: _webAPIKey);
+  static final GoogleMapsPlaces _api = GoogleMapsPlaces(
+    apiKey: FlutterConfig.get('MAPS_WEBSERVICES_API_KEY'),
+  );
 
   static Future<PlaceDetails> getDetailsByPlaceId(String id) async {
     PlacesDetailsResponse response = await _api.getDetailsByPlaceId(id, language: "pt-BR");
@@ -21,6 +23,16 @@ class Places {
         maxHeight: photo.height as int,
       ),
     );
+  }
+
+  static Future<List<Prediction>> autocomplete(String text) async {
+    PlacesAutocompleteResponse response = await _api.autocomplete(text);
+    return response.predictions;
+  }
+
+  static Future<List<PlacesSearchResult>> searchByText(String text) async {
+    PlacesSearchResponse response = await _api.searchByText(text);
+    return response.results;
   }
 
   static Future<List<PlacesSearchResult>> nearbySearch({String type = '', num radius = 1000, PriceLevel maxprice = PriceLevel.veryExpensive}) async {

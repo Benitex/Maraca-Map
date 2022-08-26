@@ -39,6 +39,7 @@ dependencies:
   geolocator: ^9.0.1
   url_launcher: ^6.1.5
   firebase_core: ^1.20.0
+  flutter_config: ^2.0.0
 
 dev_dependencies:
   flutter_test:
