@@ -14,7 +14,7 @@ class PointOfInterest {
 
   final String _id;
   late final PlaceDetails _placesDetails;
-  late final distance_api.Element _distanceFromUser;
+  distance_api.Element? _distanceFromUser;
 
   // ID
   String get id => _id;
@@ -67,7 +67,13 @@ class PointOfInterest {
   String get address {
     List<AddressComponent> adressComponents = _placesDetails.addressComponents;
     // AddressComponent[1] = rua, AddressComponent[0] = número
-    return "${adressComponents[1].shortName}, ${adressComponents[0].shortName}";
+    if (adressComponents.length > 1) {
+      return "${adressComponents[1].shortName}, ${adressComponents[0].shortName}";
+    } else if (adressComponents.isNotEmpty) {
+      return adressComponents.first.shortName;
+    } else {
+      return "Endereço indisponível.";
+    }
   }
 
   // Classificação
@@ -175,6 +181,10 @@ class PointOfInterest {
 
   // Distância até o usuário
   String get distance {
-    return "Esse lugar está a ${_distanceFromUser.distance.text} de você. O tempo para chegar até lá a pé é de ${_distanceFromUser.duration.text}.";
+    if (_distanceFromUser != null) {
+      return "Esse lugar está a ${_distanceFromUser!.distance.text} de você. O tempo para chegar até lá a pé é de ${_distanceFromUser!.duration.text}.";
+    } else {
+      return "Não foi possível calcular a distância até você.";
+    }
   }
 }

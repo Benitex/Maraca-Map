@@ -60,15 +60,19 @@ class PointOfInterestDetails extends StatelessWidget {
               scrollDirection: Axis.vertical,
               children: <Widget>[
                 // Tipos
-                ListTile(
-                  title: Row(children: [
-                    for (int typeCounter = 0; typeCounter < pointOfInterest.types.length ; typeCounter++)
-                      typeCounter == pointOfInterest.types.length -1 ? (
-                        Text("${pointOfInterest.types[typeCounter]}.")
-                      ) : (
-                        Text("${pointOfInterest.types[typeCounter]}, ")
-                      ),
-                  ]),
+                pointOfInterest.types.isNotEmpty ? (
+                  ListTile(
+                    title: Row(children: [
+                      for (int typeCounter = 0; typeCounter < pointOfInterest.types.length ; typeCounter++)
+                        typeCounter == pointOfInterest.types.length -1 ? (
+                          Text("${pointOfInterest.types[typeCounter]}.")
+                        ) : (
+                          Text("${pointOfInterest.types[typeCounter]}, ")
+                        ),
+                    ]),
+                  )
+                ) : (
+                  Container()
                 ),
 
                 // Horário de funcionamento

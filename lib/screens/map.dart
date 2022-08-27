@@ -7,9 +7,11 @@ import 'package:maraca_map/providers/filter.dart';
 import 'package:maraca_map/providers/types.dart';
 import 'package:maraca_map/models/filter_option.dart';
 import 'package:maraca_map/screens/point_of_interest_details.dart';
+import 'package:maraca_map/screens/search.dart';
 import 'package:maraca_map/screens/settings.dart';
 import 'package:maraca_map/widgets/map/floating_action_buttons.dart';
 import 'package:maraca_map/widgets/map/place_selection.dart';
+import 'package:maraca_map/widgets/search/search_field.dart';
 
 class Map extends StatefulWidget {
   const Map({super.key});
@@ -30,9 +32,33 @@ class Map extends StatefulWidget {
 }
 
 class _MapState extends State<Map> {
+  final SearchField _searchField = SearchField();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // Barra de pesquisa
+      appBar: AppBar(
+        title: _searchField,
+        actions: [IconButton(
+          icon: const Icon(Icons.search),
+
+          onPressed: () {
+            FocusManager.instance.primaryFocus?.unfocus();
+            if (_searchField.controller.text != '') {
+              setState(() {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) {
+                    return Search(searchField: _searchField);
+                  }),
+                );
+              });
+            }
+          }
+        )],
+      ),
+
       // Mapa
       body: GoogleMap(
         initialCameraPosition: const CameraPosition(

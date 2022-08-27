@@ -43,7 +43,7 @@ class PointOfInterestTile extends StatelessWidget {
             ),
 
             // Nome
-            Text(pointOfInterest.name),
+            Text(pointOfInterest.name, maxLines: 1),
 
             // Média das avaliações
             pointOfInterest.rating is num ?
