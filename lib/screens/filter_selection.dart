@@ -21,14 +21,14 @@ class _FilterSelectionState extends State<FilterSelection> {
 
       body: ListView(
         children: [
-          for (var filterOption in Map.filters)
+          for (var filter in Map.filters)
             Card(child: SwitchListTile(
               title: Text(
-                filterOption.name,
+                filter.name,
               ),
-              value: filterOption.active,
+              value: filter.active,
               onChanged: (value) => setState(() {
-                filterOption.active = value;
+                filter.active = value;
                 widget.updateMarkers();
               }),
             )),

@@ -1,20 +1,20 @@
-import 'package:maraca_map/models/filter_option.dart';
+import 'package:maraca_map/models/filter.dart';
 import 'package:maraca_map/screens/settings.dart';
 
 class MapStyle {
-  static late List<FilterOption> _filterOptions;
+  static late List<Filter> _filters;
 
   // converte bools para formatação "on", "off"
   static String _getActivity(String type) {
-    FilterOption option = _filterOptions.firstWhere((option) => option.type == type);
-    return (option.active ? 'on' : 'off');
+    Filter filter = _filters.firstWhere((element) => element.type == type);
+    return (filter.active ? 'on' : 'off');
   }
 
   // tranforma uma lista de opções de filtro em JSON
-  static String getJSON(List<FilterOption> options) {
-    _filterOptions = options;
+  static String getJSON(List<Filter> filters) {
+    _filters = filters;
     bool darkTheme = Settings.options.firstWhere(
-      (element) => element.name == "Modo escuro",
+      (option) => option.name == "Modo escuro",
     ).active;
     return '''
 [

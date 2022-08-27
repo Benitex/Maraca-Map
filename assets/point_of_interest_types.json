@@ -438,6 +438,27 @@
   "accessibility": {
     "portuguese_name": "Acessibilidade",
     "initial_value": false,
-    "subtypes": []
+    "subtypes": [
+      {
+        "type": "accessibility_ramp",
+        "portuguese_name": "Rampa de acesso"
+      },
+      {
+        "type": "missing_ramp",
+        "portuguese_name": "Falta de rampa"
+      },
+      {
+        "type": "missing_sidewalk",
+        "portuguese_name": "Falta de calçada"
+      },
+      {
+        "type": "missing_crosswalk",
+        "portuguese_name": "Falta de faixa de pedestre"
+      },
+      {
+        "type": "obstacle_on_the_sidewalk",
+        "portuguese_name": "Obstáculos na calçada"
+      }
+    ]
   }
 }

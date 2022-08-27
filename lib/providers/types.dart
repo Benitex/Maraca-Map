@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
-import 'package:maraca_map/models/filter_option.dart';
+import 'package:maraca_map/models/filter.dart';
 
 class Types {
   static late final Map _map;
@@ -11,19 +11,19 @@ class Types {
     );
   }
 
-  static List<FilterOption> getFilterOptions() {
-    List<FilterOption> filterOptions = [];
+  static List<Filter> getFilters() {
+    List<Filter> filters = [];
 
     _map.forEach((key, type) {
-      filterOptions.add(
-        FilterOption(key, type["initial_value"], type["portuguese_name"]),
+      filters.add(
+        Filter(key, type["initial_value"], type["portuguese_name"]),
       );
     });
-    filterOptions.insert(
-      6, FilterOption("traffic", false, "Trânsito"),
+    filters.insert(
+      6, Filter("traffic", false, "Trânsito"),
     );
 
-    return filterOptions;
+    return filters;
   }
 
   static List<String> getSubtypesByName(String name) {

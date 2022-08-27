@@ -5,7 +5,7 @@ import 'package:maraca_map/cloud_functions/google_maps_webservice/geocoding.dart
 import 'package:maraca_map/cloud_functions/geolocator.dart';
 import 'package:maraca_map/providers/map_style.dart';
 import 'package:maraca_map/providers/types.dart';
-import 'package:maraca_map/models/filter_option.dart';
+import 'package:maraca_map/models/filter.dart';
 import 'package:maraca_map/screens/point_of_interest_details.dart';
 import 'package:maraca_map/screens/search.dart';
 import 'package:maraca_map/screens/settings.dart';
@@ -17,7 +17,7 @@ class Map extends StatefulWidget {
   const Map({super.key});
 
   static late GoogleMapController controller;
-  static List<FilterOption> filters = Types.getFilterOptions();
+  static List<Filter> filters = Types.getFilters();
 
   static Future<void> moveCamera(LatLng location) async {
     await controller.animateCamera(
@@ -70,12 +70,14 @@ class _MapState extends State<Map> {
 
         // Configurações
         mapType: Settings.options.firstWhere(
-          (element) => element.name == "Mapa de satélite",
+          (option) => option.name == "Mapa de satélite",
         ).active ? MapType.hybrid : MapType.normal,
         zoomControlsEnabled: false,
         buildingsEnabled: false,
         compassEnabled: false,
         myLocationButtonEnabled: false,
+
+        // TODO adicionar markers
 
         onMapCreated: (controller) => _onMapCreated(controller),
         onTap: (argument) => _searchPointsOfInterest(argument),
@@ -89,11 +91,12 @@ class _MapState extends State<Map> {
               setState(() {
                 Map.controller.setMapStyle(MapStyle.getJSON(Map.filters));
               });
-            }
+            },
           ),
 
           // Botão de mover a câmera para posição atual
-          Positioned(bottom: 0, right: 0,
+          Positioned(
+            bottom: 0, right: 0,
             child: FloatingActionButton(
               heroTag: "Posição atual",
               onPressed: () async => await Map.moveCamera(await Geolocator.getCurrentLatLng()),
@@ -121,9 +124,9 @@ class _MapState extends State<Map> {
         if (result.types.contains("point_of_interest")) {
           // Verificação se um filtro ativo contém um dos subtipos
           filtersLoop:
-          for (FilterOption option in Map.filters) {
-            if (option.active) {
-              for (String subtype in Types.getSubtypesByName(option.name)) {
+          for (Filter filter in Map.filters) {
+            if (filter.active) {
+              for (String subtype in Types.getSubtypesByName(filter.name)) {
                 if (result.types.contains(subtype) && !possiblePlaces.contains(result)) {
                   possiblePlaces.add(result);
                   break filtersLoop;
