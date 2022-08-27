@@ -3,7 +3,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/geocoding.dart';
 import 'package:maraca_map/cloud_functions/google_maps_webservice/geocoding.dart';
 import 'package:maraca_map/cloud_functions/geolocator.dart';
-import 'package:maraca_map/providers/filter.dart';
+import 'package:maraca_map/providers/map_style.dart';
 import 'package:maraca_map/providers/types.dart';
 import 'package:maraca_map/models/filter_option.dart';
 import 'package:maraca_map/screens/point_of_interest_details.dart';
@@ -69,7 +69,9 @@ class _MapState extends State<Map> {
         trafficEnabled: Map.filters[6].active,
 
         // Configurações
-        mapType: Settings.options[0].active ? MapType.hybrid : MapType.normal,
+        mapType: Settings.options.firstWhere(
+          (element) => element.name == "Mapa de satélite",
+        ).active ? MapType.hybrid : MapType.normal,
         zoomControlsEnabled: false,
         buildingsEnabled: false,
         compassEnabled: false,
@@ -85,7 +87,7 @@ class _MapState extends State<Map> {
           ExpandableFloatingActionButton(
             updateMap: () {
               setState(() {
-                Map.controller.setMapStyle(Filter.getJSON(Map.filters));
+                Map.controller.setMapStyle(MapStyle.getJSON(Map.filters));
               });
             }
           ),
@@ -105,7 +107,7 @@ class _MapState extends State<Map> {
 
   void _onMapCreated(GoogleMapController controller) async {
     Map.controller = controller;
-    Map.controller.setMapStyle(Filter.getJSON(Map.filters));
+    Map.controller.setMapStyle(MapStyle.getJSON(Map.filters));
     Map.moveCamera(await Geolocator.getCurrentLatLng());
   }
 

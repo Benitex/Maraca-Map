@@ -7,6 +7,7 @@ class Settings extends StatefulWidget {
   final Function updateMap;
   static final List<Option> options = [
     Option(name: "Mapa de satélite", active: false),
+    Option(name: "Modo escuro", active: false),
   ];
 
   @override
@@ -24,8 +25,7 @@ class _SettingsState extends State<Settings> {
       body: ListView(
         children: [
           for (Option option in Settings.options)
-            Card(
-                child: SwitchListTile(
+            Card(child: SwitchListTile(
               title: Text(option.name),
               value: option.active,
               onChanged: (value) => setState(() {
