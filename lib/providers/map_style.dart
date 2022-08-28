@@ -5,8 +5,8 @@ class MapStyle {
   static late List<Filter> _filters;
 
   // converte bools para formatação "on", "off"
-  static String _getActivity(String type) {
-    Filter filter = _filters.firstWhere((element) => element.type == type);
+  static String _getActivity(String id) {
+    Filter filter = _filters.firstWhere((element) => element.id == id);
     return (filter.active ? 'on' : 'off');
   }
 

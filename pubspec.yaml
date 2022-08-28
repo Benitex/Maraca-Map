@@ -40,6 +40,7 @@ dependencies:
   url_launcher: ^6.1.5
   firebase_core: ^1.20.0
   flutter_config: ^2.0.0
+  cloud_firestore: ^3.4.6
 
 dev_dependencies:
   flutter_test:
@@ -62,9 +63,6 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
-
-  assets:
-    - assets/point_of_interest_types.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

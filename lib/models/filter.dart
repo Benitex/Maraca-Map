@@ -1,10 +1,15 @@
-class Filter {
-  Filter(this._type, this.active, this._name);
+import 'package:maraca_map/models/type.dart';
 
-  final String _type, _name;
+class Filter extends PointOfInterestType {
+  Filter({
+    required String id,
+    required String name,
+    required this.active,
+    required this.description,
+    required this.subtypes,
+  }) : super(id: id, name: name);
+
   bool active;
-
-  String get type => _type;
-  String get name => _name;
-  // TODO adicionar campo description
+  final String description;
+  final List<PointOfInterestType> subtypes;
 }

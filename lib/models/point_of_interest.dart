@@ -3,7 +3,7 @@ import 'package:google_maps_webservice/places.dart';
 import 'package:google_maps_webservice/distance.dart' as distance_api;
 import 'package:maraca_map/cloud_functions/google_maps_webservice/distance.dart';
 import 'package:maraca_map/cloud_functions/google_maps_webservice/places.dart';
-import 'package:maraca_map/providers/types.dart';
+import 'package:maraca_map/screens/map.dart' as map_page;
 
 class PointOfInterest {
   PointOfInterest(this._id);
@@ -33,7 +33,7 @@ class PointOfInterest {
   List<String> get types {
     List<String> types = [];
     for (String type in _placesDetails.types) {
-      String name = Types.getTranslatedName(type);
+      String name = _getTranslatedName(type);
       if (name != '') {
         // remoção de tipos genéricos se um tipo específicio foi definido
         if (name == "Estabelecimento" || name == "Loja") {
@@ -47,6 +47,24 @@ class PointOfInterest {
     }
 
     return types;
+  }
+
+  String _getTranslatedName(String type) {
+    String translatedName = "";
+
+    for (var filter in map_page.Map.filters) {
+      for (var subtype in filter.subtypes) {
+        if (subtype.id == type) {
+          translatedName = subtype.name;
+        }
+      }
+
+      if (translatedName != '') {
+        break;
+      }
+    }
+
+    return translatedName;
   }
 
   // Ícone

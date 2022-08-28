@@ -3,5 +3,4 @@ class Option {
 
   String name;
   bool active;
-  // TODO adicionar campo description
 }

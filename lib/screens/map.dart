@@ -4,7 +4,6 @@ import 'package:google_maps_webservice/geocoding.dart';
 import 'package:maraca_map/cloud_functions/google_maps_webservice/geocoding.dart';
 import 'package:maraca_map/cloud_functions/geolocator.dart';
 import 'package:maraca_map/providers/map_style.dart';
-import 'package:maraca_map/providers/types.dart';
 import 'package:maraca_map/models/filter.dart';
 import 'package:maraca_map/screens/point_of_interest_details.dart';
 import 'package:maraca_map/screens/search.dart';
@@ -17,7 +16,7 @@ class Map extends StatefulWidget {
   const Map({super.key});
 
   static late GoogleMapController controller;
-  static List<Filter> filters = Types.getFilters();
+  static late List<Filter> filters;
 
   static Future<void> moveCamera(LatLng location) async {
     await controller.animateCamera(
@@ -33,6 +32,12 @@ class Map extends StatefulWidget {
 
 class _MapState extends State<Map> {
   final SearchField _searchField = SearchField();
+
+  void _onMapCreated(GoogleMapController controller) async {
+    Map.controller = controller;
+    Map.controller.setMapStyle(MapStyle.getJSON(Map.filters));
+    Map.moveCamera(await Geolocator.getCurrentLatLng());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -108,12 +113,6 @@ class _MapState extends State<Map> {
     );
   }
 
-  void _onMapCreated(GoogleMapController controller) async {
-    Map.controller = controller;
-    Map.controller.setMapStyle(MapStyle.getJSON(Map.filters));
-    Map.moveCamera(await Geolocator.getCurrentLatLng());
-  }
-
   void _searchPointsOfInterest(LatLng position) async {
     List<GeocodingResult> allPlaces = await Geocoding.searchByLocation(position);
 
@@ -126,8 +125,8 @@ class _MapState extends State<Map> {
           filtersLoop:
           for (Filter filter in Map.filters) {
             if (filter.active) {
-              for (String subtype in Types.getSubtypesByName(filter.name)) {
-                if (result.types.contains(subtype) && !possiblePlaces.contains(result)) {
+              for (var subtype in filter.subtypes) {
+                if (result.types.contains(subtype.id) && !possiblePlaces.contains(result)) {
                   possiblePlaces.add(result);
                   break filtersLoop;
                 }
