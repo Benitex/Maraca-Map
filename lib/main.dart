@@ -13,6 +13,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   Map.filters = await Firestore.getFilters();
+  Map.accessibilityPoints = await Firestore.getAccessibilityPoints();
 
   runApp(const MaracaMap());
 }

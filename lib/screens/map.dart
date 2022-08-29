@@ -17,6 +17,7 @@ class Map extends StatefulWidget {
 
   static late GoogleMapController controller;
   static late List<Filter> filters;
+  static late Set<Marker> accessibilityPoints;
 
   static Future<void> moveCamera(LatLng location) async {
     await controller.animateCamera(
@@ -71,9 +72,15 @@ class _MapState extends State<Map> {
         ),
         myLocationEnabled: true,
 
+        // Filtro de trânsito
         trafficEnabled: Map.filters.firstWhere(
           (filter) => filter.id == "traffic",
         ).active,
+
+        // Ícones de acessibilidade
+        markers: Map.filters.firstWhere(
+          (filter) => filter.id == "accessibility",
+        ).active ? Map.accessibilityPoints : {},
 
         // Configurações
         mapType: Settings.options.firstWhere(
@@ -83,8 +90,6 @@ class _MapState extends State<Map> {
         buildingsEnabled: false,
         compassEnabled: false,
         myLocationButtonEnabled: false,
-
-        // TODO adicionar markers
 
         onMapCreated: (controller) => _onMapCreated(controller),
         onTap: (argument) => _searchPointsOfInterest(argument),

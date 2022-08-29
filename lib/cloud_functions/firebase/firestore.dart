@@ -1,8 +1,36 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:maraca_map/models/accessibility_point.dart';
 import 'package:maraca_map/models/filter.dart';
 import 'package:maraca_map/models/type.dart';
 
 class Firestore {
+  static Future<Set<AccessibilityMarker>> getAccessibilityPoints() async {
+    final QuerySnapshot<Map<String, dynamic>> pointsCollection =
+        await FirebaseFirestore.instance.collection("accessibility_markers").get();
+
+    Set<AccessibilityMarker> points = {};
+
+    for (QueryDocumentSnapshot<Map<String, dynamic>> document in pointsCollection.docs) {
+      Map<String, dynamic> databasePoints = document.data();
+
+      databasePoints.forEach((key, point) {
+        points.add(
+          AccessibilityMarker(
+            id: MarkerId(key),
+            type: document.id,
+            position: LatLng(
+              point['position'].latitude,
+              point['position'].longitude,
+            ),
+          ),
+        );
+      });
+    }
+
+    return points;
+  }
+
   static Future<List<Filter>> getFilters() async {
     final QuerySnapshot<Map<String, dynamic>> filtersCollection =
         await FirebaseFirestore.instance.collection("filters").get();
@@ -22,16 +50,6 @@ class Firestore {
         ),
       );
     }
-
-    filters.add(
-      Filter(
-        id: "traffic",
-        name: "Trânsito",
-        active: false,
-        description: "Linhas de trânsito no mapa, quanto mais vermelho, mais engarrafado.",
-        subtypes: [],
-      ),
-    );
 
     return filters;
   }
