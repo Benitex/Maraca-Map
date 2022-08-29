@@ -9,7 +9,11 @@ class PointOfInterest {
   PointOfInterest(this._id);
   Future<void> setPlaceDetails() async {
     _placesDetails = await Places.getDetailsByPlaceId(_id);
-    _distanceFromUser = await Distance.fromHereTo(location);
+    try {
+      _distanceFromUser = await Distance.fromHereTo(location);
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   final String _id;

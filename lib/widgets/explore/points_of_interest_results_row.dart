@@ -11,13 +11,10 @@ class PointsOfInterestResultsRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return results.isEmpty ? Container() :
-    SizedBox(
-      height: 300,
-      child: Column(children: [
-
+      Column(children: [
         Text(typeName, textAlign: TextAlign.start),
         SizedBox(
-          height: 280,
+          height: 300,
           child: ListView(
             scrollDirection: Axis.horizontal,
             children: [
@@ -26,8 +23,6 @@ class PointsOfInterestResultsRow extends StatelessWidget {
             ],
           ),
         ),
-
-      ]),
-    );
+      ]);
   }
 }

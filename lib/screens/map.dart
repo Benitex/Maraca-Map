@@ -71,7 +71,9 @@ class _MapState extends State<Map> {
         ),
         myLocationEnabled: true,
 
-        trafficEnabled: Map.filters[6].active,
+        trafficEnabled: Map.filters.firstWhere(
+          (filter) => filter.id == "traffic",
+        ).active,
 
         // Configurações
         mapType: Settings.options.firstWhere(

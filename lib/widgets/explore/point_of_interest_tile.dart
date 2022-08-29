@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:maraca_map/cloud_functions/google_maps_webservice/distance.dart';
 import 'package:maraca_map/cloud_functions/google_maps_webservice/places.dart';
-import 'package:maraca_map/screens/general_screens.dart';
 import 'package:maraca_map/screens/point_of_interest_details.dart';
 import 'package:maraca_map/widgets/point_of_interest_details/rating_row.dart';
 
@@ -24,12 +23,12 @@ class PointOfInterestTile extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(10),
         child: Container(
-          height: 280, width: 300,
+          height: 300, width: 320,
           decoration: BoxDecoration(border: Border.all()),
           child: Column(children: [
             // Foto
             SizedBox(
-              height: 180, width: 300,
+              height: 180,
               child: pointOfInterest.photos.isEmpty ? (
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -49,6 +48,9 @@ class PointOfInterestTile extends StatelessWidget {
             pointOfInterest.rating is num ?
               RatingRow(rating: pointOfInterest.rating!) : Container(),
 
+            // Preço
+            _priceRow(),
+
             // Aberto ou fechado
             pointOfInterest.openingHours is OpeningHoursDetail ?
               Text(
@@ -57,24 +59,60 @@ class PointOfInterestTile extends StatelessWidget {
               ) : Container(),
 
             // Distância até o usuário
-            pointOfInterest.geometry is Geometry ?
-              FutureBuilder(
-                future: Distance.fromHereTo(pointOfInterest.geometry!.location),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Container();
-                  } else if (snapshot.hasError) {
-                    return const ErrorScreen();
-                  } else if (!snapshot.hasData) {
-                    return Container();
-                  } else {
-                    return Text(snapshot.data!.distance.text);
-                  }
-                },
-              ) : Container(),
+            FutureBuilder(
+              future: Distance.fromHereTo(pointOfInterest.geometry!.location),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Container();
+                } else if (snapshot.hasError) {
+                  return const Text("Não foi possível calcular a distância até você.");
+                } else if (!snapshot.hasData) {
+                  return Container();
+                } else {
+                  return Text(snapshot.data!.distance.text);
+                }
+              },
+            ),
           ]),
         ),
       ),
     );
+  }
+
+  Widget _priceRow() {
+    if (pointOfInterest.priceLevel is! PriceLevel) {
+      return Container();
+    } else {
+      int priceLevel = 0;
+
+      switch (pointOfInterest.priceLevel) {
+        case PriceLevel.inexpensive:
+          priceLevel = 1;
+          break;
+        case PriceLevel.moderate:
+          priceLevel = 2;
+          break;
+        case PriceLevel.expensive:
+          priceLevel = 3;
+          break;
+        case PriceLevel.veryExpensive:
+          priceLevel = 4;
+          break;
+        default:
+      }
+
+      return Row(
+        children: [
+          for (int signCounter = 1; signCounter <= 5; signCounter++)
+            Padding(
+              padding: const EdgeInsets.only(right: 3),
+              child: Icon(
+                Icons.attach_money,
+                color: priceLevel >= signCounter ? Colors.amber : Colors.grey,
+              ),
+            ),
+        ],
+      );
+    }
   }
 }
