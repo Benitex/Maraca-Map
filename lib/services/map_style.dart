@@ -4,13 +4,7 @@ import 'package:maraca_map/screens/settings.dart';
 class MapStyle {
   static late List<Filter> _filters;
 
-  // converte bools para formatação "on", "off"
-  static String _getActivity(String id) {
-    Filter filter = _filters.firstWhere((element) => element.id == id);
-    return (filter.active ? 'on' : 'off');
-  }
-
-  // tranforma uma lista de opções de filtro em JSON
+  /// Tranforma uma lista de opções de filtro em JSON.
   static String getJSON(List<Filter> filters) {
     _filters = filters;
     bool darkTheme = Settings.options.firstWhere(
@@ -93,6 +87,12 @@ class MapStyle {
   },
 ]
     ''';
+  }
+
+  /// Converte bools para formatação "on", "off".
+  static String _getActivity(String id) {
+    Filter filter = _filters.firstWhere((element) => element.id == id);
+    return (filter.active ? 'on' : 'off');
   }
 
   static const String _darkTheme = '''

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_webservice/places.dart';
-import 'package:maraca_map/cloud_functions/google_maps_webservice/places.dart';
+import 'package:maraca_map/services/google_maps_webservice/places.dart';
 import 'package:maraca_map/screens/general_screens.dart';
 import 'package:maraca_map/widgets/explore/distance_form_field.dart';
 import 'package:maraca_map/widgets/explore/points_of_interest_results_row.dart';

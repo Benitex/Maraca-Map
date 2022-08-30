@@ -3,6 +3,7 @@ import 'package:geolocator/geolocator.dart' as api;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Geolocator {
+  /// Retorna a posição atual do usuário como [LatLng].
   static Future<LatLng> getCurrentLatLng() async {
     await _checkPermissions(); // TODO adicionar avisos de negação de permissões
     Position position = await api.Geolocator.getCurrentPosition();
@@ -13,6 +14,7 @@ class Geolocator {
     );
   }
 
+  /// Realiza as verificações das permissões de localização.
   static _checkPermissions() async {
     // Verificação se a localização por GPS está ativada
     bool gpsEnabled = await api.Geolocator.isLocationServiceEnabled();

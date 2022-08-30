@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/geocoding.dart';
-import 'package:maraca_map/cloud_functions/google_maps_webservice/geocoding.dart';
-import 'package:maraca_map/cloud_functions/geolocator.dart';
-import 'package:maraca_map/providers/map_style.dart';
+import 'package:maraca_map/services/google_maps_webservice/geocoding.dart';
+import 'package:maraca_map/services/geolocator.dart';
+import 'package:maraca_map/services/map_style.dart';
 import 'package:maraca_map/models/filter.dart';
 import 'package:maraca_map/screens/point_of_interest_details.dart';
 import 'package:maraca_map/screens/search.dart';

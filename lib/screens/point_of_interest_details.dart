@@ -4,7 +4,7 @@ import 'package:maraca_map/screens/general_screens.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:maraca_map/models/point_of_interest.dart';
-import 'package:maraca_map/widgets/point_of_interest_details/rating_row.dart';
+import 'package:maraca_map/widgets/rating_row.dart';
 import 'package:maraca_map/screens/map.dart';
 
 class PointOfInterestDetails extends StatelessWidget {

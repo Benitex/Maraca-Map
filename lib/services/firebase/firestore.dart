@@ -5,6 +5,7 @@ import 'package:maraca_map/models/filter.dart';
 import 'package:maraca_map/models/type.dart';
 
 class Firestore {
+  /// Recebe os marcadores de acessibilidade do banco de dados e retorna como um [Set] de [AccessibilityMarker].
   static Future<Set<AccessibilityMarker>> getAccessibilityPoints() async {
     final QuerySnapshot<Map<String, dynamic>> pointsCollection =
         await FirebaseFirestore.instance.collection("accessibility_markers").get();
@@ -31,6 +32,7 @@ class Firestore {
     return points;
   }
 
+  /// Recebe os filtros do banco de dados e retorna no formato de uma [List] de [Filter].
   static Future<List<Filter>> getFilters() async {
     final QuerySnapshot<Map<String, dynamic>> filtersCollection =
         await FirebaseFirestore.instance.collection("filters").get();
@@ -54,6 +56,7 @@ class Firestore {
     return filters;
   }
 
+  /// Converte o [map] de [subtypes] do banco de dados em uma [List] de [PointOfInterestType].
   static List<PointOfInterestType> _getTypesFromMap(Map map) {
     List<PointOfInterestType> subtypes = [];
 

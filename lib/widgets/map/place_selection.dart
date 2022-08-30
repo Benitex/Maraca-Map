@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_webservice/geocoding.dart';
-import 'package:maraca_map/cloud_functions/google_maps_webservice/places.dart';
+import 'package:maraca_map/services/google_maps_webservice/places.dart';
 import 'package:maraca_map/screens/general_screens.dart';
 import 'package:maraca_map/screens/point_of_interest_details.dart';
 

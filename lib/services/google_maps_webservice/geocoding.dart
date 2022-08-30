@@ -7,6 +7,7 @@ class Geocoding {
     apiKey: FlutterConfig.get('MAPS_WEBSERVICES_API_KEY'),
   );
 
+  /// Retorna uma lista de [GeocodingResult] presentes em uma [position] do mapa.
   static Future<List<GeocodingResult>> searchByLocation(LatLng position) async {
     GeocodingResponse response = await _api.searchByLocation(
       Location(lat: position.latitude, lng: position.longitude),

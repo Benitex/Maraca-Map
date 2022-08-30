@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:maraca_map/cloud_functions/firebase/firestore.dart';
-import 'package:maraca_map/cloud_functions/firebase/firebase_options.dart';
+import 'package:maraca_map/services/firebase/firestore.dart';
+import 'package:maraca_map/services/firebase/firebase_options.dart';
 import 'package:maraca_map/screens/map.dart';
 
 void main() async {

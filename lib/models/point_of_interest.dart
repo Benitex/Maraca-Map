@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:google_maps_webservice/distance.dart' as distance_api;
-import 'package:maraca_map/cloud_functions/google_maps_webservice/distance.dart';
-import 'package:maraca_map/cloud_functions/google_maps_webservice/places.dart';
+import 'package:maraca_map/services/google_maps_webservice/distance.dart';
+import 'package:maraca_map/services/google_maps_webservice/places.dart';
 import 'package:maraca_map/screens/map.dart' as map_page;
 
 class PointOfInterest {
