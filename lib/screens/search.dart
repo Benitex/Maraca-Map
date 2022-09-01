@@ -4,16 +4,16 @@ import 'package:maraca_map/screens/general_screens.dart';
 import 'package:maraca_map/widgets/search_field.dart';
 import 'package:maraca_map/widgets/point_of_interest_tile.dart';
 
-class Search extends StatefulWidget {
-  const Search({super.key, required this.searchField});
+class SearchScreen extends StatefulWidget {
+  const SearchScreen({super.key, required this.searchField});
 
   final SearchField searchField;
 
   @override
-  State<Search> createState() => _SearchState();
+  State<SearchScreen> createState() => _SearchScreenState();
 }
 
-class _SearchState extends State<Search> {
+class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +31,7 @@ class _SearchState extends State<Search> {
         future: Places.searchByText(widget.searchField.controller.text),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Loading();
+            return const LoadingScreen();
           } else if (snapshot.hasError) {
             return const ErrorScreen();
           } else if (!snapshot.hasData) {

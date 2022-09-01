@@ -16,8 +16,8 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  Map.filters = await Firestore.getFilters();
-  Map.accessibilityPoints = await Firestore.getAccessibilityPoints();
+  MapScreen.filters = await Firestore.getFilters();
+  MapScreen.accessibilityPoints = await Firestore.getAccessibilityPoints();
 
   runApp(const MaracaMap());
 }
@@ -33,11 +33,11 @@ class _MaracaMapState extends State<MaracaMap> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Map(
+      home: MapScreen(
         updateTheme: () => setState(() {}),
       ),
       debugShowCheckedModeBanner: false,
-      theme: Settings.options["Modo escuro"]!.active ?
+      theme: SettingsScreen.options["Modo escuro"]!.active ?
           DarkTheme.screensStyle : LightTheme.screensStyle,
     );
   }

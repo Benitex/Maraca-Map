@@ -31,19 +31,19 @@ class _PriceDropdownMenuState extends State<PriceDropdownMenu> {
         });
         switch (value) {
           case "free":
-            Explore.filters["maxPrice"] = PriceLevel.free;
+            ExploreScreen.filters["maxPrice"] = PriceLevel.free;
             break;
           case "inexpensive":
-            Explore.filters["maxPrice"] = PriceLevel.inexpensive;
+            ExploreScreen.filters["maxPrice"] = PriceLevel.inexpensive;
             break;
           case "moderate":
-            Explore.filters["maxPrice"] = PriceLevel.moderate;
+            ExploreScreen.filters["maxPrice"] = PriceLevel.moderate;
             break;
           case "expensive":
-            Explore.filters["maxPrice"] = PriceLevel.expensive;
+            ExploreScreen.filters["maxPrice"] = PriceLevel.expensive;
             break;
           case "veryExpensive":
-            Explore.filters["maxPrice"] = PriceLevel.veryExpensive;
+            ExploreScreen.filters["maxPrice"] = PriceLevel.veryExpensive;
             break;
         }
       }

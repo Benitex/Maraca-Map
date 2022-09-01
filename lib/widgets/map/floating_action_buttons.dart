@@ -51,7 +51,7 @@ class ExpandableFloatingActionButtonState extends State<ExpandableFloatingAction
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) {
-                    return FilterSelection(updateMarkers: widget.updateMap);
+                    return FilterSelectionScreen(updateMarkers: widget.updateMap);
                   }),
                 );
               }),
@@ -67,7 +67,7 @@ class ExpandableFloatingActionButtonState extends State<ExpandableFloatingAction
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) {
-                    return const Explore();
+                    return const ExploreScreen();
                   }),
                 );
               }),
@@ -83,7 +83,7 @@ class ExpandableFloatingActionButtonState extends State<ExpandableFloatingAction
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) {
-                    return Settings(updateMap: widget.updateMap);
+                    return SettingsScreen(updateMap: widget.updateMap);
                   }),
                 );
               }),

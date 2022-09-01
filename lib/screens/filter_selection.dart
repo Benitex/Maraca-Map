@@ -1,16 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:maraca_map/models/filter.dart';
 import 'package:maraca_map/screens/map.dart';
 
-class FilterSelection extends StatefulWidget {
-  const FilterSelection({super.key, required this.updateMarkers});
+class FilterSelectionScreen extends StatefulWidget {
+  const FilterSelectionScreen({super.key, required this.updateMarkers});
 
   final Function updateMarkers;
 
   @override
-  State<FilterSelection> createState() => _FilterSelectionState();
+  State<FilterSelectionScreen> createState() => _FilterSelectionScreenState();
 }
 
-class _FilterSelectionState extends State<FilterSelection> {
+class _FilterSelectionScreenState extends State<FilterSelectionScreen> {
+  final List<Filter> filters = []; 
+
+  @override
+  void initState() {
+    MapScreen.filters.forEach((key, filter) {
+      filters.add(filter);
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +32,7 @@ class _FilterSelectionState extends State<FilterSelection> {
 
       body: ListView(
         children: [
-          for (var filter in Map.filters)
+          for (Filter filter in filters)
             Card(child: SwitchListTile(
               title: Text(filter.name),
               value: filter.active,

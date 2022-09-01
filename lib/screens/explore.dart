@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_webservice/places.dart';
-import 'package:maraca_map/services/google_maps_webservice/places.dart';
-import 'package:maraca_map/screens/general_screens.dart';
 import 'package:maraca_map/widgets/explore/distance_form_field.dart';
 import 'package:maraca_map/widgets/explore/points_of_interest_results_row.dart';
 import 'package:maraca_map/widgets/explore/price_dropdown_menu.dart';
 
-class Explore extends StatefulWidget {
-  const Explore({super.key});
+class ExploreScreen extends StatefulWidget {
+  const ExploreScreen({super.key});
 
   static Map<String, dynamic> filters = {
     "distance": 1000,
@@ -15,12 +13,10 @@ class Explore extends StatefulWidget {
   };
 
   @override
-  State<Explore> createState() => _ExploreState();
+  State<ExploreScreen> createState() => _ExploreScreenState();
 }
 
-class _ExploreState extends State<Explore> {
-  late List<PointsOfInterestResultsRow> results;
-
+class _ExploreScreenState extends State<ExploreScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,95 +37,53 @@ class _ExploreState extends State<Explore> {
             IconButton(
               icon: const Icon(Icons.search),
               onPressed: () => setState(() {
-                Explore.filters["filters"] = int.parse(DistanceFormField.controller.text);
+                ExploreScreen.filters["filters"] = int.parse(DistanceFormField.controller.text);
               }),
             ),
           ]),
 
           // Pontos de interesse próximos
-          FutureBuilder(
-            future: _getSearchResults(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Loading();
-              } else if (snapshot.hasError) {
-                return const ErrorScreen();
-              } else if (results.isEmpty) {
-                return const NoResults();
-
-              } else {
-                return Column(
-                  children: [
-                    for (PointsOfInterestResultsRow resultRow in results)
-                      resultRow,
-                  ],
-                );
-              }
-            },
+          Column(
+            children: [
+              PointsOfInterestResultsRow(
+                typeName: "Restaurantes",
+                searchFor: "comida",
+                filters: ExploreScreen.filters,
+              ),
+              PointsOfInterestResultsRow(
+                typeName: "Lojas",
+                searchFor: "loja",
+                filters: ExploreScreen.filters,
+              ),
+              PointsOfInterestResultsRow(
+                typeName: "Transporte público",
+                searchFor: "transporte público",
+                filters: ExploreScreen.filters,
+              ),
+              PointsOfInterestResultsRow(
+                typeName: "Escolas",
+                searchFor: "escola",
+                filters: ExploreScreen.filters,
+              ),
+              PointsOfInterestResultsRow(
+                typeName: "Lazer e turismo",
+                searchFor: "atração",
+                filters: ExploreScreen.filters,
+              ),
+              PointsOfInterestResultsRow(
+                typeName: "Hospitais",
+                searchFor: "hospital",
+                filters: ExploreScreen.filters,
+              ),
+              PointsOfInterestResultsRow(
+                typeName: "Templos religiosos",
+                searchFor: "religião",
+                filters: ExploreScreen.filters,
+              ),
+            ],
           ),
         ],
       ),
     );
-  }
-
-  Future<void> _getSearchResults() async {
-    results = [
-      PointsOfInterestResultsRow(
-        typeName: "Lazer e turismo",
-        results: await Places.nearbySearch(
-          type: "atração",
-          maxprice: Explore.filters["maxPrice"],
-          radius: Explore.filters["distance"],
-        ),
-      ),
-      PointsOfInterestResultsRow(
-        typeName: "Restaurantes",
-        results: await Places.nearbySearch(
-          type: "comida",
-          maxprice: Explore.filters["maxPrice"],
-          radius: Explore.filters["distance"],
-        ),
-      ),
-      PointsOfInterestResultsRow(
-        typeName: "Lojas",
-        results: await Places.nearbySearch(
-          type: "loja",
-          maxprice: Explore.filters["maxPrice"],
-          radius: Explore.filters["distance"],
-        ),
-      ),
-      PointsOfInterestResultsRow(
-        typeName: "Hospitais", 
-        results: await Places.nearbySearch(
-          type: "hospital",
-          maxprice: Explore.filters["maxPrice"],
-          radius: Explore.filters["distance"],
-        ),
-      ),
-      PointsOfInterestResultsRow(
-        typeName: "Templos religiosos",
-        results: await Places.nearbySearch(
-          type: "religião",
-          maxprice: Explore.filters["maxPrice"],
-          radius: Explore.filters["distance"],
-        ),
-      ),
-      PointsOfInterestResultsRow(
-        typeName: "Escolas",
-        results: await Places.nearbySearch(
-          type: "escola",
-          maxprice: Explore.filters["maxPrice"],
-          radius: Explore.filters["distance"],
-        ),
-      ),
-      PointsOfInterestResultsRow(
-        typeName: "Transporte público",
-        results: await Places.nearbySearch(
-          type: "transporte público",
-          maxprice: Explore.filters["maxPrice"],
-          radius: Explore.filters["distance"],
-        ),
-      ),
-    ];
   }
 }

@@ -12,13 +12,13 @@ import 'package:maraca_map/widgets/map/floating_action_buttons.dart';
 import 'package:maraca_map/widgets/map/place_selection.dart';
 import 'package:maraca_map/widgets/search_field.dart';
 
-class Map extends StatefulWidget {
-  const Map({super.key, required this.updateTheme});
+class MapScreen extends StatefulWidget {
+  const MapScreen({super.key, required this.updateTheme});
 
   final Function updateTheme;
   static late GoogleMapController controller;
 
-  static late List<Filter> filters;
+  static late Map<String, Filter> filters;
   static late Set<Marker> accessibilityPoints;
 
   static Future<void> moveCamera(LatLng location) async {
@@ -30,16 +30,16 @@ class Map extends StatefulWidget {
   }
 
   @override
-  State<Map> createState() => _MapState();
+  State<MapScreen> createState() => _MapScreenState();
 }
 
-class _MapState extends State<Map> {
+class _MapScreenState extends State<MapScreen> {
   final SearchField _searchField = SearchField();
 
   void _onMapCreated(GoogleMapController controller) async {
-    Map.controller = controller;
-    Map.controller.setMapStyle(MapStyle.getJSON(Map.filters));
-    Map.moveCamera(await Geolocator.getCurrentLatLng());
+    MapScreen.controller = controller;
+    MapScreen.controller.setMapStyle(MapStyle.toJSON(MapScreen.filters));
+    MapScreen.moveCamera(await Geolocator.getCurrentLatLng());
   }
 
   @override
@@ -58,7 +58,7 @@ class _MapState extends State<Map> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) {
-                    return Search(searchField: _searchField);
+                    return SearchScreen(searchField: _searchField);
                   }),
                 );
               });
@@ -75,17 +75,13 @@ class _MapState extends State<Map> {
         myLocationEnabled: true,
 
         // Filtro de trânsito
-        trafficEnabled: Map.filters.firstWhere(
-          (filter) => filter.id == "traffic",
-        ).active,
+        trafficEnabled: MapScreen.filters["traffic"]!.active,
 
         // Ícones de acessibilidade
-        markers: Map.filters.firstWhere(
-          (filter) => filter.id == "accessibility",
-        ).active ? Map.accessibilityPoints : {},
+        markers: MapScreen.filters["accessibility"]!.active ? MapScreen.accessibilityPoints : {},
 
         // Configurações
-        mapType: Settings.options["Mapa de satélite"]!.active ? MapType.hybrid : MapType.normal,
+        mapType: SettingsScreen.options["Mapa de satélite"]!.active ? MapType.hybrid : MapType.normal,
         zoomControlsEnabled: false,
         buildingsEnabled: false,
         compassEnabled: false,
@@ -101,7 +97,7 @@ class _MapState extends State<Map> {
           ExpandableFloatingActionButton(
             updateMap: () {
               setState(() {
-                Map.controller.setMapStyle(MapStyle.getJSON(Map.filters));
+                MapScreen.controller.setMapStyle(MapStyle.toJSON(MapScreen.filters));
                 widget.updateTheme();
               });
             },
@@ -110,9 +106,9 @@ class _MapState extends State<Map> {
           // Botão de mover a câmera para posição atual
           Positioned(
             bottom: 0, right: 0,
-            child: FloatingActionButton(
+            child: FloatingActionButton.small(
               heroTag: "Posição atual",
-              onPressed: () async => await Map.moveCamera(await Geolocator.getCurrentLatLng()),
+              onPressed: () async => await MapScreen.moveCamera(await Geolocator.getCurrentLatLng()),
               child: const Icon(Icons.location_searching),
             ),
           ),
@@ -130,17 +126,16 @@ class _MapState extends State<Map> {
       for (GeocodingResult result in allPlaces) {
         if (result.types.contains("point_of_interest")) {
           // Verificação se um filtro ativo contém um dos subtipos
-          filtersLoop:
-          for (Filter filter in Map.filters) {
+          MapScreen.filters.forEach((key, filter) {
             if (filter.active) {
               for (var subtype in filter.subtypes) {
                 if (result.types.contains(subtype.id) && !possiblePlaces.contains(result)) {
                   possiblePlaces.add(result);
-                  break filtersLoop;
+                  break;
                 }
               }
             }
-          }
+          });
         }
       }
 
@@ -149,7 +144,7 @@ class _MapState extends State<Map> {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) {
-              return PointOfInterestDetails(
+              return PointOfInterestDetailsScreen(
                 pointOfInterestID: possiblePlaces.first.placeId,
               );
             }),

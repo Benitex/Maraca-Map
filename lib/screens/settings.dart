@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:maraca_map/models/option.dart';
 
-class Settings extends StatefulWidget {
-  const Settings({super.key, required this.updateMap});
+class SettingsScreen extends StatefulWidget {
+  const SettingsScreen({super.key, required this.updateMap});
 
   final Function updateMap;
 
@@ -20,16 +20,16 @@ class Settings extends StatefulWidget {
   };
 
   @override
-  State<Settings> createState() => _SettingsState();
+  State<SettingsScreen> createState() => _SettingsScreenState();
 }
 
-class _SettingsState extends State<Settings> {
+class _SettingsScreenState extends State<SettingsScreen> {
   final List<Option> _options = [];
 
   @override
   void initState() {
     _options.clear();
-    Settings.options.forEach((key, option) {
+    SettingsScreen.options.forEach((key, option) {
       _options.add(option);
     });
     super.initState();

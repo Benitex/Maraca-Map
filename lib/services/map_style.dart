@@ -4,12 +4,9 @@ import 'package:maraca_map/themes/dark_theme.dart';
 import 'package:maraca_map/themes/light_theme.dart';
 
 class MapStyle {
-  static late List<Filter> _filters;
-
   /// Tranforma uma lista de opções de filtro em JSON.
-  static String getJSON(List<Filter> filters) {
-    _filters = filters;
-    bool darkTheme = Settings.options["Modo escuro"]!.active;
+  static String toJSON(Map<String, Filter> filters) {
+    bool darkTheme = SettingsScreen.options["Modo escuro"]!.active;
     return '''
 [
   ${darkTheme ? DarkTheme.mapStyle : LightTheme.mapStyle}
@@ -21,7 +18,7 @@ class MapStyle {
     "featureType": "poi.attraction",
     "stylers": [
       {
-        "visibility": "${_getActivity('attractions')}"
+        "visibility": "${filters['attractions']!.active ? 'on' : 'off'}"
       }
     ]
   },
@@ -29,7 +26,7 @@ class MapStyle {
     "featureType": "poi.business",
     "stylers": [
       {
-        "visibility": "${_getActivity('business')}"
+        "visibility": "${filters['business']!.active ? 'on' : 'off'}"
       }
     ]
   },
@@ -41,7 +38,7 @@ class MapStyle {
     "featureType": "poi.medical",
     "stylers": [
       {
-        "visibility": "${_getActivity('medical')}"
+        "visibility": "${filters['medical']!.active ? 'on' : 'off'}"
       }
     ]
   },
@@ -53,7 +50,7 @@ class MapStyle {
     "featureType": "poi.place_of_worship",
     "stylers": [
       {
-        "visibility": "${_getActivity('placesOfWorship')}"
+        "visibility": "${filters['placesOfWorship']!.active ? 'on' : 'off'}"
       }
     ]
   },
@@ -61,7 +58,7 @@ class MapStyle {
     "featureType": "poi.school",
     "stylers": [
       {
-        "visibility": "${_getActivity('schools')}"
+        "visibility": "${filters['schools']!.active ? 'on' : 'off'}"
       }
     ]
   },
@@ -81,17 +78,11 @@ class MapStyle {
     "featureType": "transit.station",
     "stylers": [
       {
-        "visibility": "${_getActivity('publicTransportStations')}"
+        "visibility": "${filters['publicTransportStations']!.active ? 'on' : 'off'}"
       }
     ]
   },
 ]
     ''';
-  }
-
-  /// Converte bools para formatação "on", "off".
-  static String _getActivity(String id) {
-    Filter filter = _filters.firstWhere((element) => element.id == id);
-    return (filter.active ? 'on' : 'off');
   }
 }

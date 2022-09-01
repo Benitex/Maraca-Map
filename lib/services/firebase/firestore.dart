@@ -33,23 +33,21 @@ class Firestore {
   }
 
   /// Recebe os filtros do banco de dados e retorna no formato de uma [List] de [Filter].
-  static Future<List<Filter>> getFilters() async {
+  static Future<Map<String, Filter>> getFilters() async {
     final QuerySnapshot<Map<String, dynamic>> filtersCollection =
         await FirebaseFirestore.instance.collection("filters").get();
 
-    List<Filter> filters = [];
+    Map<String, Filter> filters = {};
 
     for (QueryDocumentSnapshot<Map<String, dynamic>> document in filtersCollection.docs) {
       Map<String, dynamic> filter = document.data();
 
-      filters.add(
-        Filter(
-          id: filter['id'],
-          name: filter["portuguese_name"],
-          active: filter["initial_value"],
-          description: filter["description"],
-          subtypes: _getTypesFromMap(filter["subtypes"]),
-        ),
+      filters[filter["id"]] = Filter(
+        id: filter['id'],
+        name: filter["portuguese_name"],
+        active: filter["initial_value"],
+        description: filter["description"],
+        subtypes: _getTypesFromMap(filter["subtypes"]),
       );
     }
 

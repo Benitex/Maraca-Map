@@ -15,7 +15,7 @@ class PointOfInterestTile extends StatelessWidget {
     return GestureDetector(
       onTap: () => Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => PointOfInterestDetails(
+        MaterialPageRoute(builder: (context) => PointOfInterestDetailsScreen(
           pointOfInterestID: pointOfInterest.placeId,
         )),
       ),

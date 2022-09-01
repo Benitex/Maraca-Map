@@ -22,7 +22,7 @@ class PlaceSelection extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text("Cancelar"),
+          child: const Text("Cancelar", style: TextStyle(color: Colors.blue)),
         )
       ],
     );
@@ -40,23 +40,28 @@ class _PointOfInterestTile extends StatelessWidget {
       future: Places.getDetailsByPlaceId(pointOfInterestID),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return OutlinedButton(onPressed: () {}, child: const Loading());
+          return OutlinedButton(onPressed: () {}, child: const LoadingScreen());
         } else if (snapshot.hasError) {
           return Container();
 
         } else {
           return Row(children: [
-            OutlinedButton(
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => PointOfInterestDetails(
-                    pointOfInterestID: pointOfInterestID,
-                  )),
-                );
-              },
-              child: Text(snapshot.data!.name),
+            Flexible(
+              child: OutlinedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => PointOfInterestDetailsScreen(
+                      pointOfInterestID: pointOfInterestID,
+                    )),
+                  );
+                },
+                child: Text(
+                  snapshot.data!.name,
+                  style: const TextStyle(color: Colors.blue),
+                ),
+              ),
             ),
           ]);
         }

@@ -3,7 +3,7 @@ import 'package:google_maps_webservice/places.dart';
 import 'package:google_maps_webservice/distance.dart' as distance_api;
 import 'package:maraca_map/services/google_maps_webservice/distance.dart';
 import 'package:maraca_map/services/google_maps_webservice/places.dart';
-import 'package:maraca_map/screens/map.dart' as map_screen;
+import 'package:maraca_map/screens/map.dart';
 
 class PointOfInterest {
   PointOfInterest(this._id);
@@ -56,17 +56,14 @@ class PointOfInterest {
   String _getTranslatedName(String type) {
     String translatedName = "";
 
-    for (var filter in map_screen.Map.filters) {
+    MapScreen.filters.forEach((key, filter) {
       for (var subtype in filter.subtypes) {
         if (subtype.id == type) {
           translatedName = subtype.name;
+          break;
         }
       }
-
-      if (translatedName != '') {
-        break;
-      }
-    }
+    });
 
     return translatedName;
   }
@@ -169,7 +166,7 @@ class PointOfInterest {
       }
 
       String openingHours = '', closingHours = '';
-      if (_placesDetails.openingHours!.periods.length > weekday) {  
+      if (_placesDetails.openingHours!.periods.length > weekday) {
         final OpeningHoursPeriod openingHoursPeriod = _placesDetails.openingHours!.periods[weekday];
 
         if (openingHoursPeriod.open is OpeningHoursPeriodDate && openingHoursPeriod.close is OpeningHoursPeriodDate) {

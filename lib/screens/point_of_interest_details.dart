@@ -7,8 +7,8 @@ import 'package:maraca_map/models/point_of_interest.dart';
 import 'package:maraca_map/widgets/rating_row.dart';
 import 'package:maraca_map/screens/map.dart';
 
-class PointOfInterestDetails extends StatelessWidget {
-  PointOfInterestDetails({super.key, required String pointOfInterestID}) {
+class PointOfInterestDetailsScreen extends StatelessWidget {
+  PointOfInterestDetailsScreen({super.key, required String pointOfInterestID}) {
     pointOfInterest = PointOfInterest(pointOfInterestID);
   }
 
@@ -23,7 +23,7 @@ class PointOfInterestDetails extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
             appBar: AppBar(),
-            body: const Loading(),
+            body: const LoadingScreen(),
           );
         } else if (snapshot.hasError) {
           return Scaffold(
@@ -49,7 +49,7 @@ class PointOfInterestDetails extends StatelessWidget {
                   context,
                   (route) => route.isFirst,
                 );
-                await Map.moveCamera(
+                await MapScreen.moveCamera(
                   LatLng(pointOfInterest.location.lat, pointOfInterest.location.lng),
                 );
               },
@@ -114,14 +114,14 @@ class PointOfInterestDetails extends StatelessWidget {
                   title: const Text("Telefone"),
                   subtitle: Row(children: [
                     Text(pointOfInterest.phoneNumber["phone_number"]!),
-                    OutlinedButton(
+                    IconButton(
+                      icon: const Icon(Icons.phone),
                       onPressed: () async {
                         await launchUrl(Uri(
                           scheme: "tel",
                           path: "tel:${pointOfInterest.phoneNumber['formatted_phone_number']}",
                         ));
                       },
-                      child: const Icon(Icons.phone),
                     ),
                   ]),
                 ),
@@ -142,7 +142,10 @@ class PointOfInterestDetails extends StatelessWidget {
                               throw "Could not launch ${pointOfInterest.url}";
                             }
                           },
-                          child: Text("${pointOfInterest.url}"),
+                          child: Text(
+                            pointOfInterest.url.toString(),
+                            style: const TextStyle(color: Colors.blue),
+                          ),
                         ),
                       ],
                     )
