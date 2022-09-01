@@ -10,7 +10,7 @@ import 'package:maraca_map/screens/search.dart';
 import 'package:maraca_map/screens/settings.dart';
 import 'package:maraca_map/widgets/map/floating_action_buttons.dart';
 import 'package:maraca_map/widgets/map/place_selection.dart';
-import 'package:maraca_map/widgets/search/search_field.dart';
+import 'package:maraca_map/widgets/search_field.dart';
 
 class Map extends StatefulWidget {
   const Map({super.key, required this.updateTheme});

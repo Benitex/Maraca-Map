@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:maraca_map/services/google_maps_webservice/places.dart';
 import 'package:maraca_map/screens/general_screens.dart';
-import 'package:maraca_map/widgets/search/search_field.dart';
+import 'package:maraca_map/widgets/search_field.dart';
 import 'package:maraca_map/widgets/point_of_interest_tile.dart';
 
 class Search extends StatefulWidget {
