@@ -23,9 +23,7 @@ class _FilterSelectionState extends State<FilterSelection> {
         children: [
           for (var filter in Map.filters)
             Card(child: SwitchListTile(
-              title: Text(
-                filter.name,
-              ),
+              title: Text(filter.name),
               value: filter.active,
               onChanged: (value) => setState(() {
                 filter.active = value;

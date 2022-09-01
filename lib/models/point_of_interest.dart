@@ -3,7 +3,7 @@ import 'package:google_maps_webservice/places.dart';
 import 'package:google_maps_webservice/distance.dart' as distance_api;
 import 'package:maraca_map/services/google_maps_webservice/distance.dart';
 import 'package:maraca_map/services/google_maps_webservice/places.dart';
-import 'package:maraca_map/screens/map.dart' as map_page;
+import 'package:maraca_map/screens/map.dart' as map_screen;
 
 class PointOfInterest {
   PointOfInterest(this._id);
@@ -56,7 +56,7 @@ class PointOfInterest {
   String _getTranslatedName(String type) {
     String translatedName = "";
 
-    for (var filter in map_page.Map.filters) {
+    for (var filter in map_screen.Map.filters) {
       for (var subtype in filter.subtypes) {
         if (subtype.id == type) {
           translatedName = subtype.name;

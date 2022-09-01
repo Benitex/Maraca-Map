@@ -13,9 +13,11 @@ import 'package:maraca_map/widgets/map/place_selection.dart';
 import 'package:maraca_map/widgets/search/search_field.dart';
 
 class Map extends StatefulWidget {
-  const Map({super.key});
+  const Map({super.key, required this.updateTheme});
 
+  final Function updateTheme;
   static late GoogleMapController controller;
+
   static late List<Filter> filters;
   static late Set<Marker> accessibilityPoints;
 
@@ -83,9 +85,7 @@ class _MapState extends State<Map> {
         ).active ? Map.accessibilityPoints : {},
 
         // Configurações
-        mapType: Settings.options.firstWhere(
-          (option) => option.name == "Mapa de satélite",
-        ).active ? MapType.hybrid : MapType.normal,
+        mapType: Settings.options["Mapa de satélite"]!.active ? MapType.hybrid : MapType.normal,
         zoomControlsEnabled: false,
         buildingsEnabled: false,
         compassEnabled: false,
@@ -102,6 +102,7 @@ class _MapState extends State<Map> {
             updateMap: () {
               setState(() {
                 Map.controller.setMapStyle(MapStyle.getJSON(Map.filters));
+                widget.updateTheme();
               });
             },
           ),

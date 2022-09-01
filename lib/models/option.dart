@@ -1,6 +1,6 @@
 class Option {
-  Option({required this.name, required this.active});
+  Option({required this.name, required this.description, required this.active});
 
-  String name;
+  String name, description;
   bool active;
 }

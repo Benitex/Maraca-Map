@@ -5,16 +5,36 @@ class Settings extends StatefulWidget {
   const Settings({super.key, required this.updateMap});
 
   final Function updateMap;
-  static final List<Option> options = [
-    Option(name: "Mapa de satélite", active: false),
-    Option(name: "Modo escuro", active: false),
-  ];
+
+  static final Map<String, Option> options = {
+    "Mapa de satélite": Option(
+      name: "Mapa de satélite",
+      description: "",
+      active: false,
+    ),
+    "Modo escuro": Option(
+      name: "Modo escuro",
+      description: "",
+      active: false,
+    ),
+  };
 
   @override
   State<Settings> createState() => _SettingsState();
 }
 
 class _SettingsState extends State<Settings> {
+  final List<Option> _options = [];
+
+  @override
+  void initState() {
+    _options.clear();
+    Settings.options.forEach((key, option) {
+      _options.add(option);
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +44,7 @@ class _SettingsState extends State<Settings> {
       ),
       body: ListView(
         children: [
-          for (Option option in Settings.options)
+          for (Option option in _options)
             Card(child: SwitchListTile(
               title: Text(option.name),
               value: option.active,
