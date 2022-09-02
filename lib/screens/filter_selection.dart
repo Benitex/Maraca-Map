@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:maraca_map/models/filter.dart';
 import 'package:maraca_map/screens/map.dart';
+import 'package:maraca_map/services/local_storage.dart';
 
 class FilterSelectionScreen extends StatefulWidget {
   const FilterSelectionScreen({super.key, required this.updateMarkers});
@@ -36,10 +37,10 @@ class _FilterSelectionScreenState extends State<FilterSelectionScreen> {
             Card(child: SwitchListTile(
               title: Text(filter.name),
               value: filter.active,
-              onChanged: (value) => setState(() {
-                filter.active = value;
-                widget.updateMarkers();
-              }),
+              onChanged: (value) async {
+                await LocalStorage.setFilterValue(filter, value);
+                setState(() => widget.updateMarkers());
+              }
             )),
         ],
       ),

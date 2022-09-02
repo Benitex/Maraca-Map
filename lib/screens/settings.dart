@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:maraca_map/models/option.dart';
+import 'package:maraca_map/services/local_storage.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key, required this.updateMap});
@@ -48,10 +49,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Card(child: SwitchListTile(
               title: Text(option.name),
               value: option.active,
-              onChanged: (value) => setState(() {
-                option.active = value;
-                widget.updateMap();
-              }),
+              onChanged: (value) async {
+                await LocalStorage.setOptionValue(option, value);
+                setState(() => widget.updateMap());
+              },
             )),
         ],
       ),

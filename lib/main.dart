@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:maraca_map/services/local_storage.dart';
 import 'package:maraca_map/themes/dark_theme.dart';
 import 'package:maraca_map/themes/light_theme.dart';
 import 'package:maraca_map/screens/settings.dart';
@@ -16,8 +17,10 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  MapScreen.filters = await Firestore.getFilters();
   MapScreen.accessibilityPoints = await Firestore.getAccessibilityPoints();
+  MapScreen.filters = await Firestore.getFilters();
+  await LocalStorage.loadFilterValues();
+  await LocalStorage.loadSettingsValues();
 
   runApp(const MaracaMap());
 }
