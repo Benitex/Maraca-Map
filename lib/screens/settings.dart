@@ -10,12 +10,12 @@ class SettingsScreen extends StatefulWidget {
   static final Map<String, Option> options = {
     "Mapa de satélite": Option(
       name: "Mapa de satélite",
-      description: "",
+      description: "Quando ativo, muda a exibição do mapa para imagens de satélite. Pode utilizar mais internet e alguns ícones podem ficar indisponíveis.",
       active: false,
     ),
     "Modo escuro": Option(
       name: "Modo escuro",
-      description: "",
+      description: "Muda o esquema de cores para uma versão mais escura.",
       active: false,
     ),
   };
@@ -48,6 +48,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           for (Option option in _options)
             Card(child: SwitchListTile(
               title: Text(option.name),
+              subtitle: Text(option.description),
+              isThreeLine: true,
               value: option.active,
               onChanged: (value) async {
                 await LocalStorage.setOptionValue(option, value);

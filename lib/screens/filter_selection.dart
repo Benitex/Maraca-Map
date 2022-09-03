@@ -13,15 +13,16 @@ class FilterSelectionScreen extends StatefulWidget {
 }
 
 class _FilterSelectionScreenState extends State<FilterSelectionScreen> {
-  final List<Filter> filters = []; 
-
-  @override
-  void initState() {
-    MapScreen.filters.forEach((key, filter) {
-      filters.add(filter);
-    });
-    super.initState();
-  }
+  final List<Filter> filters = [
+    MapScreen.filters["business"]!,
+    MapScreen.filters["publicTransportStations"]!,
+    MapScreen.filters["schools"]!,
+    MapScreen.filters["attractions"]!,
+    MapScreen.filters["traffic"]!,
+    MapScreen.filters["medical"]!,
+    MapScreen.filters["placesOfWorship"]!,
+    MapScreen.filters["accessibility"]!,
+  ]; 
 
   @override
   Widget build(BuildContext context) {
@@ -34,14 +35,18 @@ class _FilterSelectionScreenState extends State<FilterSelectionScreen> {
       body: ListView(
         children: [
           for (Filter filter in filters)
-            Card(child: SwitchListTile(
-              title: Text(filter.name),
-              value: filter.active,
-              onChanged: (value) async {
-                await LocalStorage.setFilterValue(filter, value);
-                setState(() => widget.updateMarkers());
-              }
-            )),
+            Card(
+              child: SwitchListTile(
+                title: Text(filter.name),
+                subtitle: Text(filter.description),
+                isThreeLine: true,
+                value: filter.active,
+                onChanged: (value) async {
+                  await LocalStorage.setFilterValue(filter, value);
+                  setState(() => widget.updateMarkers());
+                }
+              ),
+            ),
         ],
       ),
     );
