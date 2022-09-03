@@ -28,6 +28,8 @@ class Places {
     );
   }
 
+  /// Utilizado para facilitar buscas por [PointOfInterest] realizando uma busca
+  /// a partir do [text] e retornando uma [List] de [Prediction] com os resultados.
   static Future<List<Prediction>> autocomplete(String text) async {
     PlacesAutocompleteResponse response = await _api.autocomplete(text);
     return response.predictions;
