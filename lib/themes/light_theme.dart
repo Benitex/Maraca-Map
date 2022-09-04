@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class LightTheme {
+  static const Color primaryColor = Color(0xFF012030);
+
   static final ThemeData screensStyle = ThemeData(
     primarySwatch: const MaterialColor(
       0x00012030,
@@ -17,7 +19,7 @@ class LightTheme {
         900: Color(0xFF000b13),
       },
     ),
-    appBarTheme: const AppBarTheme(color: Color(0xFF012030)),
+    appBarTheme: const AppBarTheme(color: primaryColor),
   );
 
   static const String mapStyle = '';

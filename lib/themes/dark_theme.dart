@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 class DarkTheme {
+  static const Color primaryColor = Color(0xFF3CA6A6);
+
   static final ThemeData screensStyle = ThemeData(
     colorScheme: const ColorScheme.dark(
-      primary: Color(0xFF3CA6A6),
+      primary: primaryColor,
       secondary: Color(0xFF3CA6A6),
       tertiary: Color(0xFF3CA6A6),
     ),

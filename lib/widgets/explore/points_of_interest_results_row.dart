@@ -13,33 +13,31 @@ class PointsOfInterestResultsRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      Text(typeName, textAlign: TextAlign.start),
+      ListTile(title: Text(typeName, textAlign: TextAlign.start)),
       SizedBox(
-        height: 300,
-        child: ListView(
-          scrollDirection: Axis.horizontal,
-          children: [
-            FutureBuilder(
-              future: _getSearchResults(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const LoadingScreen();
-                } else if (snapshot.hasError) {
-                  return const ErrorScreen();
-                } else if (snapshot.data!.isEmpty) {
-                  return const NoResults();
+        height: 280,
+        child: FutureBuilder(
+          future: _getSearchResults(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const LoadingScreen();
+            } else if (snapshot.hasError) {
+              return const ErrorScreen();
+            } else if (snapshot.data!.isEmpty) {
+              return const NoResults();
 
-                } else {
-                  return Row(
-                    children: [
-                      for (PlacesSearchResult result in snapshot.data!)
-                        PointOfInterestTile(pointOfInterest: result),
-                    ],
+            } else {
+              return ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: snapshot.data!.length,
+                itemBuilder: (context, index) {
+                  return PointOfInterestTile(
+                    pointOfInterest: snapshot.data![index],
                   );
-                }
-              },
-            ),
-          ],
+                },
+              );
+            }
+          },
         ),
       ),
     ]);

@@ -23,6 +23,7 @@ class ExpandableFloatingActionButtonState extends State<ExpandableFloatingAction
           Positioned(bottom: 0, right: 0, left: 35,
             child: FloatingActionButton(
               heroTag: "menu",
+              tooltip: "Menu",
               onPressed: () => setState(() {
                 _open = true;
               }),
@@ -36,6 +37,7 @@ class ExpandableFloatingActionButtonState extends State<ExpandableFloatingAction
           Positioned(bottom: 0, right: 0, left: 35,
             child: FloatingActionButton(
               heroTag: "close",
+              tooltip: "Fechar menu",
               onPressed: () => setState(() {
                 _open = false;
               }),
@@ -46,6 +48,7 @@ class ExpandableFloatingActionButtonState extends State<ExpandableFloatingAction
           Positioned(bottom: 80, right: 150, left: 35,
             child: FloatingActionButton(
               heroTag: "filters",
+              tooltip: "Filtros do mapa",
               onPressed: () => setState(() {
                 _open = false;
                 Navigator.push(
@@ -62,6 +65,7 @@ class ExpandableFloatingActionButtonState extends State<ExpandableFloatingAction
           Positioned(bottom: 130, right: 0, left: 35,
             child: FloatingActionButton(
               heroTag: "explore",
+              tooltip: "Explorar a região",
               onPressed: () => setState(() {
                 _open = false;
                 Navigator.push(
@@ -78,6 +82,7 @@ class ExpandableFloatingActionButtonState extends State<ExpandableFloatingAction
           Positioned(bottom: 80, right: 0, left: 185,
             child: FloatingActionButton(
               heroTag: "settings",
+              tooltip: "Configurações",
               onPressed: () => setState(() {
                 _open = false;
                 Navigator.push(

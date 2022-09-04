@@ -22,6 +22,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Explorar"),
+        centerTitle: true,
       ),
 
       body: ListView(
@@ -34,6 +35,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
             const Text("Preço: "),
             const PriceDropdownMenu(),
 
+            const Spacer(),
             IconButton(
               icon: const Icon(Icons.search),
               onPressed: () => setState(() {
@@ -43,44 +45,40 @@ class _ExploreScreenState extends State<ExploreScreen> {
           ]),
 
           // Pontos de interesse próximos
-          Column(
-            children: [
-              PointsOfInterestResultsRow(
-                typeName: "Restaurantes",
-                searchFor: "comida",
-                filters: ExploreScreen.filters,
-              ),
-              PointsOfInterestResultsRow(
-                typeName: "Lojas",
-                searchFor: "loja",
-                filters: ExploreScreen.filters,
-              ),
-              PointsOfInterestResultsRow(
-                typeName: "Transporte público",
-                searchFor: "transporte público",
-                filters: ExploreScreen.filters,
-              ),
-              PointsOfInterestResultsRow(
-                typeName: "Escolas",
-                searchFor: "escola",
-                filters: ExploreScreen.filters,
-              ),
-              PointsOfInterestResultsRow(
-                typeName: "Lazer e turismo",
-                searchFor: "atração",
-                filters: ExploreScreen.filters,
-              ),
-              PointsOfInterestResultsRow(
-                typeName: "Hospitais",
-                searchFor: "hospital",
-                filters: ExploreScreen.filters,
-              ),
-              PointsOfInterestResultsRow(
-                typeName: "Templos religiosos",
-                searchFor: "religião",
-                filters: ExploreScreen.filters,
-              ),
-            ],
+          PointsOfInterestResultsRow(
+            typeName: "Restaurantes",
+            searchFor: "comida",
+            filters: ExploreScreen.filters,
+          ),
+          PointsOfInterestResultsRow(
+            typeName: "Lojas",
+            searchFor: "loja",
+            filters: ExploreScreen.filters,
+          ),
+          PointsOfInterestResultsRow(
+            typeName: "Transporte público",
+            searchFor: "transporte público",
+            filters: ExploreScreen.filters,
+          ),
+          PointsOfInterestResultsRow(
+            typeName: "Escolas",
+            searchFor: "escola",
+            filters: ExploreScreen.filters,
+          ),
+          PointsOfInterestResultsRow(
+            typeName: "Lazer e turismo",
+            searchFor: "atração",
+            filters: ExploreScreen.filters,
+          ),
+          PointsOfInterestResultsRow(
+            typeName: "Hospitais",
+            searchFor: "hospital",
+            filters: ExploreScreen.filters,
+          ),
+          PointsOfInterestResultsRow(
+            typeName: "Templos religiosos",
+            searchFor: "religião",
+            filters: ExploreScreen.filters,
           ),
         ],
       ),

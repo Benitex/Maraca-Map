@@ -21,59 +21,83 @@ class PointOfInterestTile extends StatelessWidget {
       ),
 
       child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Container(
-          height: 300, width: 320,
-          decoration: BoxDecoration(border: Border.all()),
-          child: Column(children: [
-            // Foto
-            SizedBox(
-              height: 180,
-              child: pointOfInterest.photos.isEmpty ? (
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [Text("Nenhuma imagem disponível")],
-                )
-              ) : (
-                Places.getImageFromPhoto(pointOfInterest.photos.first)
-                // TODO adicionar mais imagens se sobrar espaço na row
+        padding: const EdgeInsets.only(left: 4, right: 4),
+        child: Card(
+          child: SizedBox(
+            height: 280, width: 320,
+            child: Column(children: [
+              // Foto
+              SizedBox(
+                height: 180,
+                child: pointOfInterest.photos.isEmpty ? (
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: const [Text("Nenhuma imagem disponível")],
+                  )
+                ) : (
+                  Image(
+                    image: Places.getImageFromPhoto(pointOfInterest.photos.first).image,
+                    width: 320, fit: BoxFit.fitWidth,
+                  )
+                ),
               ),
-            ),
 
-            // Nome
-            Text(pointOfInterest.name, maxLines: 1),
+              Padding(
+                padding: const EdgeInsets.all(6),
+                child: Column(children: [
+                  // Nome
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4, bottom: 4),
+                    child: Text(
+                      pointOfInterest.name,
+                      style: const TextStyle(fontSize: 16),
+                      maxLines: 1,
+                    ),
+                  ),
 
-            // Média das avaliações
-            pointOfInterest.rating is num ?
-              RatingRow(rating: pointOfInterest.rating!) : Container(),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 2, bottom: 6),
+                    child: Row(children: [
+                      pointOfInterest.rating is num ?
+                        RatingRow(rating: pointOfInterest.rating!) : Container(),
+                      const Spacer(),
+                      _priceRow(),
+                    ]),
+                  ),
 
-            // Preço
-            _priceRow(),
+                  Row(children: [
+                    // Aberto ou fechado
+                    pointOfInterest.openingHours is OpeningHoursDetail ?
+                      Text(
+                        pointOfInterest.openingHours!.openNow ? "Aberto" : "Fechado",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: pointOfInterest.openingHours!.openNow ? Colors.green : Colors.red,
+                        ),
+                      ) : Container(),
 
-            // Aberto ou fechado
-            pointOfInterest.openingHours is OpeningHoursDetail ?
-              Text(
-                pointOfInterest.openingHours!.openNow ? "Aberto" : "Fechado",
-                style: TextStyle(color: pointOfInterest.openingHours!.openNow ? Colors.green : Colors.red),
-              ) : Container(),
-
-            // Distância até o usuário
-            FutureBuilder(
-              future: Distance.fromHereTo(pointOfInterest.geometry!.location),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Container();
-                } else if (snapshot.hasError) {
-                  return const Text("Não foi possível calcular a distância até você.");
-                } else if (!snapshot.hasData) {
-                  return Container();
-                } else {
-                  return Text(snapshot.data!.distance.text);
-                }
-              },
-            ),
-          ]),
+                    const Spacer(),
+                    // Distância até o usuário
+                    FutureBuilder(
+                      future: Distance.fromHereTo(pointOfInterest.geometry!.location),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return Container();
+                        } else if (snapshot.hasError) {
+                          return const Text("Não foi possível calcular a distância até você.");
+                        } else if (!snapshot.hasData) {
+                          return Container();
+                        } else {
+                          return Text(snapshot.data!.distance.text, style: const TextStyle(fontSize: 18));
+                        }
+                      },
+                    ),
+                  ]),
+                ]),
+              ),
+            ]),
+          ),
         ),
       ),
     );
