@@ -11,8 +11,12 @@ class DistanceFormField extends StatelessWidget {
       width: 50,
       child: Row(children: [Expanded(
         child: TextFormField(
-          keyboardType: TextInputType.number,
           controller: controller,
+          keyboardType: TextInputType.number,
+
+          cursorColor: Colors.white,
+          style: const TextStyle(color: Colors.white),
+          decoration: const InputDecoration(border: InputBorder.none),
         ),
       )]),
     );

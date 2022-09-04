@@ -23,27 +23,35 @@ class _ExploreScreenState extends State<ExploreScreen> {
       appBar: AppBar(
         title: const Text("Explorar"),
         centerTitle: true,
-      ),
-
-      body: ListView(
-        scrollDirection: Axis.vertical,
-        children: [
-          Row(children: [
-            const Text("Distância: "),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(48.0),
+          child: Row(children: [
+            const Padding(
+              padding: EdgeInsets.only(left: 10),
+              child: Text(
+                "Distância: ",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
             const DistanceFormField(),
 
-            const Text("Preço: "),
+            const Text("Preço: ", style: TextStyle(color: Colors.white)),
             const PriceDropdownMenu(),
 
             const Spacer(),
             IconButton(
-              icon: const Icon(Icons.search),
+              icon: const Icon(Icons.search, color: Colors.white),
               onPressed: () => setState(() {
                 ExploreScreen.filters["filters"] = int.parse(DistanceFormField.controller.text);
               }),
             ),
           ]),
+        ),
+      ),
 
+      body: ListView(
+        scrollDirection: Axis.vertical,
+        children: [
           // Pontos de interesse próximos
           PointsOfInterestResultsRow(
             typeName: "Restaurantes",
