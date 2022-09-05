@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:maraca_map/screens/image.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart' as places;
@@ -96,7 +97,18 @@ class PointOfInterestDetailsScreen extends StatelessWidget {
                       padding: const EdgeInsets.only(top: 10),
                       child: ListView(
                         scrollDirection: Axis.horizontal,
-                        children: pointOfInterest.images,
+                        children: [
+                          for (Image image in pointOfInterest.images)
+                            GestureDetector(
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) {
+                                  return ImageScreen(image: image);
+                                }),
+                              ),
+                              child: image,
+                            )
+                        ],
                       ),
                     ),
                   )
@@ -121,20 +133,26 @@ class PointOfInterestDetailsScreen extends StatelessWidget {
                 ),
 
                 // Preço
-                ListTile(
-                  title: Row(children: [
-                    const Text("Preço"),
-                    const Spacer(),
-                    PriceRow(price: pointOfInterest.priceLevel!),
-                    Text("(${
-                      pointOfInterest.priceLevel == places.PriceLevel.free ? "Grátis"
-                      : pointOfInterest.priceLevel == places.PriceLevel.inexpensive ? "Barato"
-                      : pointOfInterest.priceLevel == places.PriceLevel.moderate ? "Moderado"
-                      : pointOfInterest.priceLevel == places.PriceLevel.expensive ? "Caro"
-                      : "Muito caro"
-                      })",
-                    ),
-                  ]),
+                pointOfInterest.priceLevel is! places.PriceLevel ? (
+                  const ListTile(
+                    title: Text("Informações de preço indisponíveis."),
+                  )
+                ) : (
+                  ListTile(
+                    title: Row(children: [
+                      const Text("Preço"),
+                      const Spacer(),
+                      PriceRow(price: pointOfInterest.priceLevel!),
+                      Text("(${
+                        pointOfInterest.priceLevel == places.PriceLevel.free ? "Grátis"
+                        : pointOfInterest.priceLevel == places.PriceLevel.inexpensive ? "Barato"
+                        : pointOfInterest.priceLevel == places.PriceLevel.moderate ? "Moderado"
+                        : pointOfInterest.priceLevel == places.PriceLevel.expensive ? "Caro"
+                        : "Muito caro"
+                        })",
+                      ),
+                    ]),
+                  )
                 ),
 
                 // Classificação
