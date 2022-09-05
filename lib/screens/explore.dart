@@ -26,14 +26,14 @@ class _ExploreScreenState extends State<ExploreScreen> {
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(48.0),
           child: Row(children: [
-            const Padding(
-              padding: EdgeInsets.only(left: 10),
-              child: Text(
-                "Distância: ",
-                style: TextStyle(color: Colors.white),
-              ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10, right: 10),
+              child: Row(children: const [
+                Text("Distância: ", style: TextStyle(color: Colors.white)),
+                DistanceFormField(),
+                Text("m", style: TextStyle(color: Colors.white)),
+              ]),
             ),
-            const DistanceFormField(),
 
             const Text("Preço: ", style: TextStyle(color: Colors.white)),
             const PriceDropdownMenu(),

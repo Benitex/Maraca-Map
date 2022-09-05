@@ -4,6 +4,7 @@ import 'package:google_maps_webservice/distance.dart' as distance_api;
 import 'package:maraca_map/services/google_maps_webservice/distance.dart';
 import 'package:maraca_map/services/google_maps_webservice/places.dart';
 import 'package:maraca_map/screens/map.dart';
+import 'package:maraca_map/screens/settings.dart';
 
 class PointOfInterest {
   PointOfInterest(this._id);
@@ -77,7 +78,7 @@ class PointOfInterest {
 
     return Image.network(
       iconAddress,
-      color: Colors.white,
+      color: SettingsScreen.options["Modo escuro"]!.active ? Colors.white : Colors.black,
       width: 30,
     );
   }
@@ -110,20 +111,9 @@ class PointOfInterest {
   }
 
   // Preço
-  String get priceLevel {
+  get priceLevel {
     if (_placesDetails.priceLevel is PriceLevel) {
-      switch (_placesDetails.priceLevel!) {
-        case PriceLevel.free:
-          return "Grátis";
-        case PriceLevel.inexpensive:
-          return "Barato";
-        case PriceLevel.moderate:
-          return "Moderado";
-        case PriceLevel.expensive:
-          return "Caro";
-        case PriceLevel.veryExpensive:
-          return "Muito caro";
-      }
+      return _placesDetails.priceLevel!;
     } else {
       return "Informações de preço indisponíveis.";
     }

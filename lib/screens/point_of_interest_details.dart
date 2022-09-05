@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:maraca_map/screens/general_screens.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:google_maps_webservice/places.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_webservice/places.dart' as places;
 import 'package:maraca_map/models/point_of_interest.dart';
-import 'package:maraca_map/widgets/rating_row.dart';
+import 'package:maraca_map/widgets/point_of_interest_details.dart/price_row.dart';
+import 'package:maraca_map/widgets/point_of_interest_details.dart/review.dart';
+import 'package:maraca_map/widgets/point_of_interest_details.dart/rating_row.dart';
+import 'package:maraca_map/screens/general_screens.dart';
 import 'package:maraca_map/screens/map.dart';
 
 class PointOfInterestDetailsScreen extends StatelessWidget {
@@ -12,7 +14,7 @@ class PointOfInterestDetailsScreen extends StatelessWidget {
     pointOfInterest = PointOfInterest(pointOfInterestID);
   }
 
-  static late PointOfInterest pointOfInterest;
+  late final PointOfInterest pointOfInterest;
 
   @override
   Widget build(BuildContext context) {
@@ -33,15 +35,7 @@ class PointOfInterestDetailsScreen extends StatelessWidget {
 
         } else {
           return Scaffold(
-            appBar: AppBar(
-              title: Text(pointOfInterest.name),
-              actions: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: pointOfInterest.icon,
-                ),
-              ],
-            ),
+            appBar: AppBar(title: Text(pointOfInterest.name)),
 
             floatingActionButton: FloatingActionButton(
               onPressed: () async {
@@ -69,6 +63,8 @@ class PointOfInterestDetailsScreen extends StatelessWidget {
                         ) : (
                           Text("${pointOfInterest.types[typeCounter]}, ")
                         ),
+                      const Spacer(),
+                      pointOfInterest.icon,
                     ]),
                   )
                 ) : (
@@ -81,26 +77,23 @@ class PointOfInterestDetailsScreen extends StatelessWidget {
                 ),
 
                 // Endereço
-                ListTile(
-                  title: const Text("Endereço"),
-                  subtitle: Text(pointOfInterest.address),
-                ),
-                ListTile(
-                  subtitle: Text(pointOfInterest.distance),
-                ),
-
-                // Preço
-                ListTile(
-                  title: const Text("Preço"),
-                  subtitle: Text(pointOfInterest.priceLevel),
-                ),
+                Column(children: [
+                  ListTile(
+                    title: const Text("Endereço"),
+                    subtitle: Text(pointOfInterest.address),
+                  ),
+                  ListTile(
+                    subtitle: Text(pointOfInterest.distance),
+                  ),
+                ]),
 
                 // Imagens
                 pointOfInterest.images.isNotEmpty ? (
                   ListTile(
-                    title: const Text("Imagens"),
-                    subtitle: SizedBox(
+                    title: const Text("Fotos"),
+                    subtitle: Container(
                       height: 160,
+                      padding: const EdgeInsets.only(top: 10),
                       child: ListView(
                         scrollDirection: Axis.horizontal,
                         children: pointOfInterest.images,
@@ -114,16 +107,55 @@ class PointOfInterestDetailsScreen extends StatelessWidget {
                   title: const Text("Telefone"),
                   subtitle: Row(children: [
                     Text(pointOfInterest.phoneNumber["phone_number"]!),
+                    const Spacer(),
                     IconButton(
                       icon: const Icon(Icons.phone),
                       onPressed: () async {
                         await launchUrl(Uri(
                           scheme: "tel",
-                          path: "tel:${pointOfInterest.phoneNumber['formatted_phone_number']}",
+                          path: "${pointOfInterest.phoneNumber['formatted_phone_number']}",
                         ));
                       },
                     ),
                   ]),
+                ),
+
+                // Preço
+                ListTile(
+                  title: Row(children: [
+                    const Text("Preço"),
+                    const Spacer(),
+                    PriceRow(price: pointOfInterest.priceLevel!),
+                    Text("(${
+                      pointOfInterest.priceLevel == places.PriceLevel.free ? "Grátis"
+                      : pointOfInterest.priceLevel == places.PriceLevel.inexpensive ? "Barato"
+                      : pointOfInterest.priceLevel == places.PriceLevel.moderate ? "Moderado"
+                      : pointOfInterest.priceLevel == places.PriceLevel.expensive ? "Caro"
+                      : "Muito caro"
+                      })",
+                    ),
+                  ]),
+                ),
+
+                // Classificação
+                pointOfInterest.rating == -1 ? (
+                  const ListTile(
+                    title: Text("Esse lugar não possui classificação."),
+                  )
+                ) : (
+                  Column(children: [
+                    ListTile(
+                      title: Row(children: [
+                        const Text("Classificação"),
+                        const Spacer(),
+                        RatingRow(rating: pointOfInterest.rating),
+                      ]),
+                    ),
+
+                    const Divider(height: 10),
+                    for (var review in pointOfInterest.reviews)
+                      Review(review: review),
+                  ])
                 ),
 
                 // Página do Google Places
@@ -150,47 +182,6 @@ class PointOfInterestDetailsScreen extends StatelessWidget {
                       ],
                     )
                   ),
-                ),
-
-                // Classificação
-                pointOfInterest.rating == -1 ? (
-                  const ListTile(
-                    title: Text("Esse lugar não possui classificação."),
-                  )
-                ) : (
-                  ListTile(
-                    title: const Text("Classificação"),
-                    subtitle: RatingRow(rating: pointOfInterest.rating),
-                  )
-                ),
-
-                // Avaliações
-                Column(
-                  children: [
-                    for (Review review in pointOfInterest.reviews)
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: Column(children: [
-                          ListTile(
-                            title: Row(children: [
-                              Image.network(review.profilePhotoUrl, width: 40),
-                              Padding(
-                                padding: const EdgeInsets.all(8),
-                                child: Text(review.authorName),
-                              ),
-                            ]),
-                            subtitle: RatingRow(rating: review.rating),
-                          ),
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 15, right: 15),
-                              child: Text(review.text),
-                            ),
-                          ),
-                        ]),
-                      ),
-                  ],
                 ),
               ],
             ),

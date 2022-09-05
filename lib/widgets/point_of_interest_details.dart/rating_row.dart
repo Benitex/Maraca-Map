@@ -18,7 +18,7 @@ class RatingRow extends StatelessWidget {
               color: SettingsScreen.options["Modo escuro"]!.active ? const Color(0xFF3CA6A6) : const Color(0xFF012030),
             ),
           ),
-        Text(rating.toString()),
+        Text("($rating)"),
       ],
     );
   }

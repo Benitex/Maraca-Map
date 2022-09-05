@@ -3,7 +3,8 @@ import 'package:google_maps_webservice/places.dart';
 import 'package:maraca_map/services/google_maps_webservice/distance.dart';
 import 'package:maraca_map/services/google_maps_webservice/places.dart';
 import 'package:maraca_map/screens/point_of_interest_details.dart';
-import 'package:maraca_map/widgets/rating_row.dart';
+import 'package:maraca_map/widgets/point_of_interest_details.dart/price_row.dart';
+import 'package:maraca_map/widgets/point_of_interest_details.dart/rating_row.dart';
 
 class PointOfInterestTile extends StatelessWidget {
   const PointOfInterestTile({super.key, required this.pointOfInterest});
@@ -62,7 +63,11 @@ class PointOfInterestTile extends StatelessWidget {
                       pointOfInterest.rating is num ?
                         RatingRow(rating: pointOfInterest.rating!) : Container(),
                       const Spacer(),
-                      _priceRow(),
+                      pointOfInterest.priceLevel is! PriceLevel ? (
+                        Container()
+                      ) : (
+                        PriceRow(price: pointOfInterest.priceLevel!)
+                      ),
                     ]),
                   ),
 
@@ -101,42 +106,5 @@ class PointOfInterestTile extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Widget _priceRow() {
-    if (pointOfInterest.priceLevel is! PriceLevel) {
-      return Container();
-    } else {
-      int priceLevel = 0;
-
-      switch (pointOfInterest.priceLevel) {
-        case PriceLevel.inexpensive:
-          priceLevel = 1;
-          break;
-        case PriceLevel.moderate:
-          priceLevel = 2;
-          break;
-        case PriceLevel.expensive:
-          priceLevel = 3;
-          break;
-        case PriceLevel.veryExpensive:
-          priceLevel = 4;
-          break;
-        default:
-      }
-
-      return Row(
-        children: [
-          for (int signCounter = 1; signCounter <= 5; signCounter++)
-            Padding(
-              padding: const EdgeInsets.only(right: 3),
-              child: Icon(
-                Icons.attach_money,
-                color: priceLevel >= signCounter ? Colors.amber : Colors.grey,
-              ),
-            ),
-        ],
-      );
-    }
   }
 }
