@@ -28,6 +28,8 @@ void main() async {
 class MaracaMap extends StatefulWidget {
   const MaracaMap({super.key});
 
+  static final navigatorKey = GlobalKey<NavigatorState>();
+
   @override
   State<MaracaMap> createState() => _MaracaMapState();
 }
@@ -39,6 +41,7 @@ class _MaracaMapState extends State<MaracaMap> {
       home: MapScreen(
         updateTheme: () => setState(() {}),
       ),
+      navigatorKey: MaracaMap.navigatorKey,
       debugShowCheckedModeBanner: false,
       theme: SettingsScreen.options["Modo escuro"]!.active ?
           DarkTheme.screensStyle : LightTheme.screensStyle,
