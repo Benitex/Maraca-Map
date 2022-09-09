@@ -29,7 +29,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
             Padding(
               padding: const EdgeInsets.only(left: 10, right: 10),
               child: Row(children: const [
-                Text("Distância: ", style: TextStyle(color: Colors.white)),
+                Text("Distância média: ", style: TextStyle(color: Colors.white)),
                 DistanceFormField(),
                 Text("m", style: TextStyle(color: Colors.white)),
               ]),
