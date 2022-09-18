@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:maraca_map/models/accessibility_point.dart';
+import 'package:maraca_map/models/accessibility_marker.dart';
 import 'package:maraca_map/models/filter.dart';
 import 'package:maraca_map/models/type.dart';
 

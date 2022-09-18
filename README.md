@@ -17,3 +17,9 @@ O aplicativo foi desenvolvido com o objetivo de guiar as pessoas pela região do
 Se você não é um desenvolvedor, instale a [última release do aplicativo](https://github.com/Benitex/Maraca-Map/releases).
 
 Se você é um desenvolvedor, antes de compilar e executar o código, adicione suas próprias [API Keys](https://console.cloud.google.com/google/maps-apis/credentials) no arquivo `.env example`, depois, renomeie o arquivo para `.env`.
+
+## Créditos
+
+O projeto foi desenvolvido por [Benito Pepe](https://github.com/Benitex), [Enzo Murajiro](https://github.com/murajiro), [João Pedro Nogueira](https://github.com/jeynog) e [Lennon Fevereiro](https://github.com/Lennon2002).
+
+Os ícones dos marcadores de acessibilidade são versões editadas de ícones no site [Flaticom](https://www.flaticon.com), todos os links para os ícones estão referenciados no arquivo [credits.md](https://github.com/Benitex/Maraca-Map/blob/main/assets/custom_markers/credits.md).
