@@ -120,14 +120,15 @@ class PointOfInterestDetailsScreen extends StatelessWidget {
                   subtitle: Row(children: [
                     Text(pointOfInterest.phoneNumber["phone_number"]!),
                     const Spacer(),
-                    IconButton(
-                      icon: const Icon(Icons.phone),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(shape: const CircleBorder()),
                       onPressed: () async {
                         await launchUrl(Uri(
                           scheme: "tel",
                           path: "${pointOfInterest.phoneNumber['formatted_phone_number']}",
                         ));
                       },
+                      child: const Icon(Icons.phone),
                     ),
                   ]),
                 ),

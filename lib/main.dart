@@ -39,9 +39,7 @@ class _MaracaMapState extends State<MaracaMap> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: MapScreen(
-        updateTheme: () => setState(() {}),
-      ),
+      home: MapScreen(updateTheme: () => setState(() {})),
       navigatorKey: MaracaMap.navigatorKey,
       debugShowCheckedModeBanner: false,
       theme: SettingsScreen.options["Modo escuro"]!.active ?

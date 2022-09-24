@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:maraca_map/screens/explore.dart';
-import 'package:maraca_map/screens/settings.dart';
-import 'package:maraca_map/themes/dark_theme.dart';
-import 'package:maraca_map/themes/light_theme.dart';
 
 class PriceDropdownMenu extends StatefulWidget {
   const PriceDropdownMenu({super.key});
@@ -19,8 +16,7 @@ class _PriceDropdownMenuState extends State<PriceDropdownMenu> {
   Widget build(BuildContext context) {
     return DropdownButton<String>(
       style: const TextStyle(color: Colors.white),
-      dropdownColor: SettingsScreen.options["Modo escuro"]!.active ?
-          DarkTheme.primaryColor : LightTheme.primaryColor,
+      dropdownColor: Theme.of(context).primaryColor,
 
       value: _price,
 

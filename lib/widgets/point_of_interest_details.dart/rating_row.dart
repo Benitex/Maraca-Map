@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:maraca_map/screens/settings.dart';
 
 class RatingRow extends StatelessWidget {
   const RatingRow({super.key, required this.rating});
@@ -15,7 +14,7 @@ class RatingRow extends StatelessWidget {
             padding: const EdgeInsets.only(right: 3),
             child: Icon(
               rating >= starCounter ? Icons.star : Icons.star_border,
-              color: SettingsScreen.options["Modo escuro"]!.active ? const Color(0xFF3CA6A6) : const Color(0xFF012030),
+              color: Theme.of(context).primaryColor,
             ),
           ),
         Text("($rating)"),

@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:maraca_map/screens/settings.dart';
-import 'package:maraca_map/themes/dark_theme.dart';
-import 'package:maraca_map/themes/light_theme.dart';
 
 class LoadingScreen extends StatelessWidget {
   const LoadingScreen({super.key});
@@ -13,8 +10,7 @@ class LoadingScreen extends StatelessWidget {
       children: [
         Center(
           child: CircularProgressIndicator(
-            color: SettingsScreen.options["Modo escuro"]!.active ?
-              DarkTheme.primaryColor : LightTheme.primaryColor,
+            color: Theme.of(context).primaryColor,
           ),
         ),
       ],

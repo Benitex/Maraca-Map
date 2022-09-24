@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class LightTheme {
-  static const Color primaryColor = Color(0xFF012030);
+  static const Color _primaryColor = Color(0xFF012030);
 
   static final ThemeData screensStyle = ThemeData(
+    primaryColor: _primaryColor,
     primarySwatch: const MaterialColor(
       0x00012030,
       {
@@ -19,7 +20,10 @@ class LightTheme {
         900: Color(0xFF000b13),
       },
     ),
-    appBarTheme: const AppBarTheme(color: primaryColor),
+    appBarTheme: const AppBarTheme(color: _primaryColor),
+    elevatedButtonTheme: ElevatedButtonThemeData(style: const ButtonStyle().copyWith(
+      backgroundColor: const MaterialStatePropertyAll(_primaryColor),
+    )),
   );
 
   static const String mapStyle = '';
