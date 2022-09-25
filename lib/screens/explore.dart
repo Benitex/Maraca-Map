@@ -42,6 +42,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
 
             const Spacer(),
             IconButton(
+              tooltip: "Filtrar",
               icon: const Icon(Icons.search, color: Colors.white),
               onPressed: () => setState(() {
                 ExploreScreen.filters["filters"] = int.parse(DistanceFormField.controller.text);

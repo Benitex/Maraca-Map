@@ -49,8 +49,8 @@ class _MapScreenState extends State<MapScreen> {
       appBar: AppBar(
         title: _searchField,
         actions: [IconButton(
+          tooltip: "Buscar",
           icon: const Icon(Icons.search),
-
           onPressed: () {
             FocusManager.instance.primaryFocus?.unfocus();
             if (_searchField.controller.text != '') {
@@ -107,6 +107,7 @@ class _MapScreenState extends State<MapScreen> {
           Positioned(
             bottom: 0, right: 0,
             child: FloatingActionButton.small(
+              tooltip: "Mover para posição atual",
               heroTag: "Posição atual",
               onPressed: () async => await MapScreen.moveCamera(await Geolocator.getCurrentLatLng()),
               child: const Icon(Icons.location_searching),

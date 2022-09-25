@@ -71,30 +71,36 @@ class PointOfInterestDetailsScreen extends StatelessWidget {
                     title: Row(children: [
                       const Text("Endereço"),
                       const Spacer(),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(shape: const CircleBorder()),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) {
-                              return ExploreScreen(location: pointOfInterest.location);
-                            }),
-                          );
-                        },
-                        child: const Icon(Icons.share_location),
+                      Tooltip(
+                        message: "Explorar lugares próximos",
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(shape: const CircleBorder()),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) {
+                                return ExploreScreen(location: pointOfInterest.location);
+                              }),
+                            );
+                          },
+                          child: const Icon(Icons.share_location),
+                        ),
                       ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(shape: const CircleBorder()),
-                        onPressed: () async {
-                          Navigator.popUntil(
-                            context,
-                            (route) => route.isFirst,
-                          );
-                          await MapScreen.moveCamera(
-                            LatLng(pointOfInterest.location.lat, pointOfInterest.location.lng),
-                          );
-                        },
-                        child: const Icon(Icons.location_searching),
+                      Tooltip(
+                        message: "Mostrar no mapa",
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(shape: const CircleBorder()),
+                          onPressed: () async {
+                            Navigator.popUntil(
+                              context,
+                              (route) => route.isFirst,
+                            );
+                            await MapScreen.moveCamera(
+                              LatLng(pointOfInterest.location.lat, pointOfInterest.location.lng),
+                            );
+                          },
+                          child: const Icon(Icons.location_searching),
+                        ),
                       ),
                     ]),
                     subtitle: Text(pointOfInterest.address),
@@ -134,15 +140,18 @@ class PointOfInterestDetailsScreen extends StatelessWidget {
                   subtitle: Row(children: [
                     Text(pointOfInterest.phoneNumber["phone_number"]!),
                     const Spacer(),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(shape: const CircleBorder()),
-                      onPressed: () async {
-                        await launchUrl(Uri(
-                          scheme: "tel",
-                          path: "${pointOfInterest.phoneNumber['formatted_phone_number']}",
-                        ));
-                      },
-                      child: const Icon(Icons.phone),
+                    Tooltip(
+                      message: "Ligar",
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(shape: const CircleBorder()),
+                        onPressed: () async {
+                          await launchUrl(Uri(
+                            scheme: "tel",
+                            path: "${pointOfInterest.phoneNumber['formatted_phone_number']}",
+                          ));
+                        },
+                        child: const Icon(Icons.phone),
+                      ),
                     ),
                   ]),
                 ),

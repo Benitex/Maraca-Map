@@ -20,6 +20,7 @@ class _SearchScreenState extends State<SearchScreen> {
       appBar: AppBar(
         title: widget.searchField,
         actions: [IconButton(
+          tooltip: "Buscar",
           icon: const Icon(Icons.search),
           onPressed: () {
             setState(() => FocusManager.instance.primaryFocus?.unfocus());

@@ -66,7 +66,7 @@ class ExpandableFloatingActionButtonState extends State<ExpandableFloatingAction
           Positioned(bottom: 130, right: 0, left: 35,
             child: FloatingActionButton(
               heroTag: "explore",
-              tooltip: "Explorar a região",
+              tooltip: "Explorar lugares próximos",
               onPressed: () async {
                 var location = await Geolocator.getCurrentLocation();
                 setState(() {
