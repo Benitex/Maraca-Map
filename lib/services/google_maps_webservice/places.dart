@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_config/flutter_config.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart';
-import 'package:maraca_map/services/geolocator.dart';
 
 class Places {
   static final GoogleMapsPlaces _api = GoogleMapsPlaces(
@@ -41,16 +39,14 @@ class Places {
     return response.results;
   }
 
-  /// Busca [PointOfInterest] próximos e retorna uma [List] de [PlacesSearchResult].
+  /// Busca [PointOfInterest] próximos de uma [Location], retornando uma [List] de [PlacesSearchResult].
   /// 
   /// [type], e [maxprice] são os atributos do [PointOfInterest].
   /// 
   /// [radius] é a distância média máxima do usuário até o [PointOfInterest].
-  static Future<List<PlacesSearchResult>> nearbySearch({String type = '', num radius = 1000, PriceLevel maxprice = PriceLevel.veryExpensive}) async {
-    LatLng location = await Geolocator.getCurrentLatLng();
-
+  static Future<List<PlacesSearchResult>> nearbySearch({required Location location, String type = '', num radius = 1000, PriceLevel maxprice = PriceLevel.veryExpensive}) async {
     PlacesSearchResponse response = await _api.searchNearbyWithRadius(
-      Location(lat: location.latitude, lng: location.longitude),
+      location,
       radius,
       keyword: type == '' ? null : type,
       maxprice: maxprice == PriceLevel.veryExpensive ? null : maxprice,

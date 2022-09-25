@@ -26,4 +26,20 @@ class Distance {
       return response.rows[0].elements[0];
     }
   }
+
+  /// Retorna um [Element], contendo [distance] e [duration].
+  /// 
+  /// Obtido a partir do cálculo da distância entre duas [Location], uma [origin] e uma [destination].
+  static Future<Element> between({required Location origin, required Location destination}) async {
+    DistanceResponse response = await _api.distanceWithLocation(
+      [origin], [destination],
+      travelMode: TravelMode.walking,
+    );
+
+    if (response.rows.isEmpty) {
+      throw response.errorMessage!;
+    } else {
+      return response.rows[0].elements[0];
+    }
+  }
 }

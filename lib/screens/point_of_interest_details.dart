@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:maraca_map/screens/explore.dart';
 import 'package:maraca_map/screens/image.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -38,19 +39,6 @@ class PointOfInterestDetailsScreen extends StatelessWidget {
           return Scaffold(
             appBar: AppBar(title: Text(pointOfInterest.name)),
 
-            floatingActionButton: FloatingActionButton(
-              onPressed: () async {
-                Navigator.popUntil(
-                  context,
-                  (route) => route.isFirst,
-                );
-                await MapScreen.moveCamera(
-                  LatLng(pointOfInterest.location.lat, pointOfInterest.location.lng),
-                );
-              },
-              child: const Icon(Icons.location_searching),
-            ),
-
             body: ListView(
               scrollDirection: Axis.vertical,
               children: <Widget>[
@@ -80,12 +68,38 @@ class PointOfInterestDetailsScreen extends StatelessWidget {
                 // Endereço
                 Column(children: [
                   ListTile(
-                    title: const Text("Endereço"),
+                    title: Row(children: [
+                      const Text("Endereço"),
+                      const Spacer(),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(shape: const CircleBorder()),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) {
+                              return ExploreScreen(location: pointOfInterest.location);
+                            }),
+                          );
+                        },
+                        child: const Icon(Icons.share_location),
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(shape: const CircleBorder()),
+                        onPressed: () async {
+                          Navigator.popUntil(
+                            context,
+                            (route) => route.isFirst,
+                          );
+                          await MapScreen.moveCamera(
+                            LatLng(pointOfInterest.location.lat, pointOfInterest.location.lng),
+                          );
+                        },
+                        child: const Icon(Icons.location_searching),
+                      ),
+                    ]),
                     subtitle: Text(pointOfInterest.address),
                   ),
-                  ListTile(
-                    subtitle: Text(pointOfInterest.distance),
-                  ),
+                  ListTile(subtitle: Text(pointOfInterest.distance)),
                 ]),
 
                 // Imagens
@@ -107,7 +121,7 @@ class PointOfInterestDetailsScreen extends StatelessWidget {
                                 }),
                               ),
                               child: image,
-                            )
+                            ),
                         ],
                       ),
                     ),

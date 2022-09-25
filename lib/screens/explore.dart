@@ -5,7 +5,9 @@ import 'package:maraca_map/widgets/explore/points_of_interest_results_row.dart';
 import 'package:maraca_map/widgets/explore/price_dropdown_menu.dart';
 
 class ExploreScreen extends StatefulWidget {
-  const ExploreScreen({super.key});
+  const ExploreScreen({super.key, required this.location});
+
+  final Location location;
 
   static Map<String, dynamic> filters = {
     "distance": 1000,
@@ -52,41 +54,40 @@ class _ExploreScreenState extends State<ExploreScreen> {
       body: ListView(
         scrollDirection: Axis.vertical,
         children: [
-          // Pontos de interesse próximos
           PointsOfInterestResultsRow(
+            location: widget.location,
             typeName: "Restaurantes",
-            searchFor: "comida",
-            filters: ExploreScreen.filters,
+            searchFor: "food",
           ),
           PointsOfInterestResultsRow(
+            location: widget.location,
             typeName: "Lojas",
-            searchFor: "loja",
-            filters: ExploreScreen.filters,
+            searchFor: "store",
           ),
           PointsOfInterestResultsRow(
+            location: widget.location,
             typeName: "Transporte público",
-            searchFor: "transporte público",
-            filters: ExploreScreen.filters,
+            searchFor: "transport",
           ),
           PointsOfInterestResultsRow(
+            location: widget.location,
             typeName: "Escolas",
-            searchFor: "escola",
-            filters: ExploreScreen.filters,
+            searchFor: "school",
           ),
           PointsOfInterestResultsRow(
+            location: widget.location,
             typeName: "Lazer e turismo",
-            searchFor: "atração",
-            filters: ExploreScreen.filters,
+            searchFor: "attraction",
           ),
           PointsOfInterestResultsRow(
+            location: widget.location,
             typeName: "Hospitais",
-            searchFor: "hospital",
-            filters: ExploreScreen.filters,
+            searchFor: "medical",
           ),
           PointsOfInterestResultsRow(
+            location: widget.location,
             typeName: "Templos religiosos",
-            searchFor: "religião",
-            filters: ExploreScreen.filters,
+            searchFor: "place of worship",
           ),
         ],
       ),

@@ -7,9 +7,10 @@ import 'package:maraca_map/widgets/point_of_interest_details.dart/price_row.dart
 import 'package:maraca_map/widgets/point_of_interest_details.dart/rating_row.dart';
 
 class PointOfInterestTile extends StatelessWidget {
-  const PointOfInterestTile({super.key, required this.pointOfInterest});
+  const PointOfInterestTile({super.key, required this.pointOfInterest, this.origin});
 
   final PlacesSearchResult pointOfInterest;
+  final Location? origin;
 
   @override
   Widget build(BuildContext context) {
@@ -83,15 +84,14 @@ class PointOfInterestTile extends StatelessWidget {
                       ) : Container(),
 
                     const Spacer(),
-                    // Distância até o usuário
                     FutureBuilder(
-                      future: Distance.fromHereTo(pointOfInterest.geometry!.location),
+                      future: origin == null ? (
+                        Distance.fromHereTo(pointOfInterest.geometry!.location)
+                      ) : (
+                        Distance.between(origin: origin!, destination: pointOfInterest.geometry!.location)
+                      ),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return Container();
-                        } else if (snapshot.hasError) {
-                          return const Text("Não foi possível calcular a distância até você.");
-                        } else if (!snapshot.hasData) {
+                        if (snapshot.connectionState == ConnectionState.waiting || snapshot.hasError || !snapshot.hasData) {
                           return Container();
                         } else {
                           return Text(snapshot.data!.distance.text, style: const TextStyle(fontSize: 18));

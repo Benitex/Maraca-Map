@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:maraca_map/screens/filter_selection.dart';
 import 'package:maraca_map/screens/explore.dart';
 import 'package:maraca_map/screens/settings.dart';
+import 'package:maraca_map/services/geolocator.dart';
 
 class ExpandableFloatingActionButton extends StatefulWidget {
   const ExpandableFloatingActionButton({super.key, required this.updateMap});
@@ -66,16 +67,19 @@ class ExpandableFloatingActionButtonState extends State<ExpandableFloatingAction
             child: FloatingActionButton(
               heroTag: "explore",
               tooltip: "Explorar a região",
-              onPressed: () => setState(() {
-                _open = false;
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) {
-                    return const ExploreScreen();
-                  }),
-                );
-              }),
-              child: const Icon(Icons.location_on),
+              onPressed: () async {
+                var location = await Geolocator.getCurrentLocation();
+                setState(() {
+                  _open = false;
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) {
+                      return ExploreScreen(location: location);
+                    }),
+                  );
+                });
+              },
+              child: const Icon(Icons.share_location),
             ),
           ),
 

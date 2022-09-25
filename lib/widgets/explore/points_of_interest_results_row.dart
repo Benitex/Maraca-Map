@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_webservice/places.dart';
+import 'package:maraca_map/screens/explore.dart';
 import 'package:maraca_map/screens/general_screens.dart';
 import 'package:maraca_map/services/google_maps_webservice/places.dart';
 import 'package:maraca_map/widgets/point_of_interest_tile.dart';
 
 class PointsOfInterestResultsRow extends StatelessWidget {
-  const PointsOfInterestResultsRow({super.key, required this.typeName, required this.searchFor, required this.filters});
+  const PointsOfInterestResultsRow({super.key, required this.location, required this.typeName, required this.searchFor});
 
+  final Location location;
   final String typeName, searchFor;
-  final Map<String, dynamic> filters;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +34,7 @@ class PointsOfInterestResultsRow extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return PointOfInterestTile(
                     pointOfInterest: snapshot.data![index],
+                    origin: location,
                   );
                 },
               );
@@ -45,9 +47,10 @@ class PointsOfInterestResultsRow extends StatelessWidget {
 
   Future<List<PlacesSearchResult>> _getSearchResults() async {
     return await Places.nearbySearch(
+      location: location,
       type: searchFor,
-      maxprice: filters["maxPrice"],
-      radius: filters["distance"],
+      maxprice: ExploreScreen.filters["maxPrice"],
+      radius: ExploreScreen.filters["distance"],
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geolocator/geolocator.dart' as api;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_webservice/places.dart';
 import 'package:maraca_map/main.dart';
 import 'package:maraca_map/widgets/location_service_error_alert.dart';
 
@@ -14,6 +15,17 @@ class Geolocator {
     return LatLng(
       position.latitude,
       position.longitude,
+    );
+  }
+
+  /// Retorna a posição atual do usuário como [Location].
+  static Future<Location> getCurrentLocation() async {
+    await _checkPermissions();
+    Position position = await api.Geolocator.getCurrentPosition();
+
+    return Location(
+      lat: position.latitude,
+      lng: position.longitude,
     );
   }
 
