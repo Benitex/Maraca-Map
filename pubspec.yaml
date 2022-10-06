@@ -42,6 +42,7 @@ dependencies:
   flutter_config: ^2.0.0
   cloud_firestore: ^3.4.9
   shared_preferences: ^2.0.15
+  fab_circular_menu: ^1.0.2
 
 dev_dependencies:
   flutter_test:

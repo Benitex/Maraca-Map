@@ -8,7 +8,7 @@ import 'package:maraca_map/models/filter.dart';
 import 'package:maraca_map/screens/point_of_interest_details.dart';
 import 'package:maraca_map/screens/search.dart';
 import 'package:maraca_map/screens/settings.dart';
-import 'package:maraca_map/widgets/map/floating_action_buttons.dart';
+import 'package:maraca_map/widgets/map/circular_menu.dart';
 import 'package:maraca_map/widgets/map/place_selection.dart';
 import 'package:maraca_map/widgets/search_field.dart';
 
@@ -54,14 +54,11 @@ class _MapScreenState extends State<MapScreen> {
           onPressed: () {
             FocusManager.instance.primaryFocus?.unfocus();
             if (_searchField.controller.text != '') {
-              setState(() {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) {
-                    return SearchScreen(searchField: _searchField);
-                  }),
-                );
-              });
+              setState(() => Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) {
+                  return SearchScreen(searchField: _searchField);
+                }),
+              ));
             }
           }
         )],
@@ -94,7 +91,7 @@ class _MapScreenState extends State<MapScreen> {
       // Botões
       floatingActionButton: Stack(
         children: [
-          ExpandableFloatingActionButton(
+          CircularMenu(
             updateMap: () {
               setState(() {
                 MapScreen.controller.setMapStyle(MapStyle.toJSON(MapScreen.filters));
@@ -103,7 +100,6 @@ class _MapScreenState extends State<MapScreen> {
             },
           ),
 
-          // Botão de mover a câmera para posição atual
           Positioned(
             bottom: 0, right: 0,
             child: FloatingActionButton.small(
@@ -141,16 +137,13 @@ class _MapScreenState extends State<MapScreen> {
       }
 
       if (possiblePlaces.length == 1) {
-        setState(() {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) {
-              return PointOfInterestDetailsScreen(
-                pointOfInterestID: possiblePlaces.first.placeId,
-              );
-            }),
-          );
-        });
+        setState(() => Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) {
+            return PointOfInterestDetailsScreen(
+              pointOfInterestID: possiblePlaces.first.placeId,
+            );
+          }),
+        ));
       } else if (possiblePlaces.length > 1) {
         showDialog(
           context: context,

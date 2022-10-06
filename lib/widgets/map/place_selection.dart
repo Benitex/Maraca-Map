@@ -50,8 +50,7 @@ class _PointOfInterestTile extends StatelessWidget {
               child: OutlinedButton(
                 onPressed: () {
                   Navigator.pop(context);
-                  Navigator.push(
-                    context,
+                  Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => PointOfInterestDetailsScreen(
                       pointOfInterestID: pointOfInterestID,
                     )),

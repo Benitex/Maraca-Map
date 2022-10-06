@@ -75,14 +75,11 @@ class PointOfInterestDetailsScreen extends StatelessWidget {
                         message: "Explorar lugares próximos",
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(shape: const CircleBorder()),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) {
-                                return ExploreScreen(location: pointOfInterest.location);
-                              }),
-                            );
-                          },
+                          onPressed: () => Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) {
+                              return ExploreScreen(location: pointOfInterest.location);
+                            }),
+                          ),
                           child: const Icon(Icons.share_location),
                         ),
                       ),
@@ -91,8 +88,7 @@ class PointOfInterestDetailsScreen extends StatelessWidget {
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(shape: const CircleBorder()),
                           onPressed: () async {
-                            Navigator.popUntil(
-                              context,
+                            Navigator.of(context).popUntil(
                               (route) => route.isFirst,
                             );
                             await MapScreen.moveCamera(
@@ -120,8 +116,7 @@ class PointOfInterestDetailsScreen extends StatelessWidget {
                         children: [
                           for (Image image in pointOfInterest.images)
                             GestureDetector(
-                              onTap: () => Navigator.push(
-                                context,
+                              onTap: () => Navigator.of(context).push(
                                 MaterialPageRoute(builder: (context) {
                                   return ImageScreen(image: image);
                                 }),

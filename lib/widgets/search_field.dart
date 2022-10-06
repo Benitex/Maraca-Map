@@ -69,8 +69,7 @@ class SearchField extends StatelessWidget {
             );
           },
           onSelected: (Prediction option) {
-            Navigator.push(
-              context,
+            Navigator.of(context).push(
               MaterialPageRoute(builder: (context) {
                 return PointOfInterestDetailsScreen(
                   pointOfInterestID: option.placeId!,

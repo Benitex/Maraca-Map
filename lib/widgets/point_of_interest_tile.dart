@@ -15,11 +15,12 @@ class PointOfInterestTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => PointOfInterestDetailsScreen(
-          pointOfInterestID: pointOfInterest.placeId,
-        )),
+      onTap: () => Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) {
+          return PointOfInterestDetailsScreen(
+            pointOfInterestID: pointOfInterest.placeId,
+          );
+        }),
       ),
 
       child: Padding(
