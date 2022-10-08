@@ -21,20 +21,16 @@ class PointOfInterest {
   late final PlaceDetails _placesDetails;
   distance_api.Element? _distanceFromUser;
 
-  // ID
+  /// ID do Google Places
   String get id => _id;
 
-  // Location
-  get location {
-    if (_placesDetails.geometry is Geometry) {
-      return _placesDetails.geometry!.location;
-    }
-  }
+  /// Coordenadas no mapa no formato [Location]
+  Location get location => _placesDetails.geometry!.location;
 
-  // Nome
+  /// Nome
   String get name => _placesDetails.name;
 
-  // Tipos
+  /// [List] de [String] que contém tipos do Google Places
   List<String> get types {
     List<String> types = [];
     for (String type in _placesDetails.types) {
@@ -69,7 +65,7 @@ class PointOfInterest {
     return translatedName;
   }
 
-  // Ícone
+  /// Ícone que representa o tipo de lugar como [Image]
   Image get icon {
     String iconAddress = "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/geocode-71.png";
     if (_placesDetails.icon is String) {
@@ -83,7 +79,9 @@ class PointOfInterest {
     );
   }
 
-  // Endereço
+  /// [String] contendo o endereço no formato "rua, número", ou equivalentes
+  /// 
+  /// Retorna "Endereço indisponível" caso não hajam informações suficientes
   String get address {
     List<AddressComponent> adressComponents = _placesDetails.addressComponents;
     // AddressComponent[1] = rua, AddressComponent[0] = número
@@ -96,7 +94,9 @@ class PointOfInterest {
     }
   }
 
-  // Classificação
+  /// Classificação obtida pela média das avaliações dos usuários
+  /// 
+  /// Retorna [-1] caso não hajam informações suficientes
   num get rating {
     if (_placesDetails.rating is num) {
       return _placesDetails.rating!;
@@ -105,21 +105,21 @@ class PointOfInterest {
     }
   }
 
-  // Avaliações
-  List<Review> get reviews {
-    return _placesDetails.reviews;
-  }
+  /// [List] de [Review] dos usuários
+  List<Review> get reviews => _placesDetails.reviews;
 
-  // Preço
+  /// [PriceLevel] que representa o preço do lugar
+  /// 
+  /// Retorna false caso não hajam informações suficientes
   get priceLevel {
     if (_placesDetails.priceLevel is PriceLevel) {
       return _placesDetails.priceLevel!;
     } else {
-      return "Informações de preço indisponíveis.";
+      return false;
     }
   }
 
-  // Telefone
+  /// [Map] de [String] contendo número de telefone internacional no campo "phone_number" e formatado para ligação no campo "formatted_phone_number
   Map<String, String> get phoneNumber {
     Map<String, String> phoneNumber = {
       "phone_number": '',
@@ -131,51 +131,44 @@ class PointOfInterest {
       if (_placesDetails.formattedPhoneNumber is String) {
         phoneNumber["formatted_phone_number"] = _placesDetails.formattedPhoneNumber!;
       }
-    } else {
-      phoneNumber["phone_number"] = "Número de telefone indisponível.";
     }
 
     return phoneNumber;
   }
 
-  // Página do Google Places
-  get url {
-    if (_placesDetails.url is String) {
-      return Uri.parse(_placesDetails.url!);
-    } else {
-      return "Página indisponível.";
-    }
-  }
+  /// [Uri] para página do Google Places
+  Uri get url => Uri.parse(_placesDetails.url!);
 
-  // Horário de funcionamento
-  String get openingHoursToday {
+  /// Horário de funcionamento no formato [List], onde o campo 0 contém o horário de abertura e 1 o horário de fechamento
+  /// 
+  /// Retorna uma [List] contendo "Esse lugar não abre hoje." se o lugar não abrir no dia e "Horário de funcionamento indisponível." caso não hajam informações suficientes
+  List<String> get openingHoursToday {
     if (_placesDetails.openingHours is OpeningHoursDetail) {
       int weekday = DateTime.now().weekday;
+
+      // Conversão para o formato de List
       if (weekday > 6) {
-        weekday = 0;
+        weekday = 0;  // Domingo é o dia 0, em vez de 7
       }
 
-      String openingHours = '', closingHours = '';
       if (_placesDetails.openingHours!.periods.length > weekday) {
         final OpeningHoursPeriod openingHoursPeriod = _placesDetails.openingHours!.periods[weekday];
 
         if (openingHoursPeriod.open is OpeningHoursPeriodDate && openingHoursPeriod.close is OpeningHoursPeriodDate) {
-          openingHours = "${openingHoursPeriod.open!.time.substring(0, 2)}:${openingHoursPeriod.open!.time.substring(2)}";
-          closingHours = "${openingHoursPeriod.close!.time.substring(0, 2)}:${openingHoursPeriod.close!.time.substring(2)}";
+          return [
+            "${openingHoursPeriod.open!.time.substring(0, 2)}:${openingHoursPeriod.open!.time.substring(2)}",
+            "${openingHoursPeriod.close!.time.substring(0, 2)}:${openingHoursPeriod.close!.time.substring(2)}"
+          ];
         }
       }
 
-      if (openingHours != '') {
-        return "Abre às $openingHours e fecha às $closingHours.";
-      } else {
-        return "Esse lugar não abre hoje.";
-      }
+      return ["Esse lugar não abre hoje."];
     } else {
-      return "Horário de funcionamento indisponível.";
+      return ["Horário de funcionamento indisponível."];
     }
   }
 
-  // Imagens
+  /// [List] de [Photo] do Google Places convertidas em [Image]
   List<Image> get images {
     List<Image> images = [];
 
@@ -188,12 +181,14 @@ class PointOfInterest {
     return images;
   }
 
-  // Distância até o usuário
-  String get distance {
+  /// [Element] contendo a distância até o usuário em tempo e quilômetros
+  /// 
+  /// Retorna [false] caso ocorra um erro
+  get distance {
     if (_distanceFromUser != null) {
-      return "Esse lugar está a ${_distanceFromUser!.distance.text} de você. O tempo para chegar até lá a pé é de ${_distanceFromUser!.duration.text}.";
+      return _distanceFromUser!;
     } else {
-      return "Não foi possível calcular a distância até você.";
+      return false;
     }
   }
 }

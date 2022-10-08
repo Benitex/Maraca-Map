@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:maraca_map/screens/explore.dart';
-import 'package:maraca_map/screens/image.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:google_maps_webservice/places.dart' as places;
 import 'package:maraca_map/models/point_of_interest.dart';
-import 'package:maraca_map/widgets/point_of_interest_details.dart/price_row.dart';
-import 'package:maraca_map/widgets/point_of_interest_details.dart/review.dart';
-import 'package:maraca_map/widgets/point_of_interest_details.dart/rating_row.dart';
+import 'package:maraca_map/widgets/images_list_view.dart';
 import 'package:maraca_map/screens/general_screens.dart';
-import 'package:maraca_map/screens/map.dart';
+import 'package:maraca_map/widgets/point_of_interest_details.dart/list_tiles/types_tile.dart';
+import 'package:maraca_map/widgets/point_of_interest_details.dart/list_tiles/opening_hours_tile.dart';
+import 'package:maraca_map/widgets/point_of_interest_details.dart/list_tiles/address_tile.dart';
+import 'package:maraca_map/widgets/point_of_interest_details.dart/list_tiles/phone_tile.dart';
+import 'package:maraca_map/widgets/point_of_interest_details.dart/list_tiles/rating_tile.dart';
+import 'package:maraca_map/widgets/point_of_interest_details.dart/list_tiles/price_level_tile.dart';
+import 'package:maraca_map/widgets/point_of_interest_details.dart/list_tiles/places_page_tile.dart';
 
 class PointOfInterestDetailsScreen extends StatelessWidget {
   PointOfInterestDetailsScreen({super.key, required String pointOfInterestID}) {
@@ -44,65 +43,19 @@ class PointOfInterestDetailsScreen extends StatelessWidget {
               children: <Widget>[
                 // Tipos
                 pointOfInterest.types.isNotEmpty ? (
-                  ListTile(
-                    title: Row(children: [
-                      for (int typeCounter = 0; typeCounter < pointOfInterest.types.length ; typeCounter++)
-                        typeCounter == pointOfInterest.types.length -1 ? (
-                          Text("${pointOfInterest.types[typeCounter]}.")
-                        ) : (
-                          Text("${pointOfInterest.types[typeCounter]}, ")
-                        ),
-                      const Spacer(),
-                      pointOfInterest.icon,
-                    ]),
+                  TypesTile(
+                    types: pointOfInterest.types,
+                    icon: pointOfInterest.icon,
                   )
-                ) : (
-                  Container()
-                ),
+                ) : Container(),
 
-                // Horário de funcionamento
-                ListTile(
-                  title: Text(pointOfInterest.openingHoursToday),
-                ),
+                OpeningHoursTile(openingHours: pointOfInterest.openingHoursToday),
 
-                // Endereço
-                Column(children: [
-                  ListTile(
-                    title: Row(children: [
-                      const Text("Endereço"),
-                      const Spacer(),
-                      Tooltip(
-                        message: "Explorar lugares próximos",
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(shape: const CircleBorder()),
-                          onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) {
-                              return ExploreScreen(location: pointOfInterest.location);
-                            }),
-                          ),
-                          child: const Icon(Icons.share_location),
-                        ),
-                      ),
-                      Tooltip(
-                        message: "Mostrar no mapa",
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(shape: const CircleBorder()),
-                          onPressed: () async {
-                            Navigator.of(context).popUntil(
-                              (route) => route.isFirst,
-                            );
-                            await MapScreen.moveCamera(
-                              LatLng(pointOfInterest.location.lat, pointOfInterest.location.lng),
-                            );
-                          },
-                          child: const Icon(Icons.location_searching),
-                        ),
-                      ),
-                    ]),
-                    subtitle: Text(pointOfInterest.address),
-                  ),
-                  ListTile(subtitle: Text(pointOfInterest.distance)),
-                ]),
+                AddressTile(
+                  location: pointOfInterest.location,
+                  address: pointOfInterest.address,
+                  distance: pointOfInterest.distance is bool ? null : pointOfInterest.distance,
+                ),
 
                 // Imagens
                 pointOfInterest.images.isNotEmpty ? (
@@ -110,116 +63,26 @@ class PointOfInterestDetailsScreen extends StatelessWidget {
                     title: const Text("Fotos"),
                     subtitle: Container(
                       height: 160,
-                      padding: const EdgeInsets.only(top: 10),
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          for (Image image in pointOfInterest.images)
-                            GestureDetector(
-                              onTap: () => Navigator.of(context).push(
-                                MaterialPageRoute(builder: (context) {
-                                  return ImageScreen(image: image);
-                                }),
-                              ),
-                              child: image,
-                            ),
-                        ],
-                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: ImagesListView(images: pointOfInterest.images),
                     ),
                   )
                 ) : Container(),
 
-                // Telefone
-                ListTile(
-                  title: const Text("Telefone"),
-                  subtitle: Row(children: [
-                    Text(pointOfInterest.phoneNumber["phone_number"]!),
-                    const Spacer(),
-                    Tooltip(
-                      message: "Ligar",
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(shape: const CircleBorder()),
-                        onPressed: () async {
-                          await launchUrl(Uri(
-                            scheme: "tel",
-                            path: "${pointOfInterest.phoneNumber['formatted_phone_number']}",
-                          ));
-                        },
-                        child: const Icon(Icons.phone),
-                      ),
-                    ),
-                  ]),
-                ),
+                PhoneTile(phoneNumber: pointOfInterest.phoneNumber),
 
-                // Preço
-                pointOfInterest.priceLevel is! places.PriceLevel ? (
+                pointOfInterest.priceLevel is bool ? (
                   const ListTile(
                     title: Text("Informações de preço indisponíveis."),
                   )
-                ) : (
-                  ListTile(
-                    title: Row(children: [
-                      const Text("Preço"),
-                      const Spacer(),
-                      PriceRow(price: pointOfInterest.priceLevel!),
-                      Text("(${
-                        pointOfInterest.priceLevel == places.PriceLevel.free ? "Grátis"
-                        : pointOfInterest.priceLevel == places.PriceLevel.inexpensive ? "Barato"
-                        : pointOfInterest.priceLevel == places.PriceLevel.moderate ? "Moderado"
-                        : pointOfInterest.priceLevel == places.PriceLevel.expensive ? "Caro"
-                        : "Muito caro"
-                        })",
-                      ),
-                    ]),
-                  )
+                ) : PriceLevelTile(priceLevel: pointOfInterest.priceLevel),
+
+                RatingTile(
+                  rating: pointOfInterest.rating,
+                  reviews: pointOfInterest.reviews,
                 ),
 
-                // Classificação
-                pointOfInterest.rating == -1 ? (
-                  const ListTile(
-                    title: Text("Esse lugar não possui classificação."),
-                  )
-                ) : (
-                  Column(children: [
-                    ListTile(
-                      title: Row(children: [
-                        const Text("Classificação"),
-                        const Spacer(),
-                        RatingRow(rating: pointOfInterest.rating),
-                      ]),
-                    ),
-
-                    const Divider(height: 10),
-                    for (var review in pointOfInterest.reviews)
-                      Review(review: review),
-                  ])
-                ),
-
-                // Página do Google Places
-                ListTile(
-                  title: const Text("Mais detalhes"),
-                  subtitle: pointOfInterest.url == "Página indisponível." ? (
-                    Text(pointOfInterest.url)
-                  ) : (
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text("Conheça mais sobre esse lugar em sua página do Google Places:"),
-                        TextButton(
-                          onPressed: () async {
-                            if (!await launchUrl(pointOfInterest.url)) {
-                              throw "Could not launch ${pointOfInterest.url}";
-                            }
-                          },
-                          child: Text(
-                            pointOfInterest.url.toString(),
-                            style: const TextStyle(color: Colors.blue),
-                          ),
-                        ),
-                      ],
-                    )
-                  ),
-                ),
+                PlacesPageTile(url: pointOfInterest.url),
               ],
             ),
           );

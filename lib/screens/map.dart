@@ -21,10 +21,10 @@ class MapScreen extends StatefulWidget {
   static late Map<String, Filter> filters;
   static late Set<Marker> accessibilityPoints;
 
-  static Future<void> moveCamera(LatLng location) async {
+  static Future<void> moveCamera({required LatLng location, double zoom = 18}) async {
     await controller.animateCamera(
       CameraUpdate.newCameraPosition(
-        CameraPosition(zoom: 18, target: location),
+        CameraPosition(zoom: zoom, target: location),
       ),
     );
   }
@@ -39,7 +39,7 @@ class _MapScreenState extends State<MapScreen> {
   void _onMapCreated(GoogleMapController controller) async {
     MapScreen.controller = controller;
     MapScreen.controller.setMapStyle(MapStyle.toJSON(MapScreen.filters));
-    MapScreen.moveCamera(await Geolocator.getCurrentLatLng());
+    MapScreen.moveCamera(location: await Geolocator.getCurrentLatLng());
   }
 
   @override
@@ -54,11 +54,11 @@ class _MapScreenState extends State<MapScreen> {
           onPressed: () {
             FocusManager.instance.primaryFocus?.unfocus();
             if (_searchField.controller.text != '') {
-              setState(() => Navigator.of(context).push(
+              Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) {
                   return SearchScreen(searchField: _searchField);
                 }),
-              ));
+              );
             }
           }
         )],
@@ -85,7 +85,9 @@ class _MapScreenState extends State<MapScreen> {
         myLocationButtonEnabled: false,
 
         onMapCreated: (controller) => _onMapCreated(controller),
-        onTap: (argument) => _searchPointsOfInterest(argument),
+        onTap: (argument) async => _searchPointsOfInterest(
+          await Geocoding.searchByLocation(argument),
+        ),
       ),
 
       // Botões
@@ -105,7 +107,7 @@ class _MapScreenState extends State<MapScreen> {
             child: FloatingActionButton.small(
               tooltip: "Mover para posição atual",
               heroTag: "Posição atual",
-              onPressed: () async => await MapScreen.moveCamera(await Geolocator.getCurrentLatLng()),
+              onPressed: () async => await MapScreen.moveCamera(location: await Geolocator.getCurrentLatLng()),
               child: const Icon(Icons.location_searching),
             ),
           ),
@@ -114,13 +116,11 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-  void _searchPointsOfInterest(LatLng position) async {
-    List<GeocodingResult> allPlaces = await Geocoding.searchByLocation(position);
-
-    if (allPlaces.isNotEmpty) {
+  void _searchPointsOfInterest(List<GeocodingResult> results) {
+    if (results.isNotEmpty) {
       List<GeocodingResult> possiblePlaces = [];
 
-      for (GeocodingResult result in allPlaces) {
+      for (GeocodingResult result in results) {
         if (result.types.contains("point_of_interest")) {
           // Verificação se um filtro ativo contém um dos subtipos
           MapScreen.filters.forEach((key, filter) {
@@ -137,13 +137,13 @@ class _MapScreenState extends State<MapScreen> {
       }
 
       if (possiblePlaces.length == 1) {
-        setState(() => Navigator.of(context).push(
+        Navigator.of(context).push(
           MaterialPageRoute(builder: (context) {
             return PointOfInterestDetailsScreen(
               pointOfInterestID: possiblePlaces.first.placeId,
             );
           }),
-        ));
+        );
       } else if (possiblePlaces.length > 1) {
         showDialog(
           context: context,
