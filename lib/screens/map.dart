@@ -18,6 +18,7 @@ class MapScreen extends StatefulWidget {
   final Function updateTheme;
   static late GoogleMapController controller;
 
+  static Set<Polyline> polylines = {};
   static late Map<String, Filter> filters;
   static late Set<Marker> accessibilityPoints;
 
@@ -84,6 +85,9 @@ class _MapScreenState extends State<MapScreen> {
         compassEnabled: false,
         myLocationButtonEnabled: false,
 
+        // Rotas
+        polylines: MapScreen.polylines,
+
         onMapCreated: (controller) => _onMapCreated(controller),
         onTap: (argument) async => _searchPointsOfInterest(
           await Geocoding.searchByLocation(argument),
@@ -109,6 +113,16 @@ class _MapScreenState extends State<MapScreen> {
               heroTag: "Posição atual",
               onPressed: () async => await MapScreen.moveCamera(location: await Geolocator.getCurrentLatLng()),
               child: const Icon(Icons.location_searching),
+            ),
+          ),
+
+          MapScreen.polylines.isEmpty ? Container() : Positioned(
+            bottom: 60, right: 0,
+            child: FloatingActionButton.small(
+              tooltip: "Remover rota",
+              heroTag: "Remover rota",
+              onPressed: () => setState(() => MapScreen.polylines.clear()),
+              child: const Icon(Icons.cancel_outlined),
             ),
           ),
         ],

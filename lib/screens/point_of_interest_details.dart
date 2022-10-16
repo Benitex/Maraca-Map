@@ -92,6 +92,34 @@ class PointOfInterestDetailsScreen extends StatelessWidget {
                 PlacesPageTile(url: pointOfInterest.url),
               ],
             ),
+
+            floatingActionButton: FloatingActionButton(
+              tooltip: "Mostrar rotas no mapa",
+              onPressed: () async {
+                var route = await Directions.getRouteToDestination(
+                  destination: pointOfInterest.location,
+                );
+                MapScreen.polylines = {
+                  Polyline(
+                    polylineId: const PolylineId("polyline"),
+                    color: Colors.red,
+                    points: Directions.decodePolyline(
+                      route.overviewPolyline.points,
+                    ),
+                  ),
+                };
+
+                if (!context.mounted) return;
+                Navigator.popUntil(context, (route) => route.isFirst);
+                // TODO updateMap
+                for (var warning in route.warnings) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(warning)),
+                  );
+                }
+              },
+              child: const Icon(Icons.route),
+            ),
           );
         }
       },
