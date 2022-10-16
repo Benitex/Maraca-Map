@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:maraca_map/models/point_of_interest.dart';
+import 'package:maraca_map/screens/map.dart';
+import 'package:maraca_map/services/google_maps_webservice/directions.dart';
 import 'package:maraca_map/widgets/images_list_view.dart';
 import 'package:maraca_map/screens/general_screens.dart';
 import 'package:maraca_map/widgets/point_of_interest_details.dart/list_tiles/types_tile.dart';
@@ -54,7 +57,7 @@ class PointOfInterestDetailsScreen extends StatelessWidget {
                 AddressTile(
                   location: pointOfInterest.location,
                   address: pointOfInterest.address,
-                  distance: pointOfInterest.distance is bool ? null : pointOfInterest.distance,
+                  distance: pointOfInterest.distance,
                 ),
 
                 // Imagens
@@ -71,15 +74,19 @@ class PointOfInterestDetailsScreen extends StatelessWidget {
 
                 PhoneTile(phoneNumber: pointOfInterest.phoneNumber),
 
-                pointOfInterest.priceLevel is bool ? (
+                pointOfInterest.priceLevel == null ? (
                   const ListTile(
                     title: Text("Informações de preço indisponíveis."),
                   )
-                ) : PriceLevelTile(priceLevel: pointOfInterest.priceLevel),
+                ) : PriceLevelTile(priceLevel: pointOfInterest.priceLevel!),
 
-                RatingTile(
-                  rating: pointOfInterest.rating,
-                  reviews: pointOfInterest.reviews,
+                pointOfInterest.rating == null ? (
+                  const ListTile(title: Text("Esse lugar não possui classificação."))
+                ) : (
+                  RatingTile(
+                    rating: pointOfInterest.rating!,
+                    reviews: pointOfInterest.reviews,
+                  )
                 ),
 
                 PlacesPageTile(url: pointOfInterest.url),

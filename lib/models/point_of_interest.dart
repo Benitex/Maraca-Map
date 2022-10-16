@@ -81,8 +81,8 @@ class PointOfInterest {
 
   /// [String] contendo o endereço no formato "rua, número", ou equivalentes
   /// 
-  /// Retorna "Endereço indisponível" caso não hajam informações suficientes
-  String get address {
+  /// Retorna null caso não hajam informações suficientes
+  String? get address {
     List<AddressComponent> adressComponents = _placesDetails.addressComponents;
     // AddressComponent[1] = rua, AddressComponent[0] = número
     if (adressComponents.length > 1) {
@@ -90,34 +90,22 @@ class PointOfInterest {
     } else if (adressComponents.isNotEmpty) {
       return adressComponents.first.shortName;
     } else {
-      return "Endereço indisponível.";
+      return null;
     }
   }
 
   /// Classificação obtida pela média das avaliações dos usuários
   /// 
-  /// Retorna [-1] caso não hajam informações suficientes
-  num get rating {
-    if (_placesDetails.rating is num) {
-      return _placesDetails.rating!;
-    } else {
-      return -1;
-    }
-  }
+  /// Retorna null caso não hajam informações suficientes
+  num? get rating => _placesDetails.rating;
 
   /// [List] de [Review] dos usuários
   List<Review> get reviews => _placesDetails.reviews;
 
-  /// [PriceLevel] que representa o preço do lugar
+  /// [PriceLevel] que representa o preço do point of interest
   /// 
-  /// Retorna false caso não hajam informações suficientes
-  get priceLevel {
-    if (_placesDetails.priceLevel is PriceLevel) {
-      return _placesDetails.priceLevel!;
-    } else {
-      return false;
-    }
-  }
+  /// Retorna null caso não hajam informações suficientes
+  PriceLevel? get priceLevel => _placesDetails.priceLevel;
 
   /// [Map] de [String] contendo número de telefone internacional no campo "phone_number" e formatado para ligação no campo "formatted_phone_number
   Map<String, String> get phoneNumber {
@@ -183,12 +171,6 @@ class PointOfInterest {
 
   /// [Element] contendo a distância até o usuário em tempo e quilômetros
   /// 
-  /// Retorna [false] caso ocorra um erro
-  get distance {
-    if (_distanceFromUser != null) {
-      return _distanceFromUser!;
-    } else {
-      return false;
-    }
-  }
+  /// Retorna null caso ocorra um erro
+  distance_api.Element? get distance => _distanceFromUser;
 }

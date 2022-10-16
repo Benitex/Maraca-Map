@@ -11,24 +11,18 @@ class RatingTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (rating == -1) {
-      return const ListTile(
-        title: Text("Esse lugar não possui classificação."),
-      );
-    } else {
-      return Column(children: [
-        ListTile(
-          title: Row(children: [
-            const Text("Classificação"),
-            const Spacer(),
-            RatingRow(rating: rating),
-          ]),
-        ),
+    return Column(children: [
+      ListTile(
+        title: Row(children: [
+          const Text("Classificação"),
+          const Spacer(),
+          RatingRow(rating: rating),
+        ]),
+      ),
 
-        const Divider(height: 10),
-        for (var review in reviews)
-          Review(review: review),
-      ]);
-    }
+      const Divider(height: 10),
+      for (var review in reviews)
+        Review(review: review),
+    ]);
   }
 }

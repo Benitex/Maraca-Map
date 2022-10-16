@@ -6,10 +6,10 @@ import 'package:maraca_map/screens/explore.dart';
 import 'package:maraca_map/screens/map.dart';
 
 class AddressTile extends StatelessWidget {
-  const AddressTile({super.key, required this.location, required this.address, this.distance});
+  const AddressTile({super.key, required this.location, this.address, this.distance});
 
   final Location location;
-  final String address;
+  final String? address;
   final distance_api.Element? distance;
 
   @override
@@ -50,7 +50,7 @@ class AddressTile extends StatelessWidget {
           ),
         ]),
 
-        subtitle: Text(address),
+        subtitle: Text(address == null ? "Endereço indisponível." : address!),
       ),
       ListTile(subtitle: Text(
         distance == null ? (
