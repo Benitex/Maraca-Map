@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/geocoding.dart';
+import 'package:maraca_map/models/filter.dart';
+import 'package:maraca_map/screens/filter_selection.dart';
 import 'package:maraca_map/services/google_maps_webservice/geocoding.dart';
 import 'package:maraca_map/services/geolocator.dart';
 import 'package:maraca_map/services/map_style.dart';
-import 'package:maraca_map/models/filter.dart';
 import 'package:maraca_map/screens/point_of_interest_details.dart';
 import 'package:maraca_map/screens/search.dart';
 import 'package:maraca_map/screens/settings.dart';
@@ -19,7 +20,6 @@ class MapScreen extends StatefulWidget {
   static late GoogleMapController controller;
 
   static Set<Polyline> polylines = {};
-  static late Map<String, Filter> filters;
   static late Set<Marker> accessibilityPoints;
 
   static Future<void> moveCamera({required LatLng location, double zoom = 18}) async {
@@ -39,7 +39,7 @@ class _MapScreenState extends State<MapScreen> {
 
   void _onMapCreated(GoogleMapController controller) async {
     MapScreen.controller = controller;
-    MapScreen.controller.setMapStyle(MapStyle.toJSON(MapScreen.filters));
+    MapScreen.controller.setMapStyle(MapStyle.toJSON());
     MapScreen.moveCamera(location: await Geolocator.getCurrentLatLng());
   }
 
@@ -73,10 +73,10 @@ class _MapScreenState extends State<MapScreen> {
         myLocationEnabled: true,
 
         // Filtro de trânsito
-        trafficEnabled: MapScreen.filters["traffic"]!.active,
+        trafficEnabled: FilterSelectionScreen.traffic.active,
 
         // Ícones de acessibilidade
-        markers: MapScreen.filters["accessibility"]!.active ? MapScreen.accessibilityPoints : {},
+        markers: FilterSelectionScreen.accessibility.active ? MapScreen.accessibilityPoints : {},
 
         // Configurações
         mapType: SettingsScreen.options["Mapa de satélite"]!.active ? MapType.hybrid : MapType.normal,
@@ -100,7 +100,7 @@ class _MapScreenState extends State<MapScreen> {
           CircularMenu(
             updateMap: () {
               setState(() {
-                MapScreen.controller.setMapStyle(MapStyle.toJSON(MapScreen.filters));
+                MapScreen.controller.setMapStyle(MapStyle.toJSON());
                 widget.updateTheme();
               });
             },
@@ -133,11 +133,21 @@ class _MapScreenState extends State<MapScreen> {
   void _searchPointsOfInterest(List<GeocodingResult> results) {
     if (results.isNotEmpty) {
       List<GeocodingResult> possiblePlaces = [];
+      List<Filter> filters = [
+        FilterSelectionScreen.accessibility,
+        FilterSelectionScreen.attractions,
+        FilterSelectionScreen.business,
+        FilterSelectionScreen.medical,
+        FilterSelectionScreen.placesOfWorship,
+        FilterSelectionScreen.publicTransportStations,
+        FilterSelectionScreen.schools,
+        FilterSelectionScreen.traffic,
+      ];
 
       for (GeocodingResult result in results) {
         if (result.types.contains("point_of_interest")) {
           // Verificação se um filtro ativo contém um dos subtipos
-          MapScreen.filters.forEach((key, filter) {
+          for (Filter filter in filters) {
             if (filter.active) {
               for (var subtype in filter.subtypes) {
                 if (result.types.contains(subtype.id) && !possiblePlaces.contains(result)) {
@@ -146,7 +156,7 @@ class _MapScreenState extends State<MapScreen> {
                 }
               }
             }
-          });
+          }
         }
       }
 

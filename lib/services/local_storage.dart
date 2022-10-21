@@ -1,25 +1,22 @@
 import 'package:maraca_map/models/option.dart';
-import 'package:maraca_map/screens/settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:maraca_map/screens/map.dart';
 import 'package:maraca_map/models/filter.dart';
+import 'package:maraca_map/screens/settings.dart';
 
 class LocalStorage {
-  static Future<void> loadFilterValues() async {
+  static Future<void> loadFilterValues(Map<String, Filter> filters) async {
     final SharedPreferences api = await SharedPreferences.getInstance();
 
-    MapScreen.filters.forEach((key, filter) {
+    filters.forEach((key, filter) {
       if (api.getBool(key) is bool) {
         filter.active = api.getBool(key)!;
       }
     });
   }
 
-  static Future<void> setFilterValue(Filter filter, bool value) async {
+  static Future<void> saveFilter(Filter filter) async {
     final SharedPreferences api = await SharedPreferences.getInstance();
-
-    filter.active = value;
-    await api.setBool(filter.id, value);
+    await api.setBool(filter.id, filter.active);
   }
 
   static Future<void> loadSettingsValues() async {
@@ -32,10 +29,8 @@ class LocalStorage {
     });
   }
 
-  static Future<void> setOptionValue(Option option, bool value) async {
+  static Future<void> saveOption(Option option) async {
     final SharedPreferences api = await SharedPreferences.getInstance();
-
-    option.active = value;
-    await api.setBool(option.name, value);
+    await api.setBool(option.name, option.active);
   }
 }

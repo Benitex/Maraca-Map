@@ -1,11 +1,11 @@
-import 'package:maraca_map/models/filter.dart';
+import 'package:maraca_map/screens/filter_selection.dart';
 import 'package:maraca_map/screens/settings.dart';
 import 'package:maraca_map/themes/dark_theme.dart';
 import 'package:maraca_map/themes/light_theme.dart';
 
 class MapStyle {
-  /// Tranforma uma lista de opções de filtro em JSON.
-  static String toJSON(Map<String, Filter> filters) {
+  /// Converte os [Filter] da [FilterSelectionScreen] em JSON
+  static String toJSON() {
     bool darkTheme = SettingsScreen.options["Modo escuro"]!.active;
     return '''
 [
@@ -18,7 +18,7 @@ class MapStyle {
     "featureType": "poi.attraction",
     "stylers": [
       {
-        "visibility": "${filters['attractions']!.active ? 'on' : 'off'}"
+        "visibility": "${FilterSelectionScreen.attractions.active ? 'on' : 'off'}"
       }
     ]
   },
@@ -26,7 +26,7 @@ class MapStyle {
     "featureType": "poi.business",
     "stylers": [
       {
-        "visibility": "${filters['business']!.active ? 'on' : 'off'}"
+        "visibility": "${FilterSelectionScreen.business.active ? 'on' : 'off'}"
       }
     ]
   },
@@ -38,7 +38,7 @@ class MapStyle {
     "featureType": "poi.medical",
     "stylers": [
       {
-        "visibility": "${filters['medical']!.active ? 'on' : 'off'}"
+        "visibility": "${FilterSelectionScreen.medical.active ? 'on' : 'off'}"
       }
     ]
   },
@@ -50,7 +50,7 @@ class MapStyle {
     "featureType": "poi.place_of_worship",
     "stylers": [
       {
-        "visibility": "${filters['placesOfWorship']!.active ? 'on' : 'off'}"
+        "visibility": "${FilterSelectionScreen.placesOfWorship.active ? 'on' : 'off'}"
       }
     ]
   },
@@ -58,7 +58,7 @@ class MapStyle {
     "featureType": "poi.school",
     "stylers": [
       {
-        "visibility": "${filters['schools']!.active ? 'on' : 'off'}"
+        "visibility": "${FilterSelectionScreen.schools.active ? 'on' : 'off'}"
       }
     ]
   },
@@ -78,7 +78,7 @@ class MapStyle {
     "featureType": "transit.station",
     "stylers": [
       {
-        "visibility": "${filters['publicTransportStations']!.active ? 'on' : 'off'}"
+        "visibility": "${FilterSelectionScreen.publicTransportStations.active ? 'on' : 'off'}"
       }
     ]
   },

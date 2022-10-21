@@ -3,7 +3,8 @@ import 'package:google_maps_webservice/places.dart';
 import 'package:google_maps_webservice/distance.dart' as distance_api;
 import 'package:maraca_map/services/google_maps_webservice/distance.dart';
 import 'package:maraca_map/services/google_maps_webservice/places.dart';
-import 'package:maraca_map/screens/map.dart';
+import 'package:maraca_map/models/filter.dart';
+import 'package:maraca_map/screens/filter_selection.dart';
 import 'package:maraca_map/screens/settings.dart';
 
 class PointOfInterest {
@@ -53,14 +54,25 @@ class PointOfInterest {
   String _getTranslatedName(String type) {
     String translatedName = "";
 
-    MapScreen.filters.forEach((key, filter) {
+    List<Filter> filters = [
+      FilterSelectionScreen.accessibility,
+      FilterSelectionScreen.attractions,
+      FilterSelectionScreen.business,
+      FilterSelectionScreen.medical,
+      FilterSelectionScreen.placesOfWorship,
+      FilterSelectionScreen.publicTransportStations,
+      FilterSelectionScreen.schools,
+      FilterSelectionScreen.traffic,
+    ];
+
+    for (Filter filter in filters) {
       for (var subtype in filter.subtypes) {
         if (subtype.id == type) {
           translatedName = subtype.name;
           break;
         }
       }
-    });
+    }
 
     return translatedName;
   }

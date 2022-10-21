@@ -52,7 +52,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               isThreeLine: true,
               value: option.active,
               onChanged: (value) async {
-                await LocalStorage.setOptionValue(option, value);
+                option.active = value;
+                await LocalStorage.saveOption(option);
                 setState(() => widget.updateMap());
               },
             )),

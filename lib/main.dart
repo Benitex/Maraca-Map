@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:maraca_map/models/accessibility_marker.dart';
+import 'package:maraca_map/screens/filter_selection.dart';
 import 'package:maraca_map/services/local_storage.dart';
 import 'package:maraca_map/themes/dark_theme.dart';
 import 'package:maraca_map/themes/light_theme.dart';
@@ -18,8 +19,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await LocalStorage.loadSettingsValues();
-  MapScreen.filters = await Firestore.getFilters();
-  await LocalStorage.loadFilterValues();
+  FilterSelectionScreen.filters = await Firestore.getFilters();
   await AccessibilityMarker.loadIcons();
   MapScreen.accessibilityPoints = await Firestore.getAccessibilityPoints();
 

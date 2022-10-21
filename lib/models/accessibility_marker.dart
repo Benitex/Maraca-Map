@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:maraca_map/models/type.dart';
-import 'package:maraca_map/screens/map.dart';
+import 'package:maraca_map/screens/filter_selection.dart';
 
 class AccessibilityMarker extends Marker {
   AccessibilityMarker({
@@ -20,7 +20,7 @@ class AccessibilityMarker extends Marker {
   };
 
   static loadIcons() async {
-    for (PointOfInterestType type in MapScreen.filters["accessibility"]!.subtypes) {
+    for (PointOfInterestType type in FilterSelectionScreen.accessibility.subtypes) {
       _icons[type.name] = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration.empty,
         "assets/custom_markers/${type.id}.png",

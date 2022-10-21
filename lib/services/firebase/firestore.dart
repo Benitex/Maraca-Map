@@ -3,6 +3,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:maraca_map/models/accessibility_marker.dart';
 import 'package:maraca_map/models/filter.dart';
 import 'package:maraca_map/models/type.dart';
+import 'package:maraca_map/services/local_storage.dart';
 
 class Firestore {
   /// Recebe os marcadores de acessibilidade do banco de dados e retorna como um [Set] de [AccessibilityMarker].
@@ -51,10 +52,12 @@ class Firestore {
       );
     }
 
+    LocalStorage.loadFilterValues(filters);   // Carrega os valores de active salvos no dispositivo
+
     return filters;
   }
 
-  /// Converte o [map] de [subtypes] do banco de dados em uma [List] de [PointOfInterestType].
+  /// Converte o [map] de subtypes do banco de dados em uma [List] de [PointOfInterestType].
   static List<PointOfInterestType> _getTypesFromMap(Map map) {
     List<PointOfInterestType> subtypes = [];
 
