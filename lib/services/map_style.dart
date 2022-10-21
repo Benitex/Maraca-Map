@@ -6,7 +6,7 @@ import 'package:maraca_map/themes/light_theme.dart';
 class MapStyle {
   /// Converte os [Filter] da [FilterSelectionScreen] em JSON
   static String toJSON() {
-    bool darkTheme = SettingsScreen.options["Modo escuro"]!.active;
+    bool darkTheme = SettingsScreen.darkMode.active;
     return '''
 [
   ${darkTheme ? DarkTheme.mapStyle : LightTheme.mapStyle}

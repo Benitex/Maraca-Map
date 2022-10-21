@@ -22,11 +22,12 @@ class LocalStorage {
   static Future<void> loadSettingsValues() async {
     final SharedPreferences api = await SharedPreferences.getInstance();
 
-    SettingsScreen.options.forEach((key, option) {
-      if (api.getBool(key) is bool) {
-        option.active = api.getBool(key)!;
-      }
-    });
+    if (api.getBool("Mapa de satélite") is bool) {
+      SettingsScreen.satelliteMap.active = api.getBool("Mapa de satélite")!;
+    }
+    if (api.getBool("Modo escuro") is bool) {
+      SettingsScreen.darkMode.active = api.getBool("Modo escuro")!;
+    }
   }
 
   static Future<void> saveOption(Option option) async {

@@ -42,7 +42,7 @@ class _MaracaMapState extends State<MaracaMap> {
       home: MapScreen(updateTheme: () => setState(() {})),
       navigatorKey: MaracaMap.navigatorKey,
       debugShowCheckedModeBanner: false,
-      theme: SettingsScreen.options["Modo escuro"]!.active ?
+      theme: SettingsScreen.darkMode.active ?
           DarkTheme.screensStyle : LightTheme.screensStyle,
     );
   }

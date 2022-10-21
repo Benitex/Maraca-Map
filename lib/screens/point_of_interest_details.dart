@@ -111,7 +111,7 @@ class PointOfInterestDetailsScreen extends StatelessWidget {
 
                 if (!context.mounted) return;
                 Navigator.popUntil(context, (route) => route.isFirst);
-                // TODO updateMap
+                // FIXME atualizar o mapa depois de adicionar a rota
                 for (var warning in route.warnings) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text(warning)),

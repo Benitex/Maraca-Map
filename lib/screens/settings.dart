@@ -7,35 +7,23 @@ class SettingsScreen extends StatefulWidget {
 
   final Function updateMap;
 
-  static final Map<String, Option> options = {
-    "Mapa de satélite": Option(
-      name: "Mapa de satélite",
-      description: "Quando ativo, muda a exibição do mapa para imagens de satélite. Pode utilizar mais internet e alguns ícones podem ficar indisponíveis.",
-      active: false,
-    ),
-    "Modo escuro": Option(
-      name: "Modo escuro",
-      description: "Muda o esquema de cores para uma versão mais escura.",
-      active: false,
-    ),
-  };
+  static Option darkMode = Option(
+    name: "Modo escuro",
+    description: "Muda o esquema de cores para uma versão mais escura.",
+    active: false,
+  );
+
+  static Option satelliteMap = Option(
+    name: "Mapa de satélite",
+    description: "Quando ativo, muda a exibição do mapa para imagens de satélite. Pode utilizar mais internet e alguns ícones podem ficar indisponíveis.",
+    active: false,
+  );
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  final List<Option> _options = [];
-
-  @override
-  void initState() {
-    _options.clear();
-    SettingsScreen.options.forEach((key, option) {
-      _options.add(option);
-    });
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +33,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
       body: ListView(
         children: [
-          for (Option option in _options)
+          for (Option option in [SettingsScreen.darkMode, SettingsScreen.satelliteMap])
             Card(child: SwitchListTile(
               title: Text(option.name),
               subtitle: Text(option.description),

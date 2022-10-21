@@ -86,7 +86,7 @@ class PointOfInterest {
 
     return Image.network(
       iconAddress,
-      color: SettingsScreen.options["Modo escuro"]!.active ? Colors.white : Colors.black,
+      color: SettingsScreen.darkMode.active ? Colors.white : Colors.black,
       width: 30,
     );
   }

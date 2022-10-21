@@ -79,7 +79,7 @@ class _MapScreenState extends State<MapScreen> {
         markers: FilterSelectionScreen.accessibility.active ? MapScreen.accessibilityPoints : {},
 
         // Configurações
-        mapType: SettingsScreen.options["Mapa de satélite"]!.active ? MapType.hybrid : MapType.normal,
+        mapType: SettingsScreen.satelliteMap.active ? MapType.hybrid : MapType.normal,
         zoomControlsEnabled: false,
         buildingsEnabled: false,
         compassEnabled: false,
