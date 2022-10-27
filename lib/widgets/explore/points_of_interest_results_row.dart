@@ -28,15 +28,12 @@ class PointsOfInterestResultsRow extends StatelessWidget {
               return const NoResults();
 
             } else {
-              return ListView.builder(
+              return ListView(
                 scrollDirection: Axis.horizontal,
-                itemCount: snapshot.data!.length,
-                itemBuilder: (context, index) {
-                  return PointOfInterestTile(
-                    pointOfInterest: snapshot.data![index],
-                    origin: location,
-                  );
-                },
+                children: [
+                  for (PlacesSearchResult result in snapshot.data!)
+                    PointOfInterestTile(pointOfInterest: result, origin: location),
+                ],
               );
             }
           },

@@ -51,9 +51,11 @@ class _PointOfInterestTile extends StatelessWidget {
                 onPressed: () {
                   Navigator.pop(context);
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => PointOfInterestDetailsScreen(
-                      pointOfInterestID: pointOfInterestID,
-                    )),
+                    MaterialPageRoute(builder: (context) {
+                      return PointOfInterestDetailsScreen(
+                        pointOfInterestID: pointOfInterestID,
+                      );
+                    }),
                   );
                 },
                 child: Text(
