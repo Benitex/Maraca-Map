@@ -4,7 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 class PhoneTile extends StatelessWidget {
   const PhoneTile({super.key, required this.phoneNumber});
 
-  final Map<String, String> phoneNumber;
+  final Map<String, String?> phoneNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -12,14 +12,12 @@ class PhoneTile extends StatelessWidget {
       title: const Text("Telefone"),
       subtitle: Row(children: [
         Text(
-          phoneNumber["phone_number"]! == '' ? (
-            "Número de telefone indisponível."
-          ) : (
-            phoneNumber["phone_number"]!
-          ),
+          phoneNumber["phone_number"] == null ?
+              "Número de telefone indisponível." : phoneNumber["phone_number"]!,
         ),
         const Spacer(),
 
+        phoneNumber["formatted_phone_number"] == null ? Container() :
         Tooltip(
           message: "Ligar",
           child: ElevatedButton(

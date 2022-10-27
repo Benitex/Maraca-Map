@@ -8,14 +8,14 @@ import 'package:maraca_map/screens/map.dart';
 class AddressTile extends StatelessWidget {
   const AddressTile({super.key, required this.location, this.address, this.distance});
 
-  final Location location;
+  final Location? location;
   final String? address;
   final distance_api.Element? distance;
 
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      ListTile(
+      location == null ? Container() : ListTile(
         title: Row(children: [
           const Text("Endereço"),
           const Spacer(),
@@ -26,7 +26,7 @@ class AddressTile extends StatelessWidget {
               style: ElevatedButton.styleFrom(shape: const CircleBorder()),
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) {
-                  return ExploreScreen(location: location);
+                  return ExploreScreen(location: location!);
                 }),
               ),
               child: const Icon(Icons.share_location),
@@ -41,7 +41,7 @@ class AddressTile extends StatelessWidget {
                   (route) => route.isFirst,
                 );
                 await MapScreen.moveCamera(
-                  location: LatLng(location.lat, location.lng),
+                  location: LatLng(location!.lat, location!.lng),
                   zoom: 20,
                 );
               },

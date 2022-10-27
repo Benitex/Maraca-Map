@@ -133,21 +133,11 @@ class _MapScreenState extends State<MapScreen> {
   void _searchPointsOfInterest(List<GeocodingResult> results) {
     if (results.isNotEmpty) {
       List<GeocodingResult> possiblePlaces = [];
-      List<Filter> filters = [
-        FilterSelectionScreen.accessibility,
-        FilterSelectionScreen.attractions,
-        FilterSelectionScreen.business,
-        FilterSelectionScreen.medical,
-        FilterSelectionScreen.placesOfWorship,
-        FilterSelectionScreen.publicTransportStations,
-        FilterSelectionScreen.schools,
-        FilterSelectionScreen.traffic,
-      ];
 
       for (GeocodingResult result in results) {
         if (result.types.contains("point_of_interest")) {
           // Verificação se um filtro ativo contém um dos subtipos
-          for (Filter filter in filters) {
+          for (Filter filter in FilterSelectionScreen.list) {
             if (filter.active) {
               for (var subtype in filter.subtypes) {
                 if (result.types.contains(subtype.id) && !possiblePlaces.contains(result)) {

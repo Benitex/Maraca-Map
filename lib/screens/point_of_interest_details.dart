@@ -3,6 +3,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:maraca_map/models/point_of_interest.dart';
 import 'package:maraca_map/screens/map.dart';
 import 'package:maraca_map/services/google_maps_webservice/directions.dart';
+import 'package:maraca_map/services/google_maps_webservice/distance.dart';
+import 'package:maraca_map/services/google_maps_webservice/places.dart';
 import 'package:maraca_map/widgets/images_list_view.dart';
 import 'package:maraca_map/screens/general_screens.dart';
 import 'package:maraca_map/widgets/point_of_interest_details.dart/list_tiles/types_tile.dart';
@@ -14,16 +16,25 @@ import 'package:maraca_map/widgets/point_of_interest_details.dart/list_tiles/pri
 import 'package:maraca_map/widgets/point_of_interest_details.dart/list_tiles/places_page_tile.dart';
 
 class PointOfInterestDetailsScreen extends StatelessWidget {
-  PointOfInterestDetailsScreen({super.key, required String pointOfInterestID}) {
-    pointOfInterest = PointOfInterest(pointOfInterestID);
-  }
+  const PointOfInterestDetailsScreen({super.key, required this.pointOfInterestID});
 
-  late final PointOfInterest pointOfInterest;
+  final String pointOfInterestID;
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: pointOfInterest.setPlaceDetails(),
+      future: Future<PointOfInterest>(() async {
+        final placeDetails = await Places.getDetailsByPlaceId(pointOfInterestID);
+
+        try {
+          return PointOfInterest.fromPlaceDetails(
+            placeDetails: placeDetails,
+            distanceFromUser: await Distance.fromHereTo(placeDetails.geometry!.location),
+          );
+        } catch (e) {
+          return PointOfInterest.fromPlaceDetails(placeDetails: placeDetails);
+        }
+      }),
 
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -36,8 +47,14 @@ class PointOfInterestDetailsScreen extends StatelessWidget {
             appBar: AppBar(),
             body: const ErrorScreen(),
           );
-
+        } else if (!snapshot.hasData) {
+          return Scaffold(
+            appBar: AppBar(),
+            body: const NoResults(),
+          );
+ 
         } else {
+          final PointOfInterest pointOfInterest = snapshot.data!;
           return Scaffold(
             appBar: AppBar(title: Text(pointOfInterest.name)),
 
@@ -57,7 +74,7 @@ class PointOfInterestDetailsScreen extends StatelessWidget {
                 AddressTile(
                   location: pointOfInterest.location,
                   address: pointOfInterest.address,
-                  distance: pointOfInterest.distance,
+                  distance: pointOfInterest.distanceFromUser,
                 ),
 
                 // Imagens
@@ -93,11 +110,12 @@ class PointOfInterestDetailsScreen extends StatelessWidget {
               ],
             ),
 
-            floatingActionButton: FloatingActionButton(
+            floatingActionButton: pointOfInterest.location == null ?
+            Container() : FloatingActionButton(
               tooltip: "Mostrar rotas no mapa",
               onPressed: () async {
                 var route = await Directions.getRouteToDestination(
-                  destination: pointOfInterest.location,
+                  destination: pointOfInterest.location!,
                 );
                 MapScreen.polylines = {
                   Polyline(

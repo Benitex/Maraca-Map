@@ -19,6 +19,10 @@ class SettingsScreen extends StatefulWidget {
     active: false,
   );
 
+  static List<Option> list = [
+    darkMode, satelliteMap,
+  ];
+
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
 }
@@ -33,7 +37,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
       body: ListView(
         children: [
-          for (Option option in [SettingsScreen.darkMode, SettingsScreen.satelliteMap])
+          for (Option option in SettingsScreen.list)
             Card(child: SwitchListTile(
               title: Text(option.name),
               subtitle: Text(option.description),

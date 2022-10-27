@@ -16,6 +16,17 @@ class FilterSelectionScreen extends StatefulWidget {
   static late Filter schools;
   static late Filter traffic;
 
+  static List<Filter> list = [
+    FilterSelectionScreen.business,
+    FilterSelectionScreen.publicTransportStations,
+    FilterSelectionScreen.schools,
+    FilterSelectionScreen.attractions,
+    FilterSelectionScreen.traffic,
+    FilterSelectionScreen.medical,
+    FilterSelectionScreen.placesOfWorship,
+    FilterSelectionScreen.accessibility,
+  ];
+
   static set filters(Map<String, Filter> filters) {
     accessibility = filters["accessibility"]!;
     attractions = filters["attractions"]!;
@@ -32,17 +43,6 @@ class FilterSelectionScreen extends StatefulWidget {
 }
 
 class _FilterSelectionScreenState extends State<FilterSelectionScreen> {
-  List<Filter> filters = [
-    FilterSelectionScreen.business,
-    FilterSelectionScreen.publicTransportStations,
-    FilterSelectionScreen.schools,
-    FilterSelectionScreen.attractions,
-    FilterSelectionScreen.traffic,
-    FilterSelectionScreen.medical,
-    FilterSelectionScreen.placesOfWorship,
-    FilterSelectionScreen.accessibility,
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,7 +53,7 @@ class _FilterSelectionScreenState extends State<FilterSelectionScreen> {
 
       body: ListView(
         children: [
-          for (Filter filter in filters)
+          for (Filter filter in FilterSelectionScreen.list)
             Card(child: SwitchListTile(
               title: Text(filter.name),
               subtitle: Text(filter.description),
