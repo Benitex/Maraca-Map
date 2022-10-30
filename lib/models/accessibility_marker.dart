@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:maraca_map/models/type.dart';
+import 'package:maraca_map/models/point_of_interest_type.dart';
 import 'package:maraca_map/screens/filter_selection.dart';
 
 class AccessibilityMarker extends Marker {

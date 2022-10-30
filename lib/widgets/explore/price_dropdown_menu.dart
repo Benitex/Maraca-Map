@@ -29,9 +29,7 @@ class _PriceDropdownMenuState extends State<PriceDropdownMenu> {
       ],
 
       onChanged: (value) {
-        setState(() {
-          _price = value!;
-        });
+        setState(() => _price = value!);
         switch (value) {
           case "free":
             ExploreScreen.filters["maxPrice"] = PriceLevel.free;

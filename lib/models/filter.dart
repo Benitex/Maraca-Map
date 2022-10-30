@@ -1,4 +1,4 @@
-import 'package:maraca_map/models/type.dart';
+import 'package:maraca_map/models/point_of_interest_type.dart';
 
 class Filter extends PointOfInterestType {
   Filter({
