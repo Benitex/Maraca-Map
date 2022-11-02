@@ -45,7 +45,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
               tooltip: "Filtrar",
               icon: const Icon(Icons.search, color: Colors.white),
               onPressed: () => setState(() {
-                ExploreScreen.filters["filters"] = int.parse(DistanceFormField.controller.text);
+                ExploreScreen.filters["maxPrice"] = PriceDropdownMenu.price;
+                ExploreScreen.filters["distance"] = int.parse(DistanceFormField.controller.text);
               }),
             ),
           ]),

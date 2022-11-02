@@ -1,53 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_webservice/places.dart';
-import 'package:maraca_map/screens/explore.dart';
 
 class PriceDropdownMenu extends StatefulWidget {
   const PriceDropdownMenu({super.key});
+
+  static PriceLevel price = PriceLevel.veryExpensive;
 
   @override
   State<PriceDropdownMenu> createState() => _PriceDropdownMenuState();
 }
 
 class _PriceDropdownMenuState extends State<PriceDropdownMenu> {
-  String _price = "veryExpensive";
-
   @override
   Widget build(BuildContext context) {
-    return DropdownButton<String>(
+    return DropdownButton<PriceLevel>(
       style: const TextStyle(color: Colors.white),
       dropdownColor: Theme.of(context).primaryColor,
 
-      value: _price,
+      value: PriceDropdownMenu.price,
 
-      items: const <DropdownMenuItem<String>>[
-        DropdownMenuItem(value: "free", child: Text("Grátis")),
-        DropdownMenuItem(value: "inexpensive", child: Text("Barato")),
-        DropdownMenuItem(value: "moderate", child: Text("Moderado")),
-        DropdownMenuItem(value: "expensive", child: Text("Caro")),
-        DropdownMenuItem(value: "veryExpensive", child: Text("Qualquer valor")),
+      items: const <DropdownMenuItem<PriceLevel>>[
+        DropdownMenuItem(value: PriceLevel.free, child: Text("Grátis")),
+        DropdownMenuItem(value: PriceLevel.inexpensive, child: Text("Barato")),
+        DropdownMenuItem(value: PriceLevel.moderate, child: Text("Moderado")),
+        DropdownMenuItem(value: PriceLevel.expensive, child: Text("Caro")),
+        DropdownMenuItem(value: PriceLevel.veryExpensive, child: Text("Qualquer valor")),
       ],
 
-      onChanged: (value) {
-        setState(() => _price = value!);
-        switch (value) {
-          case "free":
-            ExploreScreen.filters["maxPrice"] = PriceLevel.free;
-            break;
-          case "inexpensive":
-            ExploreScreen.filters["maxPrice"] = PriceLevel.inexpensive;
-            break;
-          case "moderate":
-            ExploreScreen.filters["maxPrice"] = PriceLevel.moderate;
-            break;
-          case "expensive":
-            ExploreScreen.filters["maxPrice"] = PriceLevel.expensive;
-            break;
-          case "veryExpensive":
-            ExploreScreen.filters["maxPrice"] = PriceLevel.veryExpensive;
-            break;
-        }
-      }
+      onChanged: (value) => setState(() => PriceDropdownMenu.price = value!),
     );
   }
 }

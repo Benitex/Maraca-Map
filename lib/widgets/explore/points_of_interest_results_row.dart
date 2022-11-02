@@ -18,7 +18,15 @@ class PointsOfInterestResultsRow extends StatelessWidget {
       SizedBox(
         height: 280,
         child: FutureBuilder(
-          future: _getSearchResults(),
+          future: Future<List<PlacesSearchResult>>(() async {
+            return await Places.nearbySearch(
+              location: location,
+              type: searchFor,
+              maxprice: ExploreScreen.filters["maxPrice"],
+              radius: ExploreScreen.filters["distance"],
+            );
+          }),
+
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const LoadingScreen();
@@ -40,14 +48,5 @@ class PointsOfInterestResultsRow extends StatelessWidget {
         ),
       ),
     ]);
-  }
-
-  Future<List<PlacesSearchResult>> _getSearchResults() async {
-    return await Places.nearbySearch(
-      location: location,
-      type: searchFor,
-      maxprice: ExploreScreen.filters["maxPrice"],
-      radius: ExploreScreen.filters["distance"],
-    );
   }
 }
