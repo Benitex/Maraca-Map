@@ -3,4 +3,8 @@ class Option {
 
   final String name, description;
   bool active;
+
+  Option copyWith(bool value) {
+    return Option(name: name, description: description, active: value);
+  }
 }

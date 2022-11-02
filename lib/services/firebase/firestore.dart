@@ -1,13 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:maraca_map/models/accessibility_marker.dart';
 import 'package:maraca_map/models/filter.dart';
 import 'package:maraca_map/models/point_of_interest_type.dart';
-import 'package:maraca_map/services/local_storage.dart';
+import 'package:maraca_map/providers/filters_provider.dart';
+
+final firestoreProvider = Provider<Firestore>((ref) {
+  return Firestore(ref);
+});
 
 class Firestore {
+  Firestore(this.ref);
+
+  ProviderRef ref;
+
   /// Recebe os marcadores de acessibilidade do banco de dados e retorna como um [Set] de [AccessibilityMarker].
-  static Future<Set<AccessibilityMarker>> getAccessibilityPoints() async {
+  Future<Set<AccessibilityMarker>> getAccessibilityPoints() async {
     final QuerySnapshot<Map<String, dynamic>> pointsCollection =
         await FirebaseFirestore.instance.collection("accessibility_markers").get();
 
@@ -33,8 +42,21 @@ class Firestore {
     return points;
   }
 
-  /// Recebe os filtros do banco de dados e retorna no formato de uma [List] de [Filter].
-  static Future<Map<String, Filter>> getFilters() async {
+  /// Carrega os [Filter] do Firestore para seu [StateNotifierProvider]..
+  Future<void> loadFilters() async {
+    /// Converte o [map] de subtypes do banco de dados em uma [List] de [PointOfInterestType].
+    List<PointOfInterestType> getTypesFromMap(Map map) {
+      List<PointOfInterestType> subtypes = [];
+
+      map.forEach((key, value) {
+        subtypes.add(
+          PointOfInterestType(id: key, name: value),
+        );
+      });
+
+      return subtypes;
+    }
+
     final QuerySnapshot<Map<String, dynamic>> filtersCollection =
         await FirebaseFirestore.instance.collection("filters").get();
 
@@ -48,25 +70,10 @@ class Firestore {
         name: filter["portuguese_name"],
         active: filter["initial_value"],
         description: filter["description"],
-        subtypes: _getTypesFromMap(filter["subtypes"]),
+        subtypes: getTypesFromMap(filter["subtypes"]),
       );
     }
 
-    LocalStorage.loadFilterValues(filters);   // Carrega os valores de active salvos no dispositivo
-
-    return filters;
-  }
-
-  /// Converte o [map] de subtypes do banco de dados em uma [List] de [PointOfInterestType].
-  static List<PointOfInterestType> _getTypesFromMap(Map map) {
-    List<PointOfInterestType> subtypes = [];
-
-    map.forEach((key, value) {
-      subtypes.add(
-        PointOfInterestType(id: key, name: value),
-      );
-    });
-
-    return subtypes;
+    ref.read(filtersProvider.notifier).setFilters(filters);
   }
 }

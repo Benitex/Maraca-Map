@@ -1,12 +1,24 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:maraca_map/providers/filters_provider.dart';
+import 'package:maraca_map/providers/settings_provider.dart';
 import 'package:maraca_map/screens/filter_selection.dart';
-import 'package:maraca_map/screens/settings.dart';
 import 'package:maraca_map/themes/dark_theme.dart';
 import 'package:maraca_map/themes/light_theme.dart';
 
+final mapStyleProvider = Provider<MapStyle>((ref) {
+  return MapStyle(ref);
+});
+
 class MapStyle {
+  MapStyle(this.ref);
+
+  ProviderRef ref;
+
   /// Converte os [Filter] da [FilterSelectionScreen] em JSON
-  static String toJSON() {
-    bool darkTheme = SettingsScreen.darkMode.active;
+  String toJSON() {
+    bool darkTheme = ref.read(settingsProvider)["Modo escuro"]!.active;
+    final filters = ref.read(filtersProvider);
+
     return '''
 [
   ${darkTheme ? DarkTheme.mapStyle : LightTheme.mapStyle}
@@ -18,7 +30,7 @@ class MapStyle {
     "featureType": "poi.attraction",
     "stylers": [
       {
-        "visibility": "${FilterSelectionScreen.attractions.active ? 'on' : 'off'}"
+        "visibility": "${filters["attractions"]!.active ? 'on' : 'off'}"
       }
     ]
   },
@@ -26,7 +38,7 @@ class MapStyle {
     "featureType": "poi.business",
     "stylers": [
       {
-        "visibility": "${FilterSelectionScreen.business.active ? 'on' : 'off'}"
+        "visibility": "${filters["business"]!.active ? 'on' : 'off'}"
       }
     ]
   },
@@ -38,7 +50,7 @@ class MapStyle {
     "featureType": "poi.medical",
     "stylers": [
       {
-        "visibility": "${FilterSelectionScreen.medical.active ? 'on' : 'off'}"
+        "visibility": "${filters["medical"]!.active ? 'on' : 'off'}"
       }
     ]
   },
@@ -50,7 +62,7 @@ class MapStyle {
     "featureType": "poi.place_of_worship",
     "stylers": [
       {
-        "visibility": "${FilterSelectionScreen.placesOfWorship.active ? 'on' : 'off'}"
+        "visibility": "${filters["placesOfWorship"]!.active ? 'on' : 'off'}"
       }
     ]
   },
@@ -58,7 +70,7 @@ class MapStyle {
     "featureType": "poi.school",
     "stylers": [
       {
-        "visibility": "${FilterSelectionScreen.schools.active ? 'on' : 'off'}"
+        "visibility": "${filters["schools"]!.active ? 'on' : 'off'}"
       }
     ]
   },
@@ -78,7 +90,7 @@ class MapStyle {
     "featureType": "transit.station",
     "stylers": [
       {
-        "visibility": "${FilterSelectionScreen.publicTransportStations.active ? 'on' : 'off'}"
+        "visibility": "${filters["publicTransportStations"]!.active ? 'on' : 'off'}"
       }
     ]
   },

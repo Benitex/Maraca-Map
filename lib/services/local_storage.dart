@@ -1,37 +1,58 @@
-import 'package:maraca_map/models/option.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:maraca_map/models/filter.dart';
-import 'package:maraca_map/screens/settings.dart';
+import 'package:maraca_map/providers/filters_provider.dart';
+import 'package:maraca_map/providers/settings_provider.dart';
+
+final localStorageProvider = Provider<LocalStorage>(
+  (ref) => LocalStorage(ref),
+);
 
 class LocalStorage {
-  static Future<void> loadFilterValues(Map<String, Filter> filters) async {
+  LocalStorage(this.ref);
+
+  ProviderRef ref;
+
+  /// Carrega os valores dos [Filter] armazenados no dispositivo para seu [StateNotifierProvider].
+  Future<void> loadFilterValues() async {
+    final filters = ref.read(filtersProvider);
+    final filtersController = ref.read(filtersProvider.notifier);
     final SharedPreferences api = await SharedPreferences.getInstance();
 
     filters.forEach((key, filter) {
-      if (api.getBool(key) is bool) {
-        filter.active = api.getBool(key)!;
+      if (api.getBool(filter.id) is bool) {
+        filtersController.updateFilter(
+          filter.id,
+          api.getBool(filter.id)!,
+        );
       }
     });
   }
 
-  static Future<void> saveFilter(Filter filter) async {
+  /// Salva o valor de um [Filter] de com um determinado [filterName]
+  Future<void> saveFilter(String filterID, bool value) async {
     final SharedPreferences api = await SharedPreferences.getInstance();
-    await api.setBool(filter.id, filter.active);
+    await api.setBool(filterID, value);
   }
 
-  static Future<void> loadSettingsValues() async {
+  /// Carrega os valores das [Option] armazenados no dispositivo para seu [StateNotifierProvider].
+  Future<void> loadSettingsValues() async {
+    final settings = ref.read(settingsProvider);
+    final settingsController = ref.read(settingsProvider.notifier);
     final SharedPreferences api = await SharedPreferences.getInstance();
 
-    if (api.getBool("Mapa de satélite") is bool) {
-      SettingsScreen.satelliteMap.active = api.getBool("Mapa de satélite")!;
-    }
-    if (api.getBool("Modo escuro") is bool) {
-      SettingsScreen.darkMode.active = api.getBool("Modo escuro")!;
-    }
+    settings.forEach((key, option) {
+      if (api.getBool(option.name) is bool) {
+        settingsController.updateOption(
+          option.name,
+          api.getBool(option.name)!,
+        );
+      }
+    });
   }
 
-  static Future<void> saveOption(Option option) async {
+  /// Salva o valor de uma [Option] de com uma determinada [optionName]
+  Future<void> saveOption(String optionName, bool value) async {
     final SharedPreferences api = await SharedPreferences.getInstance();
-    await api.setBool(option.name, option.active);
+    await api.setBool(optionName, value);
   }
 }

@@ -12,4 +12,14 @@ class Filter extends PointOfInterestType {
   bool active;
   final String description;
   final List<PointOfInterestType> subtypes;
+
+  Filter copyWith(bool value) {
+    return Filter(
+      id: id,
+      name: name,
+      active: value,
+      description: description,
+      subtypes: subtypes,
+    );
+  }
 }

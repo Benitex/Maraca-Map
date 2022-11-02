@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:maraca_map/models/point_of_interest.dart';
-import 'package:maraca_map/screens/map.dart';
-import 'package:maraca_map/services/google_maps_webservice/directions.dart';
 import 'package:maraca_map/services/google_maps_webservice/distance.dart';
 import 'package:maraca_map/services/google_maps_webservice/places.dart';
 import 'package:maraca_map/widgets/images_list_view.dart';
@@ -14,14 +12,15 @@ import 'package:maraca_map/widgets/point_of_interest_details.dart/list_tiles/pho
 import 'package:maraca_map/widgets/point_of_interest_details.dart/list_tiles/rating_tile.dart';
 import 'package:maraca_map/widgets/point_of_interest_details.dart/list_tiles/price_level_tile.dart';
 import 'package:maraca_map/widgets/point_of_interest_details.dart/list_tiles/places_page_tile.dart';
+import 'package:maraca_map/widgets/point_of_interest_details.dart/route_floating_action_button.dart';
 
-class PointOfInterestDetailsScreen extends StatelessWidget {
+class PointOfInterestDetailsScreen extends ConsumerWidget {
   const PointOfInterestDetailsScreen({super.key, required this.pointOfInterestID});
 
   final String pointOfInterestID;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return FutureBuilder(
       future: Future<PointOfInterest>(() async {
         final placeDetails = await Places.getDetailsByPlaceId(pointOfInterestID);
@@ -30,9 +29,13 @@ class PointOfInterestDetailsScreen extends StatelessWidget {
           return PointOfInterest.fromPlaceDetails(
             placeDetails: placeDetails,
             distanceFromUser: await Distance.fromHereTo(placeDetails.geometry!.location),
+            ref: ref,
           );
         } catch (e) {
-          return PointOfInterest.fromPlaceDetails(placeDetails: placeDetails);
+          return PointOfInterest.fromPlaceDetails(
+            placeDetails: placeDetails,
+            ref: ref,
+          );
         }
       }),
 
@@ -111,33 +114,7 @@ class PointOfInterestDetailsScreen extends StatelessWidget {
             ),
 
             floatingActionButton: pointOfInterest.location == null ?
-            Container() : FloatingActionButton(
-              tooltip: "Mostrar rotas no mapa",
-              onPressed: () async {
-                var route = await Directions.getRouteToDestination(
-                  destination: pointOfInterest.location!,
-                );
-                MapScreen.polylines = {
-                  Polyline(
-                    polylineId: const PolylineId("polyline"),
-                    color: Colors.red,
-                    points: Directions.decodePolyline(
-                      route.overviewPolyline.points,
-                    ),
-                  ),
-                };
-
-                if (!context.mounted) return;
-                Navigator.popUntil(context, (route) => route.isFirst);
-                // FIXME atualizar o mapa depois de adicionar a rota
-                for (var warning in route.warnings) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(warning)),
-                  );
-                }
-              },
-              child: const Icon(Icons.route),
-            ),
+                Container() : RouteFloatingActionButton(location: pointOfInterest.location!),
           );
         }
       },

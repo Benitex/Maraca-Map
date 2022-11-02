@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:google_maps_webservice/distance.dart' as distance_api;
+import 'package:maraca_map/providers/filters_provider.dart';
 import 'package:maraca_map/services/google_maps_webservice/places.dart';
-import 'package:maraca_map/models/filter.dart';
-import 'package:maraca_map/screens/filter_selection.dart';
-import 'package:maraca_map/screens/settings.dart';
 
 class PointOfInterest {
-  PointOfInterest.fromPlaceDetails({required PlaceDetails placeDetails, this.distanceFromUser}) {
+  PointOfInterest.fromPlaceDetails({required WidgetRef ref, required PlaceDetails placeDetails, this.distanceFromUser}) {
     id = placeDetails.placeId;
     name = placeDetails.name;
     location = placeDetails.geometry == null ? null : placeDetails.geometry!.location;
-    types = _setTypes(placeDetails);
+    types = _setTypes(placeDetails, ref);
     icon = Image.network(
       placeDetails.icon != null ? placeDetails.icon! : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/geocode-71.png",
       width: 30,
-      color: SettingsScreen.darkMode.active ? Colors.white : Colors.black,
     );
     address = _setAddress(placeDetails);
     rating = placeDetails.rating;
@@ -89,11 +87,11 @@ class PointOfInterest {
   /// Retorna null caso ocorra um erro
   final distance_api.Element? distanceFromUser;
 
-  List<String> _setTypes(PlaceDetails placeDetails) {
+  List<String> _setTypes(PlaceDetails placeDetails, WidgetRef ref) {
     String getTranslatedName(String type) {
       String translatedName = "";
 
-      for (Filter filter in FilterSelectionScreen.list) {
+      for (var filter in ref.read(filtersProvider).values) {
         for (var subtype in filter.subtypes) {
           if (subtype.id == type) {
             translatedName = subtype.name;

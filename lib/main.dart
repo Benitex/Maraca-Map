@@ -1,49 +1,60 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:maraca_map/models/accessibility_marker.dart';
-import 'package:maraca_map/screens/filter_selection.dart';
+import 'package:maraca_map/providers/settings_provider.dart';
 import 'package:maraca_map/services/local_storage.dart';
-import 'package:maraca_map/themes/dark_theme.dart';
-import 'package:maraca_map/themes/light_theme.dart';
-import 'package:maraca_map/screens/settings.dart';
 import 'package:maraca_map/services/firebase/firestore.dart';
 import 'package:maraca_map/services/firebase/firebase_options.dart';
 import 'package:maraca_map/screens/map.dart';
+import 'package:maraca_map/themes/dark_theme.dart';
+import 'package:maraca_map/themes/light_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await FlutterConfig.loadEnvVariables();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  await LocalStorage.loadSettingsValues();
-  FilterSelectionScreen.filters = await Firestore.getFilters();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await AccessibilityMarker.loadIcons();
-  MapScreen.accessibilityPoints = await Firestore.getAccessibilityPoints();
 
-  runApp(const MaracaMap());
+  runApp(ProviderScope(
+    child: Consumer(
+      builder: (context, ref, child) => FutureBuilder(
+        future: Future(() async {
+          final localStorage = ref.read(localStorageProvider);
+          final firestore = ref.read(firestoreProvider);
+
+          await localStorage.loadSettingsValues();
+          await firestore.loadFilters();
+          await localStorage.loadFilterValues();
+          MapScreen.accessibilityPoints = await firestore.getAccessibilityPoints();
+        }),
+
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return const MaracaMap();
+          }
+          return Container();
+        }
+      ),
+    ),
+  ));
 }
 
-class MaracaMap extends StatefulWidget {
+class MaracaMap extends ConsumerWidget {
   const MaracaMap({super.key});
 
   static final navigatorKey = GlobalKey<NavigatorState>();
 
   @override
-  State<MaracaMap> createState() => _MaracaMapState();
-}
-
-class _MaracaMapState extends State<MaracaMap> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final settings = ref.watch(settingsProvider);
     return MaterialApp(
-      home: MapScreen(updateTheme: () => setState(() {})),
+      home: const MapScreen(),
       navigatorKey: MaracaMap.navigatorKey,
       debugShowCheckedModeBanner: false,
-      theme: SettingsScreen.darkMode.active ?
-          DarkTheme.screensStyle : LightTheme.screensStyle,
+      theme: settings["Modo escuro"]!.active ? DarkTheme.screensStyle : LightTheme.screensStyle,
     );
   }
 }

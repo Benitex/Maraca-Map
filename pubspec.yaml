@@ -43,6 +43,7 @@ dependencies:
   shared_preferences: ^2.0.15
   fab_circular_menu: ^1.0.2
   flutter_polyline_points: ^1.0.0
+  flutter_riverpod: ^2.0.2
 
 dev_dependencies:
   flutter_test:

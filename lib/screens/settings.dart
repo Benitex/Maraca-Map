@@ -1,35 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:maraca_map/models/option.dart';
-import 'package:maraca_map/services/local_storage.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:maraca_map/providers/settings_provider.dart';
+import 'package:maraca_map/screens/map.dart';
+import 'package:maraca_map/services/map_style.dart';
+import 'package:maraca_map/widgets/settings/option_tile.dart';
 
-class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({super.key, required this.updateMap});
-
-  final Function updateMap;
-
-  static Option darkMode = Option(
-    name: "Modo escuro",
-    description: "Muda o esquema de cores para uma versão mais escura.",
-    active: false,
-  );
-
-  static Option satelliteMap = Option(
-    name: "Mapa de satélite",
-    description: "Quando ativo, muda a exibição do mapa para imagens de satélite. Pode utilizar mais internet e alguns ícones podem ficar indisponíveis.",
-    active: false,
-  );
-
-  static List<Option> list = [
-    darkMode, satelliteMap,
-  ];
+class SettingsScreen extends ConsumerWidget {
+  const SettingsScreen({super.key});
 
   @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final settings = ref.watch(settingsProvider);
 
-class _SettingsScreenState extends State<SettingsScreen> {
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Configurações"),
@@ -37,18 +19,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
       body: ListView(
         children: [
-          for (Option option in SettingsScreen.list)
-            Card(child: SwitchListTile(
-              title: Text(option.name),
-              subtitle: Text(option.description),
-              isThreeLine: true,
-              value: option.active,
-              onChanged: (value) async {
-                option.active = value;
-                await LocalStorage.saveOption(option);
-                setState(() => widget.updateMap());
-              },
-            )),
+          OptionTile(
+            option: settings["Modo escuro"]!,
+            function: () => MapScreen.controller.setMapStyle(
+              ref.read(mapStyleProvider).toJSON(),
+            ),
+          ),
+          OptionTile(option: settings["Mapa de satélite"]!),
         ],
       ),
     );
