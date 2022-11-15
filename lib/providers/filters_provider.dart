@@ -1,17 +1,17 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:maraca_map/models/filter.dart';
 
-final filtersProvider = StateNotifierProvider<FiltersNotifier, Map<String, Filter>>(
-  (ref) => FiltersNotifier(),
+final mapFiltersProvider = StateNotifierProvider<MapFiltersNotifier, Map<String, MapFilter>>(
+  (ref) => MapFiltersNotifier(),
 );
 
-class FiltersNotifier extends StateNotifier<Map<String, Filter>> {
-  FiltersNotifier() : super({});
+class MapFiltersNotifier extends StateNotifier<Map<String, MapFilter>> {
+  MapFiltersNotifier() : super({});
 
-  void setFilters(Map<String, Filter> filters) => state = filters;
+  void setFilters(Map<String, MapFilter> filters) => state = filters;
 
   void updateFilter(String filterID, bool value) {
-    Map<String, Filter> newState = {};
+    Map<String, MapFilter> newState = {};
     state.forEach((key, filter) {
       if (key == filterID) {
         newState[key] = filter.copyWith(value);

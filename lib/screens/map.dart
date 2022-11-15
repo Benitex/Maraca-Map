@@ -33,7 +33,7 @@ class MapScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final settings = ref.watch(settingsProvider);
-    final filters = ref.watch(filtersProvider);
+    final filters = ref.watch(mapFiltersProvider);
     final polylinesController = ref.watch(mapPolylinesProvider.notifier);
 
     void onMapCreated(GoogleMapController controller) async {
@@ -49,7 +49,7 @@ class MapScreen extends ConsumerWidget {
         for (GeocodingResult result in results) {
           if (result.types.contains("point_of_interest")) {
             // Verificação se um filtro ativo contém um dos subtipos
-            for (Filter filter in ref.read(filtersProvider).values) {
+            for (MapFilter filter in ref.read(mapFiltersProvider).values) {
               if (filter.active) {
                 for (var subtype in filter.subtypes) {
                   if (result.types.contains(subtype.id) && !possiblePlaces.contains(result)) {

@@ -34,7 +34,7 @@ class _SearchScreenState extends State<SearchScreen> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const LoadingScreen();
           } else if (snapshot.hasError) {
-            return const ErrorScreen();
+            return ErrorScreen(error: snapshot.error!);
           } else if (!snapshot.hasData) {
             return const NoResults();
 

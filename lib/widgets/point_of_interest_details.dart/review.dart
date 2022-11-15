@@ -35,7 +35,7 @@ class Review extends StatelessWidget {
         Align(
           alignment: Alignment.topLeft,
           child: Padding(
-            padding: const EdgeInsets.only(left: 15, right: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Text(review.text),
           ),
         ),

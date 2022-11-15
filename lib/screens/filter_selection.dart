@@ -6,13 +6,13 @@ import 'package:maraca_map/models/filter.dart';
 import 'package:maraca_map/providers/filters_provider.dart';
 import 'package:maraca_map/screens/map.dart';
 
-class FilterSelectionScreen extends ConsumerWidget {
-  const FilterSelectionScreen({super.key});
+class MapFilterSelectionScreen extends ConsumerWidget {
+  const MapFilterSelectionScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final filters = ref.watch(filtersProvider).values;
-    final filtersController = ref.read(filtersProvider.notifier);
+    final filters = ref.watch(mapFiltersProvider).values;
+    final filtersController = ref.read(mapFiltersProvider.notifier);
     final localStorage = ref.read(localStorageProvider);
 
     return Scaffold(
@@ -23,7 +23,7 @@ class FilterSelectionScreen extends ConsumerWidget {
 
       body: ListView(
         children: [
-          for (Filter filter in filters)
+          for (MapFilter filter in filters)
             Card(child: SwitchListTile(
               title: Text(filter.name),
               subtitle: Text(filter.description),

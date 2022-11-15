@@ -14,10 +14,10 @@ class MapStyleConversor {
 
   ProviderRef ref;
 
-  /// Converte os [Filter] da [FilterSelectionScreen] em JSON
+  /// Converte os [MapFilter] da [MapFilterSelectionScreen] em JSON
   String toJSON() {
     bool darkTheme = ref.read(settingsProvider)["Modo escuro"]!.active;
-    final filters = ref.read(filtersProvider);
+    final filters = ref.read(mapFiltersProvider);
 
     return '''
 [

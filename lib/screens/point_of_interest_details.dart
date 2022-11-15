@@ -48,7 +48,7 @@ class PointOfInterestDetailsScreen extends ConsumerWidget {
         } else if (snapshot.hasError) {
           return Scaffold(
             appBar: AppBar(),
-            body: const ErrorScreen(),
+            body: ErrorScreen(error: snapshot.error!),
           );
         } else if (!snapshot.hasData) {
           return Scaffold(

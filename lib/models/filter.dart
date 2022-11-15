@@ -1,7 +1,7 @@
 import 'package:maraca_map/models/point_of_interest_type.dart';
 
-class Filter extends PointOfInterestType {
-  Filter({
+class MapFilter extends PointOfInterestType {
+  MapFilter({
     required String id,
     required String name,
     required this.active,
@@ -13,8 +13,8 @@ class Filter extends PointOfInterestType {
   final String description;
   final List<PointOfInterestType> subtypes;
 
-  Filter copyWith(bool value) {
-    return Filter(
+  MapFilter copyWith(bool value) {
+    return MapFilter(
       id: id,
       name: name,
       active: value,

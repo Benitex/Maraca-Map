@@ -12,10 +12,10 @@ class LocalStorage {
 
   ProviderRef ref;
 
-  /// Carrega os valores dos [Filter] armazenados no dispositivo para seu [StateNotifierProvider].
-  Future<void> loadFilterValues() async {
-    final filters = ref.read(filtersProvider);
-    final filtersController = ref.read(filtersProvider.notifier);
+  /// Carrega os valores dos [MapFilter] armazenados no dispositivo para seu [StateNotifierProvider].
+  Future<void> loadMapFiltersValues() async {
+    final filters = ref.read(mapFiltersProvider);
+    final filtersController = ref.read(mapFiltersProvider.notifier);
     final SharedPreferences api = await SharedPreferences.getInstance();
 
     filters.forEach((key, filter) {
@@ -28,7 +28,7 @@ class LocalStorage {
     });
   }
 
-  /// Salva o valor de um [Filter] de com um determinado [filterName]
+  /// Salva o valor de um [MapFilter] de com um determinado [filterName]
   Future<void> saveFilter(String filterID, bool value) async {
     final SharedPreferences api = await SharedPreferences.getInstance();
     await api.setBool(filterID, value);

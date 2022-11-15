@@ -23,7 +23,7 @@ class CircularMenu extends StatelessWidget {
           tooltip: "Filtros do mapa",
           onPressed: () => Navigator.of(context).push(
             MaterialPageRoute(builder: (context) {
-              return const FilterSelectionScreen();
+              return const MapFilterSelectionScreen();
             }),
           ),
           child: const Icon(Icons.filter_alt),

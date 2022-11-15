@@ -42,8 +42,8 @@ class Firestore {
     return points;
   }
 
-  /// Carrega os [Filter] do Firestore para seu [StateNotifierProvider]..
-  Future<void> loadFilters() async {
+  /// Carrega os [MapFilter] do Firestore para seu [StateNotifierProvider]..
+  Future<void> loadMapFilters() async {
     /// Converte o [map] de subtypes do banco de dados em uma [List] de [PointOfInterestType].
     List<PointOfInterestType> getTypesFromMap(Map map) {
       List<PointOfInterestType> subtypes = [];
@@ -60,12 +60,12 @@ class Firestore {
     final QuerySnapshot<Map<String, dynamic>> filtersCollection =
         await FirebaseFirestore.instance.collection("filters").get();
 
-    Map<String, Filter> filters = {};
+    Map<String, MapFilter> filters = {};
 
-    for (QueryDocumentSnapshot<Map<String, dynamic>> document in filtersCollection.docs) {
+    for (var document in filtersCollection.docs) {
       Map<String, dynamic> filter = document.data();
 
-      filters[filter["id"]] = Filter(
+      filters[filter["id"]] = MapFilter(
         id: filter['id'],
         name: filter["portuguese_name"],
         active: filter["initial_value"],
@@ -74,6 +74,6 @@ class Firestore {
       );
     }
 
-    ref.read(filtersProvider.notifier).setFilters(filters);
+    ref.read(mapFiltersProvider.notifier).setFilters(filters);
   }
 }

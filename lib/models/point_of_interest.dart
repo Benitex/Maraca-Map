@@ -51,12 +51,12 @@ class PointOfInterest {
   late final Image icon;
 
   /// [String] contendo o endereço no formato "rua, número", ou equivalentes
-  /// 
+  ///
   /// Retorna null caso não hajam informações suficientes
   late final String? address;
 
   /// Classificação obtida pela média das avaliações dos usuários
-  /// 
+  ///
   /// Retorna null caso não hajam informações suficientes
   late final num? rating;
 
@@ -64,7 +64,7 @@ class PointOfInterest {
   late final List<Review> reviews;
 
   /// [PriceLevel] que representa o preço do point of interest
-  /// 
+  ///
   /// Retorna null caso não hajam informações suficientes
   late final PriceLevel? priceLevel;
 
@@ -75,7 +75,7 @@ class PointOfInterest {
   late final Uri url;
 
   /// Horário de funcionamento no formato [List], onde o campo 0 contém o horário de abertura e 1 o horário de fechamento
-  /// 
+  ///
   /// Retorna uma [List] contendo "Esse lugar não abre hoje." se o lugar não abrir no dia e "Horário de funcionamento indisponível." caso não hajam informações suficientes
   late final List<String> openingHoursToday;
 
@@ -83,7 +83,7 @@ class PointOfInterest {
   late final List<Image> images;
 
   /// [Element] contendo a distância até o usuário em tempo e quilômetros
-  /// 
+  ///
   /// Retorna null caso ocorra um erro
   final distance_api.Element? distanceFromUser;
 
@@ -91,7 +91,7 @@ class PointOfInterest {
     String getTranslatedName(String type) {
       String translatedName = "";
 
-      for (var filter in ref.read(filtersProvider).values) {
+      for (var filter in ref.read(mapFiltersProvider).values) {
         for (var subtype in filter.subtypes) {
           if (subtype.id == type) {
             translatedName = subtype.name;

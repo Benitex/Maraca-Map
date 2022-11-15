@@ -19,10 +19,13 @@ class LoadingScreen extends StatelessWidget {
 }
 
 class ErrorScreen extends StatelessWidget {
-  const ErrorScreen({super.key});
+  const ErrorScreen({super.key, required this.error});
+
+  final Object error;
 
   @override
   Widget build(BuildContext context) {
+    debugPrint(error.toString());
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: const [

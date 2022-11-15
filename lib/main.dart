@@ -26,8 +26,8 @@ void main() async {
           final firestore = ref.read(firestoreProvider);
 
           await localStorage.loadSettingsValues();
-          await firestore.loadFilters();
-          await localStorage.loadFilterValues();
+          await firestore.loadMapFilters();
+          await localStorage.loadMapFiltersValues();
           MapScreen.accessibilityPoints = await firestore.getAccessibilityPoints();
         }),
 

@@ -24,7 +24,7 @@ class PointOfInterestTile extends StatelessWidget {
       ),
 
       child: Padding(
-        padding: const EdgeInsets.only(left: 4, right: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 4),
         child: Card(
           child: SizedBox(
             height: 280, width: 320,
@@ -51,7 +51,7 @@ class PointOfInterestTile extends StatelessWidget {
                 child: Column(children: [
                   // Nome
                   Padding(
-                    padding: const EdgeInsets.only(top: 4, bottom: 4),
+                    padding: const EdgeInsets.symmetric(vertical: 4),
                     child: Text(
                       pointOfInterest.name,
                       style: const TextStyle(fontSize: 16),
