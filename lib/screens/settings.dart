@@ -22,7 +22,7 @@ class SettingsScreen extends ConsumerWidget {
           OptionTile(
             option: settings["Modo escuro"]!,
             function: () => MapScreen.controller.setMapStyle(
-              ref.read(mapStyleProvider).toJSON(),
+              ref.read(mapStyleConversorProvider).toJSON(),
             ),
           ),
           OptionTile(option: settings["Mapa de satélite"]!),

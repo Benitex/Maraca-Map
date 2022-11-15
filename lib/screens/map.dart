@@ -38,7 +38,7 @@ class MapScreen extends ConsumerWidget {
 
     void onMapCreated(GoogleMapController controller) async {
       MapScreen.controller = controller;
-      controller.setMapStyle(ref.read(mapStyleProvider).toJSON());
+      controller.setMapStyle(ref.read(mapStyleConversorProvider).toJSON());
       moveCamera(location: await Geolocator.getCurrentLatLng());
     }
 

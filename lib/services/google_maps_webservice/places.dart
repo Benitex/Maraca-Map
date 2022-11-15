@@ -44,11 +44,16 @@ class Places {
   /// [type], e [maxprice] são os atributos do [PointOfInterest].
   /// 
   /// [radius] é a distância média máxima do usuário até o [PointOfInterest].
-  static Future<List<PlacesSearchResult>> nearbySearch({required Location location, String type = '', num radius = 1000, PriceLevel maxprice = PriceLevel.veryExpensive}) async {
+  static Future<List<PlacesSearchResult>> nearbySearch({
+    required Location location,
+    String? type,
+    num radius = 1000,
+    PriceLevel maxprice = PriceLevel.veryExpensive,
+  }) async {
     PlacesSearchResponse response = await _api.searchNearbyWithRadius(
       location,
       radius,
-      keyword: type == '' ? null : type,
+      keyword: type,
       maxprice: maxprice == PriceLevel.veryExpensive ? null : maxprice,
     );
 

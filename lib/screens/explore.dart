@@ -4,21 +4,11 @@ import 'package:maraca_map/widgets/explore/distance_form_field.dart';
 import 'package:maraca_map/widgets/explore/points_of_interest_results_row.dart';
 import 'package:maraca_map/widgets/explore/price_dropdown_menu.dart';
 
-class ExploreScreen extends StatefulWidget {
+class ExploreScreen extends StatelessWidget {
   const ExploreScreen({super.key, required this.location});
 
   final Location location;
 
-  static Map<String, dynamic> filters = {
-    "distance": 1000,
-    "maxPrice": PriceLevel.veryExpensive,
-  };
-
-  @override
-  State<ExploreScreen> createState() => _ExploreScreenState();
-}
-
-class _ExploreScreenState extends State<ExploreScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,29 +17,17 @@ class _ExploreScreenState extends State<ExploreScreen> {
         centerTitle: true,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(48.0),
-          child: Row(children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 10, right: 10),
-              child: Row(children: const [
-                Text("Distância média: ", style: TextStyle(color: Colors.white)),
-                DistanceFormField(),
-                Text("m", style: TextStyle(color: Colors.white)),
-              ]),
-            ),
-
-            const Text("Preço: ", style: TextStyle(color: Colors.white)),
-            const PriceDropdownMenu(),
-
-            const Spacer(),
-            IconButton(
-              tooltip: "Filtrar",
-              icon: const Icon(Icons.search, color: Colors.white),
-              onPressed: () => setState(() {
-                ExploreScreen.filters["maxPrice"] = PriceDropdownMenu.price;
-                ExploreScreen.filters["distance"] = int.parse(DistanceFormField.controller.text);
-              }),
-            ),
-          ]),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Row(children: const [
+              Text("Distância média: ", style: TextStyle(color: Colors.white)),
+              DistanceFormField(),
+              Text("m", style: TextStyle(color: Colors.white)),
+              Spacer(),
+              Text("Preço: ", style: TextStyle(color: Colors.white)),
+              PriceDropdownMenu(),
+            ]),
+          ),
         ),
       ),
 
@@ -57,37 +35,37 @@ class _ExploreScreenState extends State<ExploreScreen> {
         scrollDirection: Axis.vertical,
         children: [
           PointsOfInterestResultsRow(
-            location: widget.location,
+            location: location,
             typeName: "Restaurantes",
             searchFor: "food",
           ),
           PointsOfInterestResultsRow(
-            location: widget.location,
+            location: location,
             typeName: "Lojas",
             searchFor: "store",
           ),
           PointsOfInterestResultsRow(
-            location: widget.location,
+            location: location,
             typeName: "Transporte público",
             searchFor: "transport",
           ),
           PointsOfInterestResultsRow(
-            location: widget.location,
+            location: location,
             typeName: "Escolas",
             searchFor: "school",
           ),
           PointsOfInterestResultsRow(
-            location: widget.location,
+            location: location,
             typeName: "Lazer e turismo",
             searchFor: "attraction",
           ),
           PointsOfInterestResultsRow(
-            location: widget.location,
+            location: location,
             typeName: "Hospitais",
             searchFor: "medical",
           ),
           PointsOfInterestResultsRow(
-            location: widget.location,
+            location: location,
             typeName: "Templos religiosos",
             searchFor: "place of worship",
           ),

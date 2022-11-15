@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_webservice/places.dart';
-import 'package:maraca_map/screens/explore.dart';
+import 'package:maraca_map/providers/explore_filters_provider.dart';
 import 'package:maraca_map/screens/general_screens.dart';
 import 'package:maraca_map/services/google_maps_webservice/places.dart';
 import 'package:maraca_map/widgets/point_of_interest_tile.dart';
 
-class PointsOfInterestResultsRow extends StatelessWidget {
-  const PointsOfInterestResultsRow({super.key, required this.location, required this.typeName, required this.searchFor});
+class PointsOfInterestResultsRow extends ConsumerWidget {
+  const PointsOfInterestResultsRow({
+    super.key,
+    required this.location,
+    required this.typeName,
+    required this.searchFor,
+  });
 
   final Location location;
   final String typeName, searchFor;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final filters = ref.watch(exploreFiltersProvider);
     return Column(children: [
-      ListTile(title: Text(typeName, textAlign: TextAlign.start)),
+      ListTile(title: Text(typeName)),
       SizedBox(
         height: 280,
         child: FutureBuilder(
@@ -22,8 +29,8 @@ class PointsOfInterestResultsRow extends StatelessWidget {
             return await Places.nearbySearch(
               location: location,
               type: searchFor,
-              maxprice: ExploreScreen.filters["maxPrice"],
-              radius: ExploreScreen.filters["distance"],
+              maxprice: filters["maxPrice"],
+              radius: filters["distance"],
             );
           }),
 

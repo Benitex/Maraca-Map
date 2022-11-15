@@ -5,12 +5,12 @@ import 'package:maraca_map/screens/filter_selection.dart';
 import 'package:maraca_map/themes/dark_theme.dart';
 import 'package:maraca_map/themes/light_theme.dart';
 
-final mapStyleProvider = Provider<MapStyle>((ref) {
-  return MapStyle(ref);
+final mapStyleConversorProvider = Provider<MapStyleConversor>((ref) {
+  return MapStyleConversor(ref);
 });
 
-class MapStyle {
-  MapStyle(this.ref);
+class MapStyleConversor {
+  MapStyleConversor(this.ref);
 
   ProviderRef ref;
 

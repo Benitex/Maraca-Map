@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:maraca_map/providers/explore_filters_provider.dart';
 
-class DistanceFormField extends StatelessWidget {
+class DistanceFormField extends ConsumerWidget {
   const DistanceFormField({super.key});
 
-  static final TextEditingController controller = TextEditingController(text: "1000");
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
       width: 50,
       child: Row(children: [Expanded(
         child: TextFormField(
-          controller: controller,
+          initialValue: "1000",
           keyboardType: TextInputType.number,
 
           cursorColor: Colors.white,
           style: const TextStyle(color: Colors.white),
           decoration: const InputDecoration(border: InputBorder.none),
+
+          onFieldSubmitted: (value) => ref.read(exploreFiltersProvider.notifier).setDistance(int.parse(value)),
         ),
       )]),
     );

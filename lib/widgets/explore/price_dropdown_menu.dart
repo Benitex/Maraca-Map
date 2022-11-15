@@ -1,23 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_webservice/places.dart';
+import 'package:maraca_map/providers/explore_filters_provider.dart';
 
-class PriceDropdownMenu extends StatefulWidget {
+class PriceDropdownMenu extends ConsumerWidget {
   const PriceDropdownMenu({super.key});
 
-  static PriceLevel price = PriceLevel.veryExpensive;
-
   @override
-  State<PriceDropdownMenu> createState() => _PriceDropdownMenuState();
-}
-
-class _PriceDropdownMenuState extends State<PriceDropdownMenu> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return DropdownButton<PriceLevel>(
+      value: ref.watch(exploreFiltersProvider)["maxPrice"],
       style: const TextStyle(color: Colors.white),
       dropdownColor: Theme.of(context).primaryColor,
-
-      value: PriceDropdownMenu.price,
 
       items: const <DropdownMenuItem<PriceLevel>>[
         DropdownMenuItem(value: PriceLevel.free, child: Text("Grátis")),
@@ -27,7 +21,7 @@ class _PriceDropdownMenuState extends State<PriceDropdownMenu> {
         DropdownMenuItem(value: PriceLevel.veryExpensive, child: Text("Qualquer valor")),
       ],
 
-      onChanged: (value) => setState(() => PriceDropdownMenu.price = value!),
+      onChanged: (value) => ref.read(exploreFiltersProvider.notifier).setMaxPrice(value!),
     );
   }
 }

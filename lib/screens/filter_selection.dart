@@ -32,7 +32,7 @@ class FilterSelectionScreen extends ConsumerWidget {
               onChanged: (value) async {
                 filtersController.updateFilter(filter.id, value);
                 MapScreen.controller.setMapStyle(
-                  ref.read(mapStyleProvider).toJSON(),
+                  ref.read(mapStyleConversorProvider).toJSON(),
                 );
                 await localStorage.saveFilter(filter.id, value);
               }
