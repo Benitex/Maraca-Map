@@ -1,15 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_webservice/places.dart';
 
-final exploreFiltersProvider = StateNotifierProvider<ExploreFiltersNotifier, Map<String, dynamic>>(
-  (ref) => ExploreFiltersNotifier(),
-);
+final exploreFiltersProvider = NotifierProvider<ExploreFiltersNotifier, Map<String, dynamic>>(ExploreFiltersNotifier.new);
 
-class ExploreFiltersNotifier extends StateNotifier<Map<String, dynamic>> {
-  ExploreFiltersNotifier(): super({
+class ExploreFiltersNotifier extends Notifier<Map<String, dynamic>> {
+  @override
+  Map<String, dynamic> build() => {
     "distance": 1000,
     "maxPrice": PriceLevel.veryExpensive,
-  });
+  };
 
   void setMaxPrice(PriceLevel maxPrice) => _updateState(maxPrice: maxPrice);
   void setDistance(num distance) => _updateState(distance: distance);

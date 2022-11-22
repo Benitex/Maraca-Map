@@ -1,12 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:maraca_map/models/filter.dart';
 
-final mapFiltersProvider = StateNotifierProvider<MapFiltersNotifier, Map<String, MapFilter>>(
-  (ref) => MapFiltersNotifier(),
-);
+final mapFiltersProvider = NotifierProvider<MapFiltersNotifier, Map<String, MapFilter>>(MapFiltersNotifier.new);
 
-class MapFiltersNotifier extends StateNotifier<Map<String, MapFilter>> {
-  MapFiltersNotifier() : super({});
+class MapFiltersNotifier extends Notifier<Map<String, MapFilter>> {
+  @override
+  Map<String, MapFilter> build() => {};
 
   void setFilters(Map<String, MapFilter> filters) => state = filters;
 
