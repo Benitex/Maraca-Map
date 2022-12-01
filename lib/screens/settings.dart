@@ -20,12 +20,12 @@ class SettingsScreen extends ConsumerWidget {
       body: ListView(
         children: [
           OptionTile(
-            option: settings["Modo escuro"]!,
+            option: settings["darkMode"]!,
             function: () => MapScreen.controller.setMapStyle(
               ref.read(mapStyleConversorProvider).toJSON(),
             ),
           ),
-          OptionTile(option: settings["Mapa de satélite"]!),
+          OptionTile(option: settings["satelliteMap"]!),
         ],
       ),
     );

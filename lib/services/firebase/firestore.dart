@@ -42,7 +42,7 @@ class Firestore {
     return points;
   }
 
-  /// Carrega os [MapFilter] do Firestore para seu [StateNotifierProvider]..
+  /// Carrega os [MapFilter] do Firestore para seu [StateNotifierProvider].
   Future<void> loadMapFilters() async {
     /// Converte o [map] de subtypes do banco de dados em uma [List] de [PointOfInterestType].
     List<PointOfInterestType> getTypesFromMap(Map map) {

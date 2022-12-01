@@ -113,7 +113,7 @@ class MapScreen extends ConsumerWidget {
         markers: filters["accessibility"]!.active ? accessibilityPoints : {},
 
         // Configurações
-        mapType: settings["Mapa de satélite"]!.active ? MapType.hybrid : MapType.normal,
+        mapType: settings["satelliteMap"]!.active ? MapType.hybrid : MapType.normal,
         zoomControlsEnabled: false,
         buildingsEnabled: false,
         compassEnabled: false,

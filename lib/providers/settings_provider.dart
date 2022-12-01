@@ -6,12 +6,12 @@ final settingsProvider = NotifierProvider<SettingsNotifier, Map<String, Option>>
 class SettingsNotifier extends Notifier<Map<String, Option>> {
   @override
   Map<String, Option> build() => {
-    "Modo escuro": Option(
+    "darkMode": Option(
       name: "Modo escuro",
       description: "Muda o esquema de cores para uma versão mais escura.",
       active: false,
     ),
-    "Mapa de satélite": Option(
+    "satelliteMap": Option(
       name: "Mapa de satélite",
       description: "Quando ativo, muda a exibição do mapa para imagens de satélite. Pode utilizar mais internet e alguns ícones podem ficar indisponíveis.",
       active: false,
@@ -20,11 +20,11 @@ class SettingsNotifier extends Notifier<Map<String, Option>> {
 
   void updateOption(String optionName, bool value) {
     Map<String, Option> newState = {};
-    state.forEach((name, option) {
-      if (name == optionName) {
-        newState[name] = option.copyWith(value);
+    state.forEach((key, option) {
+      if (option.name == optionName) {
+        newState[key] = option.copyWith(value);
       } else {
-        newState[name] = option;
+        newState[key] = option;
       }
     });
     state = newState;

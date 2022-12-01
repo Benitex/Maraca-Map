@@ -54,7 +54,7 @@ class MaracaMap extends ConsumerWidget {
       home: const MapScreen(),
       navigatorKey: MaracaMap.navigatorKey,
       debugShowCheckedModeBanner: false,
-      theme: settings["Modo escuro"]!.active ? DarkTheme.screensStyle : LightTheme.screensStyle,
+      theme: settings["darkMode"]!.active ? DarkTheme.screensStyle : LightTheme.screensStyle,
     );
   }
 }
