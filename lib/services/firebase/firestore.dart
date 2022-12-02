@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:maraca_map/models/accessibility_marker.dart';
-import 'package:maraca_map/models/filter.dart';
+import 'package:maraca_map/models/map_filter.dart';
 import 'package:maraca_map/models/point_of_interest_type.dart';
 import 'package:maraca_map/providers/filters_provider.dart';
 

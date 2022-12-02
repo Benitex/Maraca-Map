@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/geocoding.dart';
-import 'package:maraca_map/models/filter.dart';
+import 'package:maraca_map/models/map_filter.dart';
 import 'package:maraca_map/providers/filters_provider.dart';
 import 'package:maraca_map/providers/map_polylines_provider.dart';
 import 'package:maraca_map/providers/settings_provider.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:maraca_map/models/filter.dart';
+import 'package:maraca_map/models/map_filter.dart';
 
 final mapFiltersProvider = NotifierProvider<MapFiltersNotifier, Map<String, MapFilter>>(MapFiltersNotifier.new);
 

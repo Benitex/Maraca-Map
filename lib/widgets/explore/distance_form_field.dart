@@ -11,7 +11,7 @@ class DistanceFormField extends ConsumerWidget {
       width: 50,
       child: Row(children: [Expanded(
         child: TextFormField(
-          initialValue: "1000",
+          initialValue: ref.read(exploreFiltersProvider)["distance"].toString(),
           keyboardType: TextInputType.number,
 
           cursorColor: Colors.white,

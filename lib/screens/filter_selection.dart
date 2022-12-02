@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:maraca_map/services/local_storage.dart';
 import 'package:maraca_map/services/map_style.dart';
-import 'package:maraca_map/models/filter.dart';
+import 'package:maraca_map/models/map_filter.dart';
 import 'package:maraca_map/providers/filters_provider.dart';
 import 'package:maraca_map/screens/map.dart';
 
