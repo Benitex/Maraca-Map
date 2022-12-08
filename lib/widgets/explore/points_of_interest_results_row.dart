@@ -67,7 +67,10 @@ class PointOfInterestResultsRow extends ConsumerWidget {
                 scrollDirection: Axis.horizontal,
                 children: [
                   for (PlacesSearchResult result in snapshot.data!)
-                    PointOfInterestTile(pointOfInterest: result, origin: location),
+                    PointOfInterestTile.fromPlaceSearchResult(
+                      result: result,
+                      origin: location,
+                    ),
                 ],
               );
             }

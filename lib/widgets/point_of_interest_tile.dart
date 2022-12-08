@@ -7,9 +7,48 @@ import 'package:maraca_map/widgets/point_of_interest_details.dart/price_row.dart
 import 'package:maraca_map/widgets/point_of_interest_details.dart/rating_row.dart';
 
 class PointOfInterestTile extends StatelessWidget {
-  const PointOfInterestTile({super.key, required this.pointOfInterest, this.origin});
+  const PointOfInterestTile({
+    super.key,
+    required this.placeId,
+    required this.name,
+    required this.location,
+    this.photo,
+    this.rating,
+    this.priceLevel,
+    this.openingHours,
+    this.origin,
+  });
 
-  final PlacesSearchResult pointOfInterest;
+  PointOfInterestTile.fromPlaceSearchResult({
+    super.key,
+    required PlacesSearchResult result,
+    this.origin,
+  }) : placeId = result.placeId,
+      name = result.name,
+      photo = result.photos.first,
+      rating = result.rating,
+      priceLevel = result.priceLevel,
+      openingHours = result.openingHours,
+      location = result.geometry!.location;
+
+  PointOfInterestTile.fromPlaceDetails({
+    super.key,
+    required PlaceDetails placeDetails,
+    this.origin,
+  }) : placeId = placeDetails.placeId,
+      name = placeDetails.name,
+      photo = placeDetails.photos.first,
+      rating = placeDetails.rating,
+      priceLevel = placeDetails.priceLevel,
+      openingHours = placeDetails.openingHours,
+      location = placeDetails.geometry!.location;
+
+  final String placeId, name;
+  final Photo? photo;
+  final num? rating;
+  final PriceLevel? priceLevel;
+  final OpeningHoursDetail? openingHours;
+  final Location location;
   final Location? origin;
 
   @override
@@ -18,7 +57,7 @@ class PointOfInterestTile extends StatelessWidget {
       onTap: () => Navigator.of(context).push(
         MaterialPageRoute(builder: (context) {
           return PointOfInterestDetailsScreen(
-            pointOfInterestID: pointOfInterest.placeId,
+            pointOfInterestID: placeId,
           );
         }),
       ),
@@ -32,7 +71,7 @@ class PointOfInterestTile extends StatelessWidget {
               // Foto
               SizedBox(
                 height: 180,
-                child: pointOfInterest.photos.isEmpty ? (
+                child: photo is! Photo ? (
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -40,7 +79,7 @@ class PointOfInterestTile extends StatelessWidget {
                   )
                 ) : (
                   Image(
-                    image: Places.getImageFromPhoto(pointOfInterest.photos.first).image,
+                    image: Places.getImageFromPhoto(photo!).image,
                     width: 320, fit: BoxFit.fitWidth,
                   )
                 ),
@@ -53,7 +92,7 @@ class PointOfInterestTile extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 4),
                     child: Text(
-                      pointOfInterest.name,
+                      name,
                       style: const TextStyle(fontSize: 16),
                       maxLines: 1,
                     ),
@@ -62,34 +101,29 @@ class PointOfInterestTile extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 2, bottom: 6),
                     child: Row(children: [
-                      pointOfInterest.rating is num ?
-                        RatingRow(rating: pointOfInterest.rating!) : Container(),
+                      rating is num ? RatingRow(rating: rating!) : Container(),
                       const Spacer(),
-                      pointOfInterest.priceLevel is! PriceLevel ? (
-                        Container()
-                      ) : (
-                        PriceRow(price: pointOfInterest.priceLevel!)
-                      ),
+                      priceLevel is PriceLevel ? PriceRow(price: priceLevel!) : Container(),
                     ]),
                   ),
 
                   Row(children: [
                     // Aberto ou fechado
-                    pointOfInterest.openingHours is OpeningHoursDetail ?
+                    openingHours is OpeningHoursDetail ?
                       Text(
-                        pointOfInterest.openingHours!.openNow ? "Aberto" : "Fechado",
+                        openingHours!.openNow ? "Aberto" : "Fechado",
                         style: TextStyle(
                           fontSize: 16,
-                          color: pointOfInterest.openingHours!.openNow ? Colors.green : Colors.red,
+                          color: openingHours!.openNow ? Colors.green : Colors.red,
                         ),
                       ) : Container(),
 
                     const Spacer(),
                     FutureBuilder(
                       future: origin == null ? (
-                        Distance.fromHereTo(pointOfInterest.geometry!.location)
+                        Distance.fromHereTo(location)
                       ) : (
-                        Distance.between(origin: origin!, destination: pointOfInterest.geometry!.location)
+                        Distance.between(origin: origin!, destination: location)
                       ),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState == ConnectionState.waiting || snapshot.hasError || !snapshot.hasData) {

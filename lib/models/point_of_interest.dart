@@ -10,12 +10,12 @@ class PointOfInterest {
     id = placeDetails.placeId;
     name = placeDetails.name;
     location = placeDetails.geometry == null ? null : placeDetails.geometry!.location;
-    types = _setTypes(placeDetails, ref);
+    types = _setTypes(placeDetails.types, ref);
     icon = Image.network(
       placeDetails.icon != null ? placeDetails.icon! : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/geocode-71.png",
       width: 30,
     );
-    address = _setAddress(placeDetails);
+    address = _setAddress(placeDetails.addressComponents);
     rating = placeDetails.rating;
     reviews = placeDetails.reviews;
     priceLevel = placeDetails.priceLevel;
@@ -28,7 +28,7 @@ class PointOfInterest {
     } else {
       url = Uri.parse(placeDetails.url!);
     }
-    openingHoursToday = _setOpeningHours(placeDetails);
+    openingHoursToday = _setOpeningHours(placeDetails.openingHours);
     images = [
       for (Photo photo in placeDetails.photos)
         Places.getImageFromPhoto(photo)
@@ -87,25 +87,19 @@ class PointOfInterest {
   /// Retorna null caso ocorra um erro
   final distance_api.Element? distanceFromUser;
 
-  List<String> _setTypes(PlaceDetails placeDetails, WidgetRef ref) {
+  List<String> _setTypes(List<String> list, WidgetRef ref) {
     String getTranslatedName(String type) {
-      String translatedName = "";
-
       for (var filter in ref.read(mapFiltersProvider).values) {
         for (var subtype in filter.subtypes) {
           if (subtype.id == type) {
-            translatedName = subtype.name;
-            break;
+            return subtype.name;
           }
         }
       }
-
-      return translatedName;
+      return '';
     }
 
-    List<String> list = [];
-
-    for (String type in placeDetails.types) {
+    for (String type in list) {
       String name = getTranslatedName(type);
       if (name != '') {
         // remoção de tipos genéricos se um tipo específicio foi definido
@@ -122,8 +116,7 @@ class PointOfInterest {
     return list;
   }
 
-  String? _setAddress(PlaceDetails placeDetails) {
-    List<AddressComponent> adressComponents = placeDetails.addressComponents;
+  String? _setAddress(List<AddressComponent> adressComponents) {
     // AddressComponent[1] = rua, AddressComponent[0] = número
     if (adressComponents.length > 1) {
       return "${adressComponents[1].shortName}, ${adressComponents[0].shortName}";
@@ -133,13 +126,13 @@ class PointOfInterest {
     return null;
   }
 
-  List<String> _setOpeningHours(PlaceDetails placeDetails) {
-    if (placeDetails.openingHours is OpeningHoursDetail) {
+  List<String> _setOpeningHours(OpeningHoursDetail? openingHours) {
+    if (openingHours is OpeningHoursDetail) {
       int weekday = DateTime.now().weekday;
 
       if (weekday > 6) weekday = 0;  // Domingo ocupa a posição 0 na lista placeDetails.openingHours!.periods
-      if (placeDetails.openingHours!.periods.length > weekday) {
-        final OpeningHoursPeriod openingHoursPeriod = placeDetails.openingHours!.periods[weekday];
+      if (openingHours.periods.length > weekday) {
+        final OpeningHoursPeriod openingHoursPeriod = openingHours.periods[weekday];
 
         if (openingHoursPeriod.open is OpeningHoursPeriodDate && openingHoursPeriod.close is OpeningHoursPeriodDate) {
           return [

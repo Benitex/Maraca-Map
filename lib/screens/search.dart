@@ -42,7 +42,7 @@ class _SearchScreenState extends State<SearchScreen> {
             return ListView(
               children: [
                 for (var result in snapshot.data!)
-                  PointOfInterestTile(pointOfInterest: result),
+                  PointOfInterestTile.fromPlaceSearchResult(result: result),
               ],
             );
           }
