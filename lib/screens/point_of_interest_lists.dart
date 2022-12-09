@@ -25,12 +25,12 @@ class PointOfInterestLists extends ConsumerWidget {
           for (String listName in lists.keys)
             Dismissible(
               key: Key(listName),
-              onDismissed: (direction) {
+              onDismissed: (direction) async {
                 listsController.removeList(listName);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text("$listName foi removido.")),
                 );
-                localStorage.saveListNames([
+                await localStorage.saveListNames([
                   for (String list in lists.keys)
                     if (listName != list) list,
                 ]);
@@ -39,10 +39,9 @@ class PointOfInterestLists extends ConsumerWidget {
 
               child: GestureDetector(
                 onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => CustomPointOfInterestList(
-                    listName: listName,
-                    idsList: lists[listName]!,
-                  )),
+                  MaterialPageRoute(builder: (context) {
+                    return CustomPointOfInterestList(listName: listName);
+                  }),
                 ),
                 child: Card(child: ListTile(title: Text(listName))),
               ),
@@ -52,12 +51,10 @@ class PointOfInterestLists extends ConsumerWidget {
 
       floatingActionButton: FloatingActionButton(
         tooltip: "Adicionar nova lista",
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (context) => AddListDialog(),
-          );
-        },
+        onPressed: () => showDialog(
+          context: context,
+          builder: (context) => AddListDialog(),
+        ),
         child: const Icon(Icons.add),
       ),
     );

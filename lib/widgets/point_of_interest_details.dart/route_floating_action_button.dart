@@ -29,12 +29,13 @@ class RouteFloatingActionButton extends ConsumerWidget {
             ),
           );
 
-          if (!context.mounted) return;
-          Navigator.popUntil(context, (route) => route.isFirst);
-          for (var warning in route.warnings) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(warning)),
-            );
+          if (context.mounted) {
+            Navigator.popUntil(context, (route) => route.isFirst);
+            for (var warning in route.warnings) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(warning)),
+              );
+            }
           }
         } catch (e) {
           ScaffoldMessenger.of(context).showSnackBar(

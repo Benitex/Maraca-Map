@@ -73,7 +73,7 @@ class LocalStorage {
     }
   }
 
-  /// Salva as [List] de [ids] de [PointOfInterest] de acordo com seu [name].
+  /// Salva uma [List] de [ids] de [PointOfInterest] de acordo com seu [name].
   Future<void> savePointOfInterestIdsList(String name, List<String> ids) async {
     final SharedPreferences api = await SharedPreferences.getInstance();
     await api.setStringList(name, ids);

@@ -43,17 +43,17 @@ class _AddToListDialogState extends ConsumerState<AddPointOfInterestToListDialog
           child: Text("Cancelar", style: TextStyle(color: Theme.of(context).primaryColor)),
         ),
         TextButton(
-          onPressed: () {
+          onPressed: () async {
             if (listName != null && listName != '') {
               listsController.addPointOfInterestTo(
                 listName: listName!,
                 id: widget.pointOfInterestId,
               );
-              localStorage.savePointOfInterestIdsList(
+              await localStorage.savePointOfInterestIdsList(
                 listName!,
                 [...lists[listName]!, widget.pointOfInterestId],
               );
-              Navigator.pop(context);
+              if (context.mounted) Navigator.pop(context);
             }
           },
           child: Text("Salvar", style: TextStyle(color: Theme.of(context).primaryColor)),

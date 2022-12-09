@@ -41,11 +41,11 @@ class AddListDialog extends ConsumerWidget {
           child: Text("Cancelar", style: TextStyle(color: Theme.of(context).primaryColor)),
         ),
         TextButton(
-          onPressed: () {
+          onPressed: () async {
             if (formState.currentState!.validate()) {
               listsController.addList(listName: listNameController.text);
-              localStorage.saveListNames([...lists.keys, listNameController.text]);
-              Navigator.pop(context);
+              await localStorage.saveListNames([...lists.keys, listNameController.text]);
+              if (context.mounted) Navigator.pop(context);
             }
           },
           child: Text("Salvar", style: TextStyle(color: Theme.of(context).primaryColor)),

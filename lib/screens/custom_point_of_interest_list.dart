@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_webservice/places.dart';
-import 'package:maraca_map/screens/general_screens.dart';
+import 'package:maraca_map/providers/point_of_interest_lists_provider.dart';
 import 'package:maraca_map/services/google_maps_webservice/places.dart';
+import 'package:maraca_map/services/local_storage.dart';
+import 'package:maraca_map/screens/general_screens.dart';
 import 'package:maraca_map/widgets/point_of_interest_tile.dart';
 
-class CustomPointOfInterestList extends StatelessWidget {
-  const CustomPointOfInterestList({
-    super.key,
-    required this.listName,
-    required this.idsList,
-  });
+class CustomPointOfInterestList extends ConsumerWidget {
+  const CustomPointOfInterestList({super.key, required this.listName});
 
   final String listName;
-  final List<String> idsList;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final list = ref.watch(pointOfInterestListProvider)[listName];
+    final listsController = ref.read(pointOfInterestListProvider.notifier);
+    final localStorage = ref.read(localStorageProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(listName),
@@ -25,7 +27,7 @@ class CustomPointOfInterestList extends StatelessWidget {
       body: FutureBuilder(
         future: Future<List<PlaceDetails>>(() async {
           List<PlaceDetails> placeDetails = [];
-          for (var id in idsList) {
+          for (String id in list!) {
             placeDetails.add(await Places.getDetailsByPlaceId(id));
           }
           return placeDetails;
@@ -42,7 +44,27 @@ class CustomPointOfInterestList extends StatelessWidget {
               return ListView(
                 children: [
                   for (PlaceDetails details in snapshot.data!)
-                    PointOfInterestTile.fromPlaceDetails(placeDetails: details),
+                    Dismissible(
+                      key: Key(details.placeId),
+                      onDismissed: (direction) async {
+                        listsController.removePointOfInterestFrom(
+                          listName: listName,
+                          removedId: details.placeId,
+                        );
+                        await localStorage.savePointOfInterestIdsList(
+                          listName,
+                          [
+                            for (String id in list!)
+                              if (id != details.placeId) id,
+                          ],
+                        );
+                      },
+                      background: Container(color: Colors.red),
+                      child: FractionallySizedBox(
+                        widthFactor: 1.0,
+                        child: PointOfInterestTile.fromPlaceDetails(placeDetails: details),
+                      ),
+                    ),
                 ],
               );
             }

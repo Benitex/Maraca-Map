@@ -35,12 +35,13 @@ class CircularMenu extends StatelessWidget {
           tooltip: "Explorar lugares próximos",
           onPressed: () async {
             var location = await Geolocator.getCurrentLocation();
-            if (!context.mounted) return;
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) {
-                return ExploreScreen(location: location);
-              }),
-            );
+            if (context.mounted) { 
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) {
+                  return ExploreScreen(location: location);
+                }),
+              );
+            }
           },
           child: const Icon(Icons.share_location),
         ),
