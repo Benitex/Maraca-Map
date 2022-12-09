@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:maraca_map/providers/point_of_interest_lists_provider.dart';
+import 'package:maraca_map/services/local_storage.dart';
 
 class AddPointOfInterestToListDialog extends ConsumerStatefulWidget {
   const AddPointOfInterestToListDialog({super.key, required this.pointOfInterestId});
@@ -18,6 +19,7 @@ class _AddToListDialogState extends ConsumerState<AddPointOfInterestToListDialog
   Widget build(BuildContext context) {
     final lists = ref.read(pointOfInterestListProvider);
     final listsController = ref.read(pointOfInterestListProvider.notifier);
+    final localStorage = ref.read(localStorageProvider);
 
     return AlertDialog(
       content: DropdownButton<String>(
@@ -31,7 +33,7 @@ class _AddToListDialogState extends ConsumerState<AddPointOfInterestToListDialog
             ),
         ],
         onChanged: (value) => setState(() {
-          listName = value;
+          listName = value!.trim();
         }),
       ),
 
@@ -47,7 +49,10 @@ class _AddToListDialogState extends ConsumerState<AddPointOfInterestToListDialog
                 listName: listName!,
                 id: widget.pointOfInterestId,
               );
-              // TODO salvar no dispositivo
+              localStorage.savePointOfInterestIdsList(
+                listName!,
+                [...lists[listName]!, widget.pointOfInterestId],
+              );
               Navigator.pop(context);
             }
           },

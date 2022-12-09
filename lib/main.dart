@@ -28,6 +28,7 @@ void main() async {
           await localStorage.loadSettingsValues();
           await firestore.loadMapFilters();
           await localStorage.loadMapFiltersValues();
+          await localStorage.loadPointOfInterestIdsLists();
           MapScreen.accessibilityPoints = await firestore.getAccessibilityPoints();
         }),
 
