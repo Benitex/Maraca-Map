@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
+import 'package:maraca_map/services/geolocator.dart';
 import 'package:maraca_map/screens/filter_selection.dart';
 import 'package:maraca_map/screens/explore.dart';
+import 'package:maraca_map/screens/point_of_interest_lists.dart';
 import 'package:maraca_map/screens/settings.dart';
-import 'package:maraca_map/services/geolocator.dart';
 
 class CircularMenu extends StatelessWidget {
   const CircularMenu({super.key});
@@ -42,6 +43,17 @@ class CircularMenu extends StatelessWidget {
             );
           },
           child: const Icon(Icons.share_location),
+        ),
+
+        FloatingActionButton(
+          heroTag: "pointOfInterestLists",
+          tooltip: "Listas de lugares",
+          onPressed: () => Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) {
+              return const PointOfInterestLists();
+            }),
+          ),
+          child: const Icon(Icons.star),
         ),
 
         FloatingActionButton(

@@ -5,6 +5,7 @@ import 'package:maraca_map/services/google_maps_webservice/distance.dart';
 import 'package:maraca_map/services/google_maps_webservice/places.dart';
 import 'package:maraca_map/widgets/images_list_view.dart';
 import 'package:maraca_map/screens/general_screens.dart';
+import 'package:maraca_map/widgets/point_of_interest_details.dart/add_point_of_interest_to_list_dialog.dart';
 import 'package:maraca_map/widgets/point_of_interest_details.dart/list_tiles/types_tile.dart';
 import 'package:maraca_map/widgets/point_of_interest_details.dart/list_tiles/opening_hours_tile.dart';
 import 'package:maraca_map/widgets/point_of_interest_details.dart/list_tiles/address_tile.dart';
@@ -59,7 +60,17 @@ class PointOfInterestDetailsScreen extends ConsumerWidget {
         } else {
           final PointOfInterest pointOfInterest = snapshot.data!;
           return Scaffold(
-            appBar: AppBar(title: Text(pointOfInterest.name)),
+            appBar: AppBar(
+              title: Text(pointOfInterest.name),
+              actions: [IconButton(
+                tooltip: "Adicionar a uma lista",
+                icon: const Icon(Icons.star),
+                onPressed: () => showDialog(
+                  context: context,
+                  builder: (context) => AddPointOfInterestToListDialog(pointOfInterestId: pointOfInterestID),
+                ),
+              )],
+            ),
 
             body: ListView(
               scrollDirection: Axis.vertical,

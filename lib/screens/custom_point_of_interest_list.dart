@@ -17,7 +17,10 @@ class CustomPointOfInterestList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(listName)),
+      appBar: AppBar(
+        title: Text(listName),
+        centerTitle: true,
+      ),
 
       body: FutureBuilder(
         future: Future<List<PlaceDetails>>(() async {
@@ -34,22 +37,22 @@ class CustomPointOfInterestList extends StatelessWidget {
           } else if (snapshot.hasError) {
             return ErrorScreen(error: snapshot.error!);
 
-          } else if (!snapshot.hasData) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Center(child: Text("Nenhum lugar foi adicionado à lista $listName.")),
-              ],
-            );
-
-          } else {
-            return ListView(
-              children: [
-                for (PlaceDetails details in snapshot.data!)
-                  PointOfInterestTile.fromPlaceDetails(placeDetails: details),
-              ],
-            );
+          } else if (snapshot.hasData) {
+            if (snapshot.data!.isNotEmpty) {
+              return ListView(
+                children: [
+                  for (PlaceDetails details in snapshot.data!)
+                    PointOfInterestTile.fromPlaceDetails(placeDetails: details),
+                ],
+              );
+            }
           }
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(child: Text("Nenhum lugar foi adicionado à lista \"$listName\".")),
+            ],
+          );
         },
       ),
     );

@@ -12,7 +12,7 @@ class PointOfInterestTile extends StatelessWidget {
     required this.placeId,
     required this.name,
     required this.location,
-    this.photo,
+    this.photos = const [],
     this.rating,
     this.priceLevel,
     this.openingHours,
@@ -25,7 +25,7 @@ class PointOfInterestTile extends StatelessWidget {
     this.origin,
   }) : placeId = result.placeId,
       name = result.name,
-      photo = result.photos.first,
+      photos = result.photos,
       rating = result.rating,
       priceLevel = result.priceLevel,
       openingHours = result.openingHours,
@@ -37,14 +37,14 @@ class PointOfInterestTile extends StatelessWidget {
     this.origin,
   }) : placeId = placeDetails.placeId,
       name = placeDetails.name,
-      photo = placeDetails.photos.first,
+      photos = placeDetails.photos,
       rating = placeDetails.rating,
       priceLevel = placeDetails.priceLevel,
       openingHours = placeDetails.openingHours,
       location = placeDetails.geometry!.location;
 
   final String placeId, name;
-  final Photo? photo;
+  final List<Photo> photos;
   final num? rating;
   final PriceLevel? priceLevel;
   final OpeningHoursDetail? openingHours;
@@ -71,7 +71,7 @@ class PointOfInterestTile extends StatelessWidget {
               // Foto
               SizedBox(
                 height: 180,
-                child: photo is! Photo ? (
+                child: photos.isEmpty ? (
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -79,7 +79,7 @@ class PointOfInterestTile extends StatelessWidget {
                   )
                 ) : (
                   Image(
-                    image: Places.getImageFromPhoto(photo!).image,
+                    image: Places.getImageFromPhoto(photos.first).image,
                     width: 320, fit: BoxFit.fitWidth,
                   )
                 ),

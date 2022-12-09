@@ -87,7 +87,7 @@ class PointOfInterest {
   /// Retorna null caso ocorra um erro
   final distance_api.Element? distanceFromUser;
 
-  List<String> _setTypes(List<String> list, WidgetRef ref) {
+  List<String> _setTypes(List<String> types, WidgetRef ref) {
     String getTranslatedName(String type) {
       for (var filter in ref.read(mapFiltersProvider).values) {
         for (var subtype in filter.subtypes) {
@@ -99,21 +99,22 @@ class PointOfInterest {
       return '';
     }
 
-    for (String type in list) {
+    List<String> translatedNames = [];
+    for (String type in types) {
       String name = getTranslatedName(type);
       if (name != '') {
         // remoção de tipos genéricos se um tipo específicio foi definido
         if (name == "Estabelecimento" || name == "Loja") {
-          if (list.isEmpty) {
-            list.add(name);
+          if (translatedNames.isEmpty) {
+            translatedNames.add(name);
           }
         } else {
-          list.add(name);
+          translatedNames.add(name);
         }
       }
     }
 
-    return list;
+    return translatedNames;
   }
 
   String? _setAddress(List<AddressComponent> adressComponents) {
