@@ -33,7 +33,7 @@ class _AddToListDialogState extends ConsumerState<AddPointOfInterestToListDialog
             ),
         ],
         onChanged: (value) => setState(() {
-          listName = value!.trim();
+          listName = value!;
         }),
       ),
 
@@ -44,7 +44,15 @@ class _AddToListDialogState extends ConsumerState<AddPointOfInterestToListDialog
         ),
         TextButton(
           onPressed: () async {
-            if (listName != null && listName != '') {
+            if (listName == null || listName == '') {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Por favor, selecione uma lista.")),
+              );
+            } else if (lists[listName]!.contains(widget.pointOfInterestId)) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text("Esse lugar já foi adicionado a \"$listName\".")),
+              );
+            } else {
               listsController.addPointOfInterestTo(
                 listName: listName!,
                 id: widget.pointOfInterestId,

@@ -51,6 +51,9 @@ class CustomPointOfInterestList extends ConsumerWidget {
                           listName: listName,
                           removedId: details.placeId,
                         );
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("${details.name} foi removido da lista \"$listName\".")),
+                        );
                         await localStorage.savePointOfInterestIdsList(
                           listName,
                           [

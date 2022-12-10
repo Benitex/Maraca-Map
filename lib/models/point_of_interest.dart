@@ -117,12 +117,12 @@ class PointOfInterest {
     return translatedNames;
   }
 
-  String? _setAddress(List<AddressComponent> adressComponents) {
+  String? _setAddress(List<AddressComponent> addressComponents) {
     // AddressComponent[1] = rua, AddressComponent[0] = número
-    if (adressComponents.length > 1) {
-      return "${adressComponents[1].shortName}, ${adressComponents[0].shortName}";
-    } else if (adressComponents.isNotEmpty) {
-      return adressComponents.first.shortName;
+    if (addressComponents.length > 1) {
+      return "${addressComponents[1].shortName}, ${addressComponents[0].shortName}";
+    } else if (addressComponents.isNotEmpty) {
+      return addressComponents.first.shortName;
     }
     return null;
   }
