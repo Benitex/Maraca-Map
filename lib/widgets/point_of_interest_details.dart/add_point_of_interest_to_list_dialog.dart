@@ -57,11 +57,11 @@ class _AddToListDialogState extends ConsumerState<AddPointOfInterestToListDialog
                 listName: listName!,
                 id: widget.pointOfInterestId,
               );
+              Navigator.pop(context);
               await localStorage.savePointOfInterestIdsList(
                 listName!,
                 [...lists[listName]!, widget.pointOfInterestId],
               );
-              if (context.mounted) Navigator.pop(context);
             }
           },
           child: Text("Salvar", style: TextStyle(color: Theme.of(context).primaryColor)),

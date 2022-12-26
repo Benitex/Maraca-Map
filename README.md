@@ -21,7 +21,7 @@ O aplicativo foi desenvolvido com o objetivo de guiar as pessoas pela região do
 
 Se você não é um desenvolvedor, acesse a página da [última release do aplicativo](https://github.com/Benitex/Maraca-Map/releases/tag/1.1.0) e siga as instruções de instalação.
 
-Se você é um desenvolvedor, baixe o framework [Flutter na versão 3.7.0 da branch master](https://github.com/flutter/flutter/tree/0c7d84aa789e649cb05b0f5f890c04e482f43737). Depois, clone esse repositório no computador, adicione suas próprias [API Keys](https://console.cloud.google.com/google/maps-apis/credentials) no arquivo `.env example` e renomeie o arquivo para `.env`.
+Se você é um desenvolvedor, baixe o framework [Flutter na branch stable](https://github.com/flutter/flutter/tree/stable). Depois, clone esse repositório no computador, adicione suas próprias [API Keys](https://console.cloud.google.com/google/maps-apis/credentials) no arquivo `.env example` e renomeie o arquivo para `.env`.
 
 ## Créditos
 

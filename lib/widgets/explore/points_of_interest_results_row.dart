@@ -33,10 +33,7 @@ class PointOfInterestResultsRow extends ConsumerWidget {
           if (subtypes.isNotEmpty) {
             Navigator.of(context).push(
               MaterialPageRoute(builder: (context) {
-                return ExploreScreen(
-                  types: subtypes,
-                  location: location,
-                );
+                return ExploreScreen(types: subtypes);
               }),
             );
           }

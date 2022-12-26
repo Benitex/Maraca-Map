@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fab_circular_menu/fab_circular_menu.dart';
-import 'package:maraca_map/services/geolocator.dart';
 import 'package:maraca_map/screens/filter_selection.dart';
 import 'package:maraca_map/screens/explore.dart';
 import 'package:maraca_map/screens/point_of_interest_lists.dart';
@@ -14,6 +13,7 @@ class CircularMenu extends StatelessWidget {
     return FabCircularMenu(
       alignment: Alignment.bottomCenter,
       ringColor: Colors.black26,
+      fabColor: Theme.of(context).primaryColor,
       fabOpenIcon: const Icon(Icons.menu, color: Colors.white),
       fabCloseIcon: const Icon(Icons.close, color: Colors.white),
       animationDuration: const Duration(milliseconds: 500),
@@ -33,16 +33,11 @@ class CircularMenu extends StatelessWidget {
         FloatingActionButton(
           heroTag: "explore",
           tooltip: "Explorar lugares próximos",
-          onPressed: () async {
-            var location = await Geolocator.getCurrentLocation();
-            if (context.mounted) { 
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) {
-                  return ExploreScreen(location: location);
-                }),
-              );
-            }
-          },
+          onPressed: () => Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) {
+              return const ExploreScreen();
+            }),
+          ),
           child: const Icon(Icons.share_location),
         ),
 

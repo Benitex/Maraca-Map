@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart';
-import 'package:google_maps_webservice/distance.dart' as distance_api;
 import 'package:maraca_map/screens/explore.dart';
 import 'package:maraca_map/screens/map.dart';
+import 'package:maraca_map/services/google_maps_webservice/distance.dart';
 
 class AddressTile extends StatelessWidget {
-  const AddressTile({super.key, required this.location, this.address, this.distance});
+  const AddressTile({super.key, required this.location, this.address});
 
   final Location? location;
   final String? address;
-  final distance_api.Element? distance;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +25,7 @@ class AddressTile extends StatelessWidget {
               style: ElevatedButton.styleFrom(shape: const CircleBorder()),
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) {
-                  return ExploreScreen(location: location!);
+                  return const ExploreScreen();
                 }),
               ),
               child: const Icon(Icons.share_location),
@@ -52,13 +51,18 @@ class AddressTile extends StatelessWidget {
 
         subtitle: Text(address == null ? "Endereço indisponível." : address!),
       ),
-      ListTile(subtitle: Text(
-        distance == null ? (
-          "Não foi possível calcular a distância até você."
-        ) : (
-          "Esse lugar está a ${distance!.distance.text} de você. O tempo para chegar até lá a pé é de ${distance!.duration.text}."
-        )
-      )),
+      FutureBuilder(
+        future: Future(() async {
+          if (location == null) return null;
+          final distance = await Distance.fromHereTo(location!);
+          return "Esse lugar está a ${distance.distance.text} de você. O tempo médio para chegar até lá é de ${distance.duration.text}.";
+        }),
+        builder: (context, snapshot) {
+          return ListTile(subtitle: Text(
+            snapshot.data ?? "Não foi possível calcular a distância até você.",
+          ));
+        },
+      ),
     ]);
   }
 }

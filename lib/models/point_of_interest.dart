@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_webservice/places.dart';
-import 'package:google_maps_webservice/distance.dart' as distance_api;
 import 'package:maraca_map/providers/filters_provider.dart';
 import 'package:maraca_map/services/google_maps_webservice/places.dart';
 
 class PointOfInterest {
-  PointOfInterest.fromPlaceDetails({required WidgetRef ref, required PlaceDetails placeDetails, this.distanceFromUser}) {
+  PointOfInterest.fromPlaceDetails({required WidgetRef ref, required PlaceDetails placeDetails}) {
     id = placeDetails.placeId;
     name = placeDetails.name;
     location = placeDetails.geometry == null ? null : placeDetails.geometry!.location;
@@ -81,11 +80,6 @@ class PointOfInterest {
 
   /// [List] de [Photo] do Google Places convertidas em [Image]
   late final List<Image> images;
-
-  /// [Element] contendo a distância até o usuário em tempo e quilômetros
-  ///
-  /// Retorna null caso ocorra um erro
-  final distance_api.Element? distanceFromUser;
 
   List<String> _setTypes(List<String> types, WidgetRef ref) {
     String getTranslatedName(String type) {

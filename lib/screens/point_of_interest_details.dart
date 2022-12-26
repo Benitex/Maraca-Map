@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:maraca_map/models/point_of_interest.dart';
-import 'package:maraca_map/services/google_maps_webservice/distance.dart';
 import 'package:maraca_map/services/google_maps_webservice/places.dart';
 import 'package:maraca_map/widgets/images_list_view.dart';
 import 'package:maraca_map/screens/general_screens.dart';
@@ -24,20 +23,10 @@ class PointOfInterestDetailsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return FutureBuilder(
       future: Future<PointOfInterest>(() async {
-        final placeDetails = await Places.getDetailsByPlaceId(pointOfInterestID);
-
-        try {
-          return PointOfInterest.fromPlaceDetails(
-            placeDetails: placeDetails,
-            distanceFromUser: await Distance.fromHereTo(placeDetails.geometry!.location),
-            ref: ref,
-          );
-        } catch (e) {
-          return PointOfInterest.fromPlaceDetails(
-            placeDetails: placeDetails,
-            ref: ref,
-          );
-        }
+        return PointOfInterest.fromPlaceDetails(
+          placeDetails: await Places.getDetailsByPlaceId(pointOfInterestID),
+          ref: ref,
+        );
       }),
 
       builder: (context, snapshot) {
@@ -88,7 +77,6 @@ class PointOfInterestDetailsScreen extends ConsumerWidget {
                 AddressTile(
                   location: pointOfInterest.location,
                   address: pointOfInterest.address,
-                  distance: pointOfInterest.distanceFromUser,
                 ),
 
                 // Imagens

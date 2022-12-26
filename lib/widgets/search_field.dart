@@ -20,9 +20,7 @@ class SearchField extends StatelessWidget {
             return TextFormField(
               controller: textEditingController,
               keyboardType: TextInputType.streetAddress,
-
               focusNode: focusNode,
-              onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
 
               style: const TextStyle(color: Colors.black),
               decoration: const InputDecoration(

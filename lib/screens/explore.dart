@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_webservice/places.dart';
+import 'package:google_maps_webservice/directions.dart';
+import 'package:maraca_map/screens/general_screens.dart';
+import 'package:maraca_map/services/geolocator.dart';
 import 'package:maraca_map/models/point_of_interest_type.dart';
 import 'package:maraca_map/widgets/explore/distance_form_field.dart';
 import 'package:maraca_map/widgets/explore/points_of_interest_results_row.dart';
@@ -8,7 +10,6 @@ import 'package:maraca_map/widgets/explore/price_dropdown_menu.dart';
 class ExploreScreen extends StatelessWidget {
   const ExploreScreen({
     super.key,
-    required this.location,
     this.types = const [
       PointOfInterestType(
         id: "food",
@@ -105,7 +106,6 @@ class ExploreScreen extends StatelessWidget {
   });
 
   final List<PointOfInterestType> types;
-  final Location location;
 
   @override
   Widget build(BuildContext context) {
@@ -129,17 +129,30 @@ class ExploreScreen extends StatelessWidget {
         ),
       ),
 
-      body: ListView(
-        scrollDirection: Axis.vertical,
-        children: [
-          for (PointOfInterestType type in types)
-            PointOfInterestResultsRow(
-              location: location,
-              typeName: type.name,
-              searchFor: type.name,
-              subtypes: type.subtypes,
-            ),
-        ],
+      body: FutureBuilder(
+        future: Future<Location>(() async => await Geolocator.getCurrentLocation()),
+
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const LoadingScreen();
+          } else if (snapshot.hasError) {
+            return ErrorScreen(error: snapshot.error!);
+
+          } else {
+            return ListView(
+              scrollDirection: Axis.vertical,
+              children: [
+                for (PointOfInterestType type in types)
+                  PointOfInterestResultsRow(
+                    location: snapshot.data!,
+                    typeName: type.name,
+                    searchFor: type.name,
+                    subtypes: type.subtypes,
+                  ),
+              ],
+            );
+          }
+        },
       ),
     );
   }
