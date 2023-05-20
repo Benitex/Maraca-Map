@@ -16,25 +16,26 @@ class RouteFloatingActionButton extends ConsumerWidget {
       tooltip: "Mostrar rotas no mapa",
       onPressed: () async {
         try {
-          var route = await Directions.getRouteToDestination(
+          await Directions.getRouteToDestination(
             destination: location,
-          );
-          ref.read(mapPolylinesProvider.notifier).add(
-            Polyline(
-              polylineId: const PolylineId("polyline"),
-              color: Colors.red,
-              points: Directions.decodePolyline(
-                route.overviewPolyline.points,
+          ).then((route) {
+            ref.read(mapPolylinesProvider.notifier).add(
+              Polyline(
+                polylineId: const PolylineId("polyline"),
+                color: Colors.red,
+                points: Directions.decodePolyline(
+                  route.overviewPolyline.points,
+                ),
               ),
-            ),
-          );
-
-          Navigator.popUntil(context, (route) => route.isFirst);
-          for (var warning in route.warnings) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(warning)),
             );
-          }
+
+            Navigator.of(context).popUntil((route) => route.isFirst);
+            for (var warning in route.warnings) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(warning)),
+              );
+            }
+          });
         } catch (e) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Ocorreu um erro no carregamento da rota. Tente novamente mais tarde.")),

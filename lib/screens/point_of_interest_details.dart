@@ -45,7 +45,7 @@ class PointOfInterestDetailsScreen extends ConsumerWidget {
             appBar: AppBar(),
             body: const NoResults(),
           );
- 
+
         } else {
           final PointOfInterest pointOfInterest = snapshot.data!;
           return Scaffold(

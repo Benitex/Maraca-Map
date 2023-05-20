@@ -72,10 +72,10 @@ class PointOfInterestTile extends StatelessWidget {
               SizedBox(
                 height: 180,
                 child: photos.isEmpty ? (
-                  Column(
+                  const Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: const [Text("Nenhuma imagem disponível")],
+                    children: [Text("Nenhuma imagem disponível")],
                   )
                 ) : (
                   Image(

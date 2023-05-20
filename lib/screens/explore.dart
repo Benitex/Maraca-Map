@@ -113,11 +113,11 @@ class ExploreScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Explorar"),
         centerTitle: true,
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(48.0),
+        bottom: const PreferredSize(
+          preferredSize: Size.fromHeight(48.0),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Row(children: const [
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            child: Row(children: [
               Text("Distância média: ", style: TextStyle(color: Colors.white)),
               DistanceFormField(),
               Text("m", style: TextStyle(color: Colors.white)),

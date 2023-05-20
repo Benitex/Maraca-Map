@@ -26,9 +26,9 @@ class ErrorScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     debugPrint(error.toString());
-    return Column(
+    return const Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: const [
+      children: [
         Center(child: Text("Ocorreu um erro no carregamento da página.\nTente novamente mais tarde.")),
       ],
     );
@@ -40,9 +40,9 @@ class NoResults extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: const [
+      children: [
         Center(child: Text("Nenhum resultado encontrado.")),
       ],
     );
